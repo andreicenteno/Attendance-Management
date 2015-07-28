@@ -85,15 +85,25 @@
         <put-attribute name="body" value="/WEB-INF/views/update_ministry.jsp"></put-attribute> 
  </definition> 
  
-  <definition extends="base.definition" name="add_service">  
+<definition extends="base.definition" name="add_service">  
   		<put-attribute name="title" value="Add Service"></put-attribute>  
         <put-attribute name="body" value="/WEB-INF/views/add_service.jsp"></put-attribute> 
  </definition> 
 
-  <definition extends="base.definition" name="update_service">  
+<definition extends="base.definition" name="update_service">  
   		<put-attribute name="title" value="Update Service"></put-attribute>  
         <put-attribute name="body" value="/WEB-INF/views/update_service.jsp"></put-attribute> 
- </definition>  
+</definition>  
+
+<definition extends="base.definition" name="add_group">  
+  		<put-attribute name="title" value="Add Group"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/add_group.jsp"></put-attribute> 
+</definition> 
+
+<definition extends="base.definition" name="update_group">  
+		<put-attribute name="title" value="Update Group"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/update_group.jsp"></put-attribute> 
+</definition>  
 
 
 <definition extends="base.definition" name="main_template">  

@@ -24,7 +24,7 @@ public class AttendeesDaoImpl implements AttendeesDao {
 
 	@SuppressWarnings("unchecked")
 	public List<Attendees> listAttendees(){
-		String sql = "SELECT * FROM asystem.attendees";
+		String sql = "SELECT * FROM asystem.attendees order by update_time desc";
 		SQLQuery sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(sql);
 	    sqlQuery.addEntity(Attendees.class);
 	    return sqlQuery.list();

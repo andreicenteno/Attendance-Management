@@ -78,6 +78,70 @@
 					<center>No record found</center>
 				</c:if>
 			</div>
+			
+			<hr/>
+			
+			<h3>Groups</h3>
+
+			<div class="row">
+				<div class="date-form">
+					<div class="form-horizontal">
+
+						<a href="add_group.html"><button type="submit"
+								class="btn btn-default">Add Group</button></a><br /> <label
+							for="date-picker-3" class="control-label">Name</label>
+						<div class="control-group">
+							<div class="controls">
+								<div class="input-group">
+									<input type="text" class="form-control"
+										placeholder="Search name..."> <span
+										class="input-group-btn">
+										<button class="btn btn-default" type="button">Go!</button>
+									</span>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Group</th>
+							<th class="hidden-xs hidden-sm">Description</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<c:if test="${!empty groupList}">
+							<c:forEach items="${groupList}" var="groupList">
+								<tr>
+									<th><c:out value='${groupList.groupName}' /></th>
+									<th class="hidden-xs hidden-sm"><c:out
+											value='${groupList.description}' /></th>
+									<th><a
+										href="update_group.html?groupId=${groupList.groupId}">Update</a>
+										&nbsp;&nbsp; | &nbsp;&nbsp;<a
+										href="delete_group.html?groupId=${groupList.groupId}">Delete</a></th>
+								</tr>
+							</c:forEach>
+						</c:if>
+
+					</tbody>
+				</table>
+				<c:if test="${empty groupList}">
+					<center>No record found</center>
+				</c:if>
+			</div>
+			
+			
+			
+			
 
 			<hr/>
 

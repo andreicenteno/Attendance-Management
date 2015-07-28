@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.am.common.BeanMapper;
+import com.am.service.GroupService;
 import com.am.service.MinistryService;
 import com.am.service.ServiceService;
+import com.am.bean.GroupBean;
 import com.am.bean.MinistryBean;
 import com.am.bean.ServiceBean;
+import com.am.model.Group;
 import com.am.model.Ministry;
 import com.am.model.ServiceEntity;
 
@@ -24,16 +27,21 @@ import com.am.model.ServiceEntity;
 public class MaintenanceController extends BeanMapper{
 
 	@Autowired
-	MinistryService ministryService;
+	private MinistryService ministryService;
 	
 	@Autowired
-	ServiceService serviceService;
+	private ServiceService serviceService;
+	
+	
+	@Autowired
+	private GroupService groupService;
 	
 	@RequestMapping(value = "/maintenance", method = RequestMethod.GET)
 	public ModelAndView maintenanceGet(){
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("ministryList", prepareListOfMinistry(ministryService.listMinistry()));
 		model.put("serviceList", prepareListOfService(serviceService.listService()));
+		model.put("groupList", prepareListOfGroup(groupService.listGroup()));
 		return new ModelAndView("maintenance", model);
 	}
 	
@@ -90,6 +98,62 @@ public class MaintenanceController extends BeanMapper{
 		}
 		return new ModelAndView("redirect:/maintenance.html");
 	}
+	
+/*=============== GROUPS ================== */		
+	
+	@RequestMapping(value = "/add_group", method = RequestMethod.GET)
+	public ModelAndView addGroupGet(@ModelAttribute("group") GroupBean groupBean,BindingResult result){
+		Map<String, Object> model = new HashMap<String, Object>();
+		return new ModelAndView("add_group", model);
+	}
+	
+	@RequestMapping(value = "/insert_group", method = RequestMethod.POST)
+	public ModelAndView insertGroup(@ModelAttribute("group") GroupBean groupBean,BindingResult result){
+		try{
+			Group group= prepareGroupModel(groupBean);
+			groupService.insert(group);
+				
+		}catch(Exception e){
+			System.out.println(e);
+		}
+		
+		return new ModelAndView("redirect:/maintenance.html");
+	}
+	
+	@RequestMapping(value = "/update_group", method = RequestMethod.GET)
+	public ModelAndView updateGroupGet(@ModelAttribute("group") GroupBean groupBean,BindingResult result){
+		Map<String, Object> model = new HashMap<String, Object>();
+		try{
+			model.put("updateGroup", prepareGroupBean(groupService.getGroup(groupBean.getGroupId())));
+		}catch(Exception e){
+			System.out.println(e);
+		}
+		return new ModelAndView("update_group", model);
+	}
+	
+	@RequestMapping(value = "/save_group", method = RequestMethod.POST)
+	public ModelAndView saveGroup(@ModelAttribute("group") GroupBean groupBean,BindingResult result){
+		try{
+			Group group= prepareGroupModel(groupBean);
+			groupService.update(group);
+		}catch(Exception e){
+			
+		}
+		return new ModelAndView("redirect:/maintenance.html");
+	}
+	
+	
+	@RequestMapping(value = "/delete_group", method = RequestMethod.GET)
+	public ModelAndView deleteGroup(@ModelAttribute("group") GroupBean groupBean,BindingResult result){
+		try{
+			Group group = prepareGroupModel(groupBean);
+			groupService.delete(group);
+		}catch(Exception e){
+			
+		}
+		return new ModelAndView("redirect:/maintenance.html");
+	}
+	
 	
  /*=============== SERVICE ================== */	
 	

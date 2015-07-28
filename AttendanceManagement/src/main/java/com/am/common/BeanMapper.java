@@ -15,11 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.am.bean.AttendeesBean;
+import com.am.bean.GroupBean;
 import com.am.bean.MinistryBean;
 import com.am.bean.ServiceBean;
 import com.am.bean.SundayServiceAttendeesBean;
 import com.am.bean.SundayServiceBean;
 import com.am.model.Attendees;
+import com.am.model.Group;
 import com.am.model.Ministry;
 import com.am.model.ServiceEntity;
 import com.am.model.SundayService;
@@ -107,6 +109,11 @@ public class BeanMapper extends EntityMapper{
 				bean.setMemberDate(entity.getMemberDate());
 				bean.setCreateTime(entity.getCreateTime());
 				bean.setUpdateTime(entity.getUpdateTime());
+				
+				GroupBean groupBean = new GroupBean();
+				groupBean.setGroupId(entity.getId());
+				groupBean.setGroupName(entity.getGroup().getGroupName());
+				bean.setGroupBean(groupBean);
 				beans.add(bean);
 			}
 		}
@@ -130,6 +137,10 @@ public class BeanMapper extends EntityMapper{
 		bean.setMemberDate(entity.getMemberDate());
 		bean.setCreateTime(entity.getCreateTime());
 		bean.setUpdateTime(entity.getUpdateTime());
+		
+		GroupBean groupBean = new GroupBean();
+		groupBean.setGroupId(entity.getId());
+		bean.setGroupBean(groupBean);
 		return bean;
 	}
 	
@@ -218,6 +229,35 @@ public class BeanMapper extends EntityMapper{
 		
 		bean.setCreateTime(entity.getCreateTime());
 		bean.setUpdateTime(entity.getUpdateTime());
+		return bean;
+	}
+	
+	
+	public List<GroupBean> prepareListOfGroup(List<Group> groups) {
+		List<GroupBean> beans = null;
+		if (groups != null && !groups.isEmpty()) {
+			beans = new ArrayList<GroupBean>();
+			GroupBean bean = null;
+			for (Group group : groups) {
+				bean = new GroupBean();
+				bean.setGroupId(group.getId());
+				bean.setGroupName(group.getGroupName());
+				bean.setDescription(group.getDescription());
+				bean.setCreateTime(group.getCreateTime());
+				bean.setUpdateTime(group.getUpdateTime());
+				beans.add(bean);
+			}
+		}
+		return beans;
+	}
+	
+	public GroupBean prepareGroupBean(Group group){
+		GroupBean bean = new GroupBean();
+		bean.setGroupId(group.getId());
+		bean.setGroupName(group.getGroupName());
+		bean.setDescription(group.getDescription());
+		bean.setCreateTime(group.getCreateTime());
+		bean.setUpdateTime(group.getUpdateTime());
 		return bean;
 	}
 	

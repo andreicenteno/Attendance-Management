@@ -23,7 +23,7 @@ public class SundayServiceAttendeesDaoImpl implements SundayServiceAttendeesDao 
 
 	@SuppressWarnings("unchecked")
 	public List<SundayServiceAttendees> listSundayServiceAttendees(){
-		String sql = "SELECT * FROM asystem.sunday_service_attendees";
+		String sql = "SELECT * FROM asystem.sunday_service_attendees order by update_time desc";
 		SQLQuery sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(sql);
 	    sqlQuery.addEntity(SundayServiceAttendees.class);
 	    return sqlQuery.list();

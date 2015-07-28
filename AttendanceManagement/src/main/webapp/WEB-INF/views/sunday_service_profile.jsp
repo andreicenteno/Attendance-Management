@@ -81,7 +81,14 @@
 									</th>
 									<th><c:out value='${sundayServiceAttendeesList.attendeesBean.contactNumber}' /></th>
 									<th><c:out value='${sundayServiceAttendeesList.attendeesBean.address}' /></th>
-									<th><a href="#">Remove</a></th>
+									<th>
+									<form:form method="POST" style="align-items: center;" class="form-horizontal" action="remove_service_attendees.html" modelAttribute="sunday_services_attendees">
+										<form:input path="sundayServiceAttendeesId" type="hidden" value="${sundayServiceAttendeesList.sundayServiceAttendeesId}" class="form-control"></form:input>
+										<form:input path="sundayServiceBean.sundayServiceId" type="hidden" value="${SUNDAY_SERVICE_ID}" class="form-control"></form:input>
+										<form:input path="attendeesBean.attendeesId" type="hidden" value="${sundayServiceAttendeesList.attendeesBean.attendeesId}" class="form-control"></form:input>
+										<button type="submit" class="btn btn-default">REMOVE</button>
+									</form:form>
+									</th>
 								</tr>
 								</c:forEach>
 						</c:if>

@@ -12,7 +12,9 @@
 	content="Custom built online life group management for JIL or Jesus Is Lord">
 <meta name="author" content="Andrei Centeno">
 <link rel="icon" href="images/favicon.ico">
-<script src="${pageContext.request.contextPath}/resources/js/customize/common.js" type="text/javascript"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/customize/common.js"
+	type="text/javascript"></script>
 <title>Attendees</title>
 
 
@@ -26,7 +28,9 @@
 
 
 				<div class="col-md-8">
-					<form:form method="POST" style="align-items: center;" class="form-horizontal" action="insert_attendees.html" modelAttribute="attendees">
+					<form:form method="POST" style="align-items: center;"
+						class="form-horizontal" action="insert_attendees.html"
+						modelAttribute="attendees">
 						<div class="form-group">
 							<label class="col-sm-2 control-label">First Name</label>
 							<div class="col-sm-10">
@@ -76,7 +80,20 @@
 							<div class="col-sm-10">
 								<form:select path="gender" id="leave_type" class="form-control">
 									<form:option path="gender" value="true">Male</form:option>
-									<form:option path = "gender" value = "false">Female</form:option>
+									<form:option path="gender" value="false">Female</form:option>
+								</form:select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Group</label>
+							<div class="col-sm-10">
+								<form:select path="groupBean.groupId" id="leave_type" class="form-control">
+									<c:if test="${!empty groupList}">
+										<c:forEach items="${groupList}" var="groupList">
+											<form:option path="groupBean.groupId" value="${groupList.groupId}"><c:out value='${groupList.groupName}' /></form:option>
+										</c:forEach>
+									</c:if>
 								</form:select>
 							</div>
 						</div>
@@ -85,9 +102,10 @@
 							<label class="col-sm-2 control-label">Birthday</label>
 							<div class="col-sm-10">
 								<div class="input-group">
-									<label for="date-picker-2" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span> </label>
-									<%-- <form:input path="birthday" id="date-picker-2" type="text" class="date-picker form-control"></form:input> --%>
-									<form:input path="birthday" type="text" id="birthday" readonly="readonly" class="form-control"></form:input>
+									<label for="date-picker-2" class="input-group-addon btn"><span
+										class="glyphicon glyphicon-calendar"></span> </label>
+									<form:input path="birthday" id="date-picker-2" type="text"
+										class="date-picker form-control"></form:input>
 								</div>
 							</div>
 						</div>
@@ -95,17 +113,19 @@
 						<div class="form-group">
 							<label class="col-sm-2 control-label">First Timer?</label>
 							<div class="col-sm-10">
-								<form:checkbox path="isFirstTimer" id="isFirstTimer" type="checkbox" value="false"
-									onchange="changeValueFirstTimer(this)" class="checkbox form-control"></form:checkbox>
+								<form:checkbox path="isFirstTimer" id="isFirstTimer"
+									type="checkbox" value="false"
+									onchange="changeValueFirstTimer(this)"
+									class="checkbox form-control"></form:checkbox>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Is Member?</label>
 							<div class="col-sm-10">
-								<form:checkbox path="isMember" id="isMember" type="checkbox" 
-								onchange="changeValueMember(this)" value="false" 
-								class="checkbox form-control"></form:checkbox>
+								<form:checkbox path="isMember" id="isMember" type="checkbox"
+									onchange="changeValueMember(this)" value="false"
+									class="checkbox form-control"></form:checkbox>
 							</div>
 						</div>
 

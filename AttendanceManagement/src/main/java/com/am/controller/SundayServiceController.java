@@ -11,13 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.am.bean.AttendeesBean;
 import com.am.bean.SundayServiceAttendeesBean;
 import com.am.bean.SundayServiceBean;
 import com.am.common.BeanMapper;
-import com.am.model.Attendees;
 import com.am.model.SundayService;
-import com.am.model.SundayServiceAttendees;
 import com.am.service.AttendeesService;
 import com.am.service.ServiceService;
 import com.am.service.SundayServiceAttendeesService;
@@ -150,6 +147,17 @@ public class SundayServiceController extends BeanMapper {
 			System.out.println(e);
 		}
 		return new ModelAndView("redirect:/sunday_service_attendees.html?sundayServiceId="+sundayServiceAttendeesBean.getSundayServiceBean().getSundayServiceId());
+	}
+	
+	@RequestMapping(value = "/remove_service_attendees", method = RequestMethod.POST)
+	public ModelAndView removeSundayServiceAttendees(@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
+			@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,BindingResult result){
+		try{
+			sundayServiceAttendeesService.delete(prepareSundayServiceAttendeesModel(sundayServiceAttendeesBean));
+		}catch(Exception e){
+			System.out.println(e);
+		}
+		return new ModelAndView("redirect:/sunday_service_profile.html?sundayServiceId="+sundayServiceAttendeesBean.getSundayServiceBean().getSundayServiceId());
 	}
 	
 

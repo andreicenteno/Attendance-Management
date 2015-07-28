@@ -24,7 +24,7 @@ public class ServiceDaoImpl implements ServiceDao {
 
 	@SuppressWarnings("unchecked")
 	public List<ServiceEntity> listService(){
-		String sql = "SELECT * FROM asystem.services";
+		String sql = "SELECT * FROM asystem.services order by update_time desc";
 		SQLQuery sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(sql);
 	    sqlQuery.addEntity(ServiceEntity.class);
 	    return sqlQuery.list();

@@ -51,7 +51,7 @@
 							<th>Name</th>
 							<th>Contact Number</th>
 							<th>Gender</th>
-							<th>Address</th>
+							<th>Group</th>
 							<th>Birthday</th>
 							<th>Action</th>
 						</tr>
@@ -73,7 +73,7 @@
 									
 									
 									</th>
-									<th><c:out value='${attendeesList.address}' /></th>
+									<th><c:out value='${attendeesList.groupBean.groupName}' /></th>
 									<th><c:out value='${attendeesList.birthday}' /></th>
 									<th><a
 										href="update_attendees.html?attendeesId=${attendeesList.attendeesId}">Update</a>

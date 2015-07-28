@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -61,6 +63,11 @@ private static final long serialVersionUID = -723583058586873479L;
 	@Column(name="member_date")
 	private Timestamp memberDate;
 	
+	@ManyToOne
+	@JoinColumn(name = "group_id", nullable=true)
+	private Group group;
+	
+	
 	@Generated(GenerationTime.INSERT)
 	@Column(name="create_time" , nullable = false, insertable=false, updatable=false)
 	private Timestamp createTime;
@@ -75,6 +82,15 @@ private static final long serialVersionUID = -723583058586873479L;
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	
+	public Group getGroup() {
+		return group;
+	}
+
+	public void setGroup(Group group) {
+		this.group = group;
 	}
 
 	public String getFirstName() {
@@ -194,9 +210,12 @@ private static final long serialVersionUID = -723583058586873479L;
 				+ ", birthday=" + birthday + ", gender=" + gender
 				+ ", isFirstTimer=" + isFirstTimer + ", firstTimerDate="
 				+ firstTimerDate + ", isMember=" + isMember + ", memberDate="
-				+ memberDate + ", createTime=" + createTime + ", updateTime="
-				+ updateTime + ", toString()=" + super.toString() + "]";
+				+ memberDate + ", group=" + group + ", createTime="
+				+ createTime + ", updateTime=" + updateTime + ", toString()="
+				+ super.toString() + "]";
 	}
+
+	
 
 	
 

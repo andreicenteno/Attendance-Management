@@ -1,16 +1,19 @@
 package com.am.common;
-import java.sql.Timestamp;
 import java.text.ParseException;
 
 
 
 
+
+
 import com.am.bean.AttendeesBean;
+import com.am.bean.GroupBean;
 import com.am.bean.MinistryBean;
 import com.am.bean.ServiceBean;
 import com.am.bean.SundayServiceAttendeesBean;
 import com.am.bean.SundayServiceBean;
 import com.am.model.Attendees;
+import com.am.model.Group;
 import com.am.model.Ministry;
 import com.am.model.ServiceEntity;
 import com.am.model.SundayService;
@@ -58,6 +61,9 @@ public class EntityMapper {
 		entity.setMemberDate(attendeesBean.getMemberDate());
 		entity.setCreateTime(attendeesBean.getCreateTime());
 		entity.setUpdateTime(attendeesBean.getUpdateTime());
+		Group group = new Group();
+		group.setId(attendeesBean.getGroupBean().getGroupId());
+		entity.setGroup(group);
 		
 		return entity;
 	}
@@ -67,12 +73,9 @@ public class EntityMapper {
 		entity.setId(sundayServiceBean.getSundayServiceId());
 		entity.setServiceTitle(sundayServiceBean.getServiceTitle());
 		entity.setDescription(sundayServiceBean.getDescription());
-		entity.setCreateTime(Timestamp.valueOf(sundayServiceBean.getCreateTime()));
-		entity.setUpdateTime(sundayServiceBean.getUpdateTime());
-		
 		ServiceEntity serviceEntity = new ServiceEntity();
-			serviceEntity.setId(sundayServiceBean.getServiceBean().getServiceId());
-			entity.setServiceEntity(serviceEntity);
+		serviceEntity.setId(sundayServiceBean.getServiceBean().getServiceId());
+		entity.setServiceEntity(serviceEntity);
 		
 		return entity;
 	}
@@ -92,6 +95,17 @@ public class EntityMapper {
 		entity.setUpdateTime(sundayServiceAttendeesBean.getUpdateTime());
 		
 		return entity;
+	}
+	
+
+	public Group prepareGroupModel(GroupBean groupBean){
+		Group group = new Group();
+		group.setId(groupBean.getGroupId());
+		group.setGroupName(groupBean.getGroupName());
+		group.setDescription(groupBean.getDescription());
+		group.setCreateTime(groupBean.getCreateTime());
+		group.setUpdateTime(groupBean.getUpdateTime());
+		return group;
 	}
 
 }

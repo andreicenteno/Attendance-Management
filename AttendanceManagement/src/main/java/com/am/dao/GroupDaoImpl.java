@@ -7,40 +7,40 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.am.model.SundayService;
+import com.am.model.Group;
 
 
-@Repository("sundayserviceDao")
-public class SundayServiceDaoImpl implements SundayServiceDao {
+@Repository("groupDao")
+public class GroupDaoImpl implements GroupDao {
 
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	public void insert(SundayService entity){
+	public void insert(Group entity){
 		Long id = (Long) sessionFactory.getCurrentSession().save(entity);
 		sessionFactory.getCurrentSession().flush();
 		entity.setId(id);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<SundayService> listSundayService(){
-		String sql = "SELECT * FROM asystem.sunday_services order by update_time desc";
+	public List<Group> listGroup(){
+		String sql = "SELECT * FROM asystem.groups order by update_time desc";
 		SQLQuery sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(sql);
-	    sqlQuery.addEntity(SundayService.class);
+	    sqlQuery.addEntity(Group.class);
 	    return sqlQuery.list();
 	}
 	
-	public SundayService getSundayService(Long id){
-		return (SundayService) sessionFactory.getCurrentSession().get(SundayService.class, id);
+	public Group getGroup(Long id){
+		return (Group) sessionFactory.getCurrentSession().get(Group.class, id);
 	}
 	
-	public void delete(SundayService entity){
+	public void delete(Group entity){
 		sessionFactory.getCurrentSession().delete(entity);
 		sessionFactory.getCurrentSession().flush();
 
 	}
 	
-	public void update(SundayService entity){
+	public void update(Group entity){
 		sessionFactory.getCurrentSession().update(entity);
 		sessionFactory.getCurrentSession().flush();
 	}

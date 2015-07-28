@@ -73,7 +73,7 @@
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Gender</label>
 							<div class="col-sm-10">
-								<form:select path="gender" id="leave_type" class="form-control">
+								<form:select path="gender" id="gender" class="form-control">
 								    <c:if test="${updateAttendees.gender eq true}">
 								    <form:option path="gender" value="true" selected="selected">Male</form:option>
 									<form:option path = "gender" value = "false">Female</form:option>
@@ -85,6 +85,36 @@
 								</form:select>
 							</div>
 						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Group</label>
+							<div class="col-sm-10">
+								<form:select path="groupBean.groupId" id="groupBean.groupId" class="form-control">
+									<c:forEach items="${groupList}" var="groupList">
+										<c:if test="${!empty groupList}">
+											<c:choose>
+											<c:when test="${groupList.groupId eq updateAttendees.groupBean.groupId}">
+												<form:option value="${groupList.groupId}" path="groupBean.groupId" selected="true">
+													<c:out value='${groupList.groupName}' />
+												</form:option>
+											</c:when>
+											<c:otherwise>
+												<form:option value="${groupList.groupId}" path="groupBean.groupId">
+													<c:out value='${groupList.groupName}' />
+												</form:option>
+											</c:otherwise>
+											</c:choose>
+										</c:if>
+										<c:if test="${empty groupList}">
+										<form:option path="groupBean.groupId" value="0">
+											<c:out value='No Services! Please add first services' />
+										</form:option>
+										</c:if>
+									</c:forEach>
+								</form:select>
+							</div>
+						</div>
+						
 
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Birthday</label>

@@ -24,7 +24,7 @@ public class MinistryDaoImpl implements MinistryDao {
 
 	@SuppressWarnings("unchecked")
 	public List<Ministry> listMinistry(){
-		String sql = "SELECT * FROM asystem.ministries";
+		String sql = "SELECT * FROM asystem.ministries order by update_time desc";
 		SQLQuery sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(sql);
 	    sqlQuery.addEntity(Ministry.class);
 	    return sqlQuery.list();

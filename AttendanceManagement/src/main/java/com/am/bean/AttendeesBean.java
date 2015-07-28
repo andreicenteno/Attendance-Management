@@ -17,9 +17,16 @@ public class AttendeesBean{
 	private Timestamp memberDate;
 	private Timestamp createTime;
 	private Timestamp updateTime;
+	private GroupBean groupBean;
 	
 	
 	
+	public GroupBean getGroupBean() {
+		return groupBean;
+	}
+	public void setGroupBean(GroupBean groupBean) {
+		this.groupBean = groupBean;
+	}
 	public String getBirthday() {
 		return birthday;
 	}
