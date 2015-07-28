@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>  
+
+ <definition name="base.definition" template="/WEB-INF/views/main_template.jsp">  
+        <put-attribute name="title" value=""></put-attribute>  
+        <put-attribute name="header" value="/WEB-INF/views/header.jsp"></put-attribute>  
+        <put-attribute name="menu" value="/WEB-INF/views/menu.jsp"></put-attribute>  
+        <put-attribute name="body" value=""></put-attribute>  
+        <put-attribute name="footer" value="/WEB-INF/views/footer.jsp"></put-attribute>  
+</definition> 
+    
+<definition name="index" template="/WEB-INF/views/index.jsp">  
+       <put-attribute name="title" value="/WEB-INF/views/index.jsp"></put-attribute>
+</definition>
+
+<definition extends="base.definition" name="dashboard">  
+  		<put-attribute name="title" value="Dashboard"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/dashboard.jsp"></put-attribute> 
+ </definition> 
+
+<definition extends="base.definition" name="sunday_service">  
+  		<put-attribute name="title" value="Sunday Service"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/sunday_service.jsp"></put-attribute> 
+ </definition> 
+
+<definition extends="base.definition" name="sunday_service_profile">  
+  		<put-attribute name="title" value="Sunday Service Profile"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/sunday_service_profile.jsp"></put-attribute> 
+ </definition> 
+
+
+<definition extends="base.definition" name="add_sunday_service">  
+  		<put-attribute name="title" value="Add Sunday Service"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/add_sunday_service.jsp"></put-attribute> 
+ </definition> 
+
+<definition extends="base.definition" name="sunday_service_attendees">  
+  		<put-attribute name="title" value="Sunday Service Attendees"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/sunday_service_attendees.jsp"></put-attribute> 
+ </definition> 
+
+<definition extends="base.definition" name="update_sunday_service">  
+  		<put-attribute name="title" value="Update Sunday Service"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/update_sunday_service.jsp"></put-attribute> 
+ </definition> 
+
+
+
+<definition extends="base.definition" name="attendees">  
+  		<put-attribute name="title" value="Attendees"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/attendees.jsp"></put-attribute> 
+ </definition> 
+
+<definition extends="base.definition" name="add_attendees">  
+  		<put-attribute name="title" value="Add Attendees"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/add_attendees.jsp"></put-attribute> 
+ </definition> 
+
+<definition extends="base.definition" name="update_attendees">  
+  		<put-attribute name="title" value="Update Attendees"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/update_attendees.jsp"></put-attribute> 
+ </definition> 
+ 
+ <definition extends="base.definition" name="reports">  
+  		<put-attribute name="title" value="Reports"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/reports.jsp"></put-attribute> 
+ </definition> 
+ 
+ <definition extends="base.definition" name="maintenance">  
+  		<put-attribute name="title" value="Maintenance"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/maintenance.jsp"></put-attribute> 
+ </definition> 
+ 
+ <definition extends="base.definition" name="add_ministry">  
+  		<put-attribute name="title" value="Add Ministry"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/add_ministry.jsp"></put-attribute> 
+ </definition> 
+ 
+ <definition extends="base.definition" name="update_ministry">  
+  		<put-attribute name="title" value="Update Ministry"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/update_ministry.jsp"></put-attribute> 
+ </definition> 
+ 
+  <definition extends="base.definition" name="add_service">  
+  		<put-attribute name="title" value="Add Service"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/add_service.jsp"></put-attribute> 
+ </definition> 
+
+  <definition extends="base.definition" name="update_service">  
+  		<put-attribute name="title" value="Update Service"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/update_service.jsp"></put-attribute> 
+ </definition>  
+
+
+<definition extends="base.definition" name="main_template">  
+       <put-attribute name="title" value="Dashboard"></put-attribute>  
+       <put-attribute name="header" value="/WEB-INF/views/header.jsp"></put-attribute>  
+       <put-attribute name="menu" value="/WEB-INF/views/menu.jsp"></put-attribute>  
+       <put-attribute name="body" value="/WEB-INF/views/dashboard.jsp"></put-attribute>  
+       <put-attribute name="footer" value="/WEB-INF/views/footer.jsp"></put-attribute>  
+ </definition>
+
+
+    
+</tiles-definitions>  

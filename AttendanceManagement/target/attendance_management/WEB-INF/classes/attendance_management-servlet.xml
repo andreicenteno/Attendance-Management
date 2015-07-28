@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<!-- extends other xml like database and security -->
+	<!-- <context:component-scan base-package="com.webapp.controller" /> -->
+	<context:component-scan base-package="com.am" />
+	<beans:import resource="attendance_management-database.xml"/>
+	<beans:import resource="attendance_management-security.xml"/>
+	<beans:import resource="attendance_management-properties.xml"/>
+	
+	<!-- Connection of properties on pom.xml -->
+	
+	<!-- <util:properties id="serviceProperties">
+    	<prop key="bucket.name">${bucket.name}</prop>
+    	<prop key="bucket.name.sticker">${bucket.name.sticker}</prop>
+    	<prop key="bucket.name.file">${bucket.name.file}</prop>
+    	<prop key="xmpp.host">${xmpp.host}</prop>
+    	<prop key="xmpp.port">${xmpp.port}</prop>
+    	<prop key="email.from">${email.from}</prop>
+    	<prop key="base.report.dir">${base.report.dir}</prop>
+    	<prop key="report.template">${report.template}</prop>
+    </util:properties> -->
+	
+	<!-- implement the tiles -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+    	<property name="viewClass">
+	        <value>
+	           org.springframework.web.servlet.view.tiles2.TilesView 
+	        </value>
+	    </property>
+	</bean>
+ 	<bean id="tilesConfigurer"
+	    class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+	    <property name="definitions">
+	        <list>
+	            <value>classpath:tiles.xml</value>
+	        </list>
+	    </property>
+	</bean>
+	
+	
+	<!-- setup every model or table add in this project -->
+	
+<!-- 	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan" value="com.code.entity"></property>
+		  <property name="annotatedClasses">
+			<list>
+					<value>com.cheers.model.StickerCategory</value>
+					<value>com.cheers.model.GiftCategory</value>
+					<value>com.cheers.model.Constant</value>
+					<value>com.cheers.model.User</value>
+					<value>com.cheers.model.Sticker</value>
+					<value>com.cheers.model.WorldCountry</value>
+					<value>com.cheers.model.WorldCity</value>
+					<value>com.cheers.model.Currency</value>
+					<value>com.cheers.model.PaymentMethod</value>
+					<value>com.cheers.model.CountryCurrency</value>
+					<value>com.cheers.model.Gift</value>
+					<value>com.cheers.model.GiftLocalization</value>
+					<value>com.cheers.model.UserProfile</value>
+					<value>com.cheers.model.Status</value>
+					<value>com.cheers.model.WorldCountryTransaction</value>
+					<value>com.cheers.model.TransactionType</value>
+					<value>com.cheers.model.UserAdmin</value>
+					<value>com.cheers.model.BannedEmail</value>
+					<value>com.cheers.model.PaymentSetup</value>
+					<value>com.cheers.model.TransactionType</value>
+					<value>com.cheers.model.ActivityLog</value>
+					<value>com.cheers.model.ActivityObject</value>
+					<value>com.cheers.model.UserRole</value>
+					<value>com.cheers.model.WalletStatus</value>
+					<value>com.cheers.model.Gender</value>
+					<value>com.cheers.model.TransactionStatus</value>
+					<value>com.cheers.model.TransactionType</value>
+					<value>com.cheers.model.TransactionBreakdown</value>
+					<value>com.cheers.model.Transaction</value>
+					<value>com.cheers.model.AccessToken</value>
+					<value>com.cheers.model.TransactionTypeBreakdown</value>
+					<value>com.cheers.model.TransactionReport</value>
+					<value>com.cheers.model.UserWalletStatusHistory</value>
+					<value>com.cheers.model.UserLog</value>
+					<value>com.cheers.model.UserReport</value>
+					<value>com.cheers.model.UserBaseCurrency</value>
+					<value>com.cheers.model.VMoneyInfo</value>
+					<value>com.cheers.model.VMoneyLog</value>
+					<value>com.cheers.model.Locations</value>
+					<value>com.cheers.model.AccountInfo</value>
+					<value>com.cheers.model.KycRequirement</value>
+					<value>com.cheers.model.Password</value>
+					<value>com.cheers.model.Messages</value>
+					<value>com.cheers.model.UserWallet</value>
+					<value>com.cheers.model.UserAppLog</value>
+					
+					
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>				
+			</props>
+		</property>
+	</bean> -->
+	
+	<!-- this is for sending email -->
+	
+	<!--  <beans:bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+         <beans:property name="host" value="smtpout.asia.secureserver.net" />
+         <beans:property name="port" value="80" />
+         <beans:property name="username" value="support@cheersnow.com" />
+         <beans:property name="password" value="JK67NJHall" />
+         <beans:property name="javaMailProperties">
+             <beans:props>
+                 <beans:prop key="mail.smtp.auth">
+                     true
+                 </beans:prop>
+                 <beans:prop key="mail.smtp.starttls.enable">
+                     true
+                 </beans:prop>
+             </beans:props>
+         </beans:property>
+     </beans:bean> -->
+	
+	
+	<!-- Webapp Session -->
+<!-- 	<bean id="hibernateTransactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>  -->
+	<!-- 
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/views/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean> -->
+
+</beans>

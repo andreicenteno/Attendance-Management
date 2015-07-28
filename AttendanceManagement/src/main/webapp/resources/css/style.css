@@ -1,0 +1,162 @@
+/********* GENERAL STYLE*********/
+
+.footer {
+	margin-top: 300px;
+}
+
+/********* LOGIN PAGE *********/
+.wrapper {	
+  margin-top: 80px;
+  margin-bottom: 80px;
+}
+
+.form-signin {
+  max-width: 380px;
+  padding: 15px 35px 45px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,0.1);  
+
+  .form-signin-heading,
+	.checkbox {
+	  margin-bottom: 30px;
+	}
+
+	.checkbox {
+	  font-weight: normal;
+	}
+
+	.form-control {
+	  position: relative;
+	  font-size: 16px;
+	  height: auto;
+	  padding: 10px;
+		@include box-sizing(border-box);
+
+		&:focus {
+		  z-index: 2;
+		}
+	}
+
+	input[type="text"] {
+	  margin-bottom: -1px;
+	  border-bottom-left-radius: 0;
+	  border-bottom-right-radius: 0;
+	}
+
+	input[type="password"] {
+	  margin-bottom: 20px;
+	  border-top-left-radius: 0;
+	  border-top-right-radius: 0;
+	}
+}
+
+
+
+
+/********* LEAVES FULL CALENDAR *********/
+.icon-chevron {
+  display:block;
+  width:15px;
+  height:22px;
+}
+.icon-chevron-rotate {
+  transform: rotate(180deg);
+}
+.page {
+  width: 500px;
+  margin: 0 auto;
+  padding: 1em;
+}
+.responsive-calendar-placeholder {}
+.responsive-calendar-modal {
+  background-color: #1d86c8;
+  color: white;
+  padding: 1em;
+}
+.responsive-calendar .controls {
+  text-align: center;
+}
+.responsive-calendar .controls a {
+  cursor: pointer;
+  color: red;
+}
+.responsive-calendar .controls h4 {
+  display: inline;
+}
+.responsive-calendar .day-headers,
+.responsive-calendar .days {
+  font-size: 0;
+}
+.responsive-calendar .day {
+  display: inline-block;
+  position: relative;
+  font-size: 14px;
+  width: 14.285714285714286%;
+  text-align: center;
+}
+.responsive-calendar .day a {
+  color: #000000;
+  display: block;
+  cursor: pointer;
+  padding: 20% 0 20% 0;
+}
+.responsive-calendar .day a:hover {
+  background-color: #eee;
+  text-decoration: none;
+}
+.responsive-calendar .day.header {
+  border-bottom: 1px gray solid;
+}
+.responsive-calendar .day.active a {
+  background-color: #1d86c8;
+  color: #ffffff;
+}
+.responsive-calendar .day.active a:hover {
+  background-color: #36a0e2;
+}
+.responsive-calendar .day.active .not-current {
+  background-color: #8fcaef;
+  color: #ffffff;
+}
+.responsive-calendar .day.active .not-current:hover {
+  background-color: #bcdff5;
+}
+.responsive-calendar .day.not-current a {
+  color: #ddd;
+}
+.responsive-calendar .day .badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  z-index: 1;
+}
+
+
+
+/********* BOOTSTRAP DATEPCIKER *********/
+.date-form { margin: 10px; }
+label.control-label span { cursor: pointer; }
+
+
+
+
+/********* MEDIA QUERIES *********/ 
+
+@media (min-width: 768px){
+	.full_navbar {
+		display: block;
+	}
+	.mobile_navbar {
+		display: none;
+	}
+}
+
+@media (max-width: 767px){
+	.full_navbar {
+		display: none;
+	}
+	.mobile_navbar {
+		display: block;
+	}
+}

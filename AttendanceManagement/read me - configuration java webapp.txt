@@ -1,0 +1,53 @@
+ ====================================DEFAULT JAVA WEB APPLICATION ===================================
+Author: Andrei Centeno
+Position: Java Developer
+
+/*******************************************************************************
+ * Copyright (c) 2015 APC All Rights Reserved.
+ *        DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *        
+ *        This code is NOT free software; you cannot redistribute, modify, 
+ *        decompile, copy or publish without the prior written consent of 
+ *        APC.
+ *        
+ *        
+ *        This software is the confidential and proprietary information
+ *        of APC ("Confidential Information").  You shall 
+ *        not disclose such Confidential Information and shall use it 
+ *        only in accordance with the terms of the license agreement
+ *        you entered into with APC.
+ *        
+ *        Please contact APC. Dasmarinas Cavite, Langkaan blk 9 lot 1 Villa Elena
+	  Cavite Philippines. 
+ *        if you need additional information or have any questions.
+ ******************************************************************************/
+Steps to configure the java web application
+
+ 1. Import the project in spring.
+ 2. Change the project name.
+ 	> pom.xml
+ 	> web.xml
+ 	> file name of resources
+ 		>database
+ 		>properties
+ 		>security
+ 		>servlet
+
+ 3. Rename all the src/main/java
+ 	>bean
+ 	>common
+ 	>controller
+ 	>dao
+ 	>model
+ 	>service
+ 	>utils		
+
+
+  4. change "defaultjavawebapp" your system name	
+  <path>/defaultjavawebapp</path>
+  <finalName>defaultjavawebapp</finalName>
+
+  5. Set the web project settings in to your name.
+  	>Delete the project
+  	mvn eclipse:eclipse -Dwtpversion=2.0
+  	> clean, install and test maven.

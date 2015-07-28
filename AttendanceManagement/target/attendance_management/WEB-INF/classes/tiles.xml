@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>  
+
+ <definition name="base.definition" template="/WEB-INF/views/main_template.jsp">  
+        <put-attribute name="title" value=""></put-attribute>  
+        <put-attribute name="header" value="/WEB-INF/views/header.jsp"></put-attribute>  
+        <put-attribute name="menu" value="/WEB-INF/views/menu.jsp"></put-attribute>  
+        <put-attribute name="body" value=""></put-attribute>  
+        <put-attribute name="footer" value="/WEB-INF/views/footer.jsp"></put-attribute>  
+</definition> 
+    
+<definition name="index" template="/WEB-INF/views/index.jsp">  
+       <put-attribute name="title" value="/WEB-INF/views/index.jsp"></put-attribute>
+</definition>
+
+<definition extends="base.definition" name="dashboard">  
+  		<put-attribute name="title" value="Dashboard"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/dashboard.jsp"></put-attribute> 
+ </definition> 
+
+<definition extends="base.definition" name="main_template">  
+       <put-attribute name="title" value="Dashboard"></put-attribute>  
+       <put-attribute name="header" value="/WEB-INF/views/header.jsp"></put-attribute>  
+       <put-attribute name="menu" value="/WEB-INF/views/menu.jsp"></put-attribute>  
+       <put-attribute name="body" value="/WEB-INF/views/dashboard.jsp"></put-attribute>  
+       <put-attribute name="footer" value="/WEB-INF/views/footer.jsp"></put-attribute>  
+ </definition>
+
+
+<!-- 
+<definition name="success_forgot_password" template="/WEB-INF/views/success_forgot_password.jsp">  
+       <put-attribute name="title" value="/WEB-INF/views/success_forgot_password.jsp"></put-attribute>
+</definition>
+
+  <definition name="forgot_password" template="/WEB-INF/views/forgot_password.jsp">  
+        <put-attribute name="title" value="/WEB-INF/views/forgot_password.jsp"></put-attribute>  
+  </definition> 
+  
+
+
+<definition name="403" template="/WEB-INF/views/403.jsp">  
+       <put-attribute name="title" value="Error"></put-attribute>
+       <put-attribute name="body" value="/WEB-INF/views/403.jsp"></put-attribute> 
+</definition>
+
+
+<definition name="login_expired" template="/WEB-INF/views/login_expired.jsp">  
+       <put-attribute name="title" value="Login_Expired"></put-attribute>
+       <put-attribute name="body" value="/WEB-INF/views/login_expired.jsp"></put-attribute> 
+</definition>
+
+  <definition extends="base.definition" name="change_password">  
+  		<put-attribute name="title" value="Change Password"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/change_password.jsp"></put-attribute> 
+  </definition> 
+
+  <definition extends="base.definition" name="home_reports">  
+    <put-attribute name="title" value="Reports"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/home_reports.jsp"></put-attribute> 
+</definition>
+
+ <definition extends="base.definition" name="vmoney_log">  
+    <put-attribute name="title" value="Reports"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/vmoney_log.jsp"></put-attribute> 
+</definition>
+
+    
+  <definition extends="base.definition" name="application_control">  
+        <put-attribute name="title" value="Application Control"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/application_control.jsp"></put-attribute>  
+    </definition>  
+    
+    
+    <definition extends="base.definition" name="wallet_administration">  
+        <put-attribute name="title" value="Wallet Administration"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/wallet_administration.jsp"></put-attribute>  
+    </definition>  
+    
+   <definition extends="base.definition" name="reports">  
+        <put-attribute name="title" value="Reports"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/reports.jsp"></put-attribute>  
+    </definition>     
+    
+    
+       <definition extends="base.definition" name="admin_users">  
+        <put-attribute name="title" value="Admin Users"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/admin_users.jsp"></put-attribute>  
+    </definition>     
+    
+	<definition extends="base.definition" name="activity_log">  
+        <put-attribute name="title" value="Activity Log"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/activity_log.jsp"></put-attribute>  
+    </definition>     
+ 
+ -->
+    
+     <definition extends="base.definition" name="main_template">  
+       <put-attribute name="title" value="Dashboard"></put-attribute>  
+       <put-attribute name="header" value="/WEB-INF/views/header.jsp"></put-attribute>  
+       <put-attribute name="menu" value="/WEB-INF/views/menu.jsp"></put-attribute>  
+       <put-attribute name="body" value="/WEB-INF/views/dashboard.jsp"></put-attribute>  
+       <put-attribute name="footer" value="/WEB-INF/views/footer.jsp"></put-attribute>  
+ </definition>
+    
+</tiles-definitions>  

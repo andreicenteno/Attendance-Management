@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/util 
+	http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+<!-- 	<util:properties id="serviceProperties">
+    	<prop key="base.service.domain">${base.service.domain}</prop>
+    	<prop key="netteller.base64">${netteller.base64}</prop>
+    	<prop key="netteller.auth.url">${netteller.auth.url}</prop>
+    	<prop key="netteller.transfer.out.url">${netteller.transfer.out.url}</prop>
+    	<prop key="netteller.transfer.in.url">${netteller.transfer.in.url}</prop>
+    	<prop key="base.report.dir">${base.report.dir}</prop>
+
+    	<prop key="s3.users.bucketname">${s3.users.bucketname}</prop>
+    	<prop key="report.template">${report.template}</prop>
+    </util:properties> -->
+   
+	<!-- <util:properties id="vMoneyProperties">
+    	<prop key="vmoney.base.url">${vmoney.base.url}</prop>
+    	<prop key="vmoney.signup.host">${vmoney.signup.host}</prop>
+   </util:properties> -->
+   
+ <!--   <util:properties id="vMoneyProperties">
+    	<prop key="vmoney.base.url">http://test.vmoney.com/gtcvbankapp/</prop>
+    	<prop key="vmoney.signup.host">http://test.vmoney.com</prop>
+   </util:properties>    -->
+    
+</beans>

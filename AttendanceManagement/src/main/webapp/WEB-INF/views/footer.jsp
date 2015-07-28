@@ -1,0 +1,1 @@
+<p>©2015 Attendance Management. Jesus is Lord Church Bulihan.</p>
