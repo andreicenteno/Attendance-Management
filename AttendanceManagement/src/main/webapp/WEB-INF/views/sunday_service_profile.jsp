@@ -99,13 +99,12 @@
 				</c:if>
 			</div>
 			<br/>
-			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Attendees: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">50</span><br/>
-			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all First Timer: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">5</span><br/>
-			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all KKB: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">20</span><br/>
-			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all YAM: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">30</span><br/>
-			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Men: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">15</span><br/>
-			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Women: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">17</span>
-		
+			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Attendees: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_ALL_ATTENDEES}</span><br/>
+			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all KKB: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_KKB}</span><br/>
+			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all YAM: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_YAM}</span><br/>
+			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Men: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_MEN}</span><br/>
+			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Women: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_WOMEN}</span><br/>
+		<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Children: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_CHILDREN}</span>
 		
 		</div>
 	</div>

@@ -54,6 +54,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<value>com.am.model.SundayService</value>
 					<value>com.am.model.SundayServiceAttendees</value>
 					<value>com.am.model.Group</value>
+					<value>com.am.model.ServiceAttendanceView</value>
 					
 			</list>
 		</property>

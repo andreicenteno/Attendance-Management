@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -13,7 +14,6 @@
 <link rel="icon" href="images/favicon.ico">
 
 <title>Attendees</title>
-
 
 </head>
 <body>
@@ -28,18 +28,22 @@
 						<a href="add_attendees.html"><button type="submit"
 								class="btn btn-default">Add Attendees</button></a><br /> <label
 							for="date-picker-3" class="control-label">Name</label>
+						
 						<div class="control-group">
-							<div class="controls">
-								<div class="input-group">
-									<input type="text" class="form-control"
-										placeholder="Search name..."> <span
-										class="input-group-btn">
-										<button class="btn btn-default" type="button">Go!</button>
-									</span>
-
+							<form:form method="GET" style="align-items: center;" class="form-horizontal" 
+										action="search_attendees.html" modelAttribute="attendees">
+								<div class="controls">
+									<div class="input-group">
+										<form:input path="keywords" type="text" class="form-control"
+											placeholder="Search name..."></form:input>
+										<span class="input-group-btn">
+											<button class="btn btn-default" type="button">Go!</button>
+										</span>
+									</div>
 								</div>
-							</div>
+							</form:form>
 						</div>
+						
 					</div>
 				</div>
 			</div>
@@ -61,18 +65,14 @@
 						<c:if test="${!empty attendeesList}">
 							<c:forEach items="${attendeesList}" var="attendeesList">
 								<tr>
-									<th><c:out value='${attendeesList.firstName}' /> &nbsp; <c:out value='${attendeesList.lastName}' /></th>
+									<th><c:out value='${attendeesList.firstName}' /> &nbsp; <c:out
+											value='${attendeesList.lastName}' /></th>
 									<th><c:out value='${attendeesList.contactNumber}' /></th>
-									<th>
-									<c:if test="${attendeesList.gender eq true}">
-										<c:out value='Male' />
-									</c:if>
-									<c:if test="${attendeesList.gender eq false}">
-										<c:out value='Female' />
-									</c:if>
-									
-									
-									</th>
+									<th><c:if test="${attendeesList.gender eq true}">
+											<c:out value='Male' />
+										</c:if> <c:if test="${attendeesList.gender eq false}">
+											<c:out value='Female' />
+										</c:if></th>
 									<th><c:out value='${attendeesList.groupBean.groupName}' /></th>
 									<th><c:out value='${attendeesList.birthday}' /></th>
 									<th><a
@@ -90,7 +90,7 @@
 				</c:if>
 			</div>
 
-		
+
 		</div>
 	</div>
 </body>

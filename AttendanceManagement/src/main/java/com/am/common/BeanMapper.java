@@ -17,12 +17,14 @@ import java.util.List;
 import com.am.bean.AttendeesBean;
 import com.am.bean.GroupBean;
 import com.am.bean.MinistryBean;
+import com.am.bean.ServiceAttendanceViewBean;
 import com.am.bean.ServiceBean;
 import com.am.bean.SundayServiceAttendeesBean;
 import com.am.bean.SundayServiceBean;
 import com.am.model.Attendees;
 import com.am.model.Group;
 import com.am.model.Ministry;
+import com.am.model.ServiceAttendanceView;
 import com.am.model.ServiceEntity;
 import com.am.model.SundayService;
 import com.am.model.SundayServiceAttendees;
@@ -259,6 +261,34 @@ public class BeanMapper extends EntityMapper{
 		bean.setCreateTime(group.getCreateTime());
 		bean.setUpdateTime(group.getUpdateTime());
 		return bean;
+	}
+	
+	
+	public List<ServiceAttendanceViewBean> prepareListOfServiceAttendanceView(List<ServiceAttendanceView> serviceAttendanceViews) {
+		List<ServiceAttendanceViewBean> beans = null;
+		if (serviceAttendanceViews != null && !serviceAttendanceViews.isEmpty()) {
+			beans = new ArrayList<ServiceAttendanceViewBean>();
+			ServiceAttendanceViewBean bean = null;
+			for (ServiceAttendanceView entity : serviceAttendanceViews) {
+				bean = new ServiceAttendanceViewBean();
+				bean.setSundayServiceId(entity.getSundayServiceId());
+				bean.setTotal(entity.getTotal());
+				bean.setTotalOfKkb(entity.getTotalOfKkb());
+				bean.setTotalOfYam(entity.getTotalOfYam());
+				bean.setTotalOfMen(entity.getTotalOfMen());
+				bean.setTotalOfWomen(entity.getTotalOfWomen());
+				bean.setTotalOfChildren(entity.getTotalOfChildren());
+				bean.setTotalOfKkbMale(entity.getTotalOfKkbMale());
+				bean.setTotalOfKkbFemale(entity.getTotalOfKkbFemale());
+				bean.setTotalOfYamMale(entity.getTotalOfYamMale());
+				bean.setTotalOfYamFemale(entity.getTotalOfYamFemale());
+				bean.setTotalOfChildrenMale(entity.getTotalOfChildrenMale());
+				bean.setTotalOfChildrenFemale(entity.getTotalOfChildrenFemale());
+				beans.add(bean);
+			}
+		}
+		return beans;
+
 	}
 	
 	

@@ -18,9 +18,31 @@ public class AttendeesBean{
 	private Timestamp createTime;
 	private Timestamp updateTime;
 	private GroupBean groupBean;
+	private MinistryBean ministryBean;
+	private String keywords;
+	private long sundayServiceId;
 	
 	
 	
+	
+	public MinistryBean getMinistryBean() {
+		return ministryBean;
+	}
+	public void setMinistryBean(MinistryBean ministryBean) {
+		this.ministryBean = ministryBean;
+	}
+	public long getSundayServiceId() {
+		return sundayServiceId;
+	}
+	public void setSundayServiceId(long sundayServiceId) {
+		this.sundayServiceId = sundayServiceId;
+	}
+	public String getKeywords() {
+		return keywords;
+	}
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
 	public GroupBean getGroupBean() {
 		return groupBean;
 	}

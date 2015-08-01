@@ -31,12 +31,36 @@ public class AttendeesDaoImpl implements AttendeesDao {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Attendees> findAttendeesByName(String keyword){
+		String sql = "select * from asystem.attendees where (LOWER(first_name)"+
+					 " like LOWER('%"+keyword+"%') OR LOWER(last_name)"+
+					 " like LOWER('%"+keyword+"%') OR LOWER(middle_name)"+
+					 " like LOWER('%"+keyword+"%') )";
+		SQLQuery sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(sql);
+	    sqlQuery.addEntity(Attendees.class);
+	    return sqlQuery.list();
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Attendees> findAttendeesOnSundayService(long sunday_service_id){
 		String sql = "select * from asystem.attendees where attendees_id NOT IN (select attendees_id from asystem.sunday_service_attendees where sunday_service_id = "+sunday_service_id+")";
 		SQLQuery sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(sql);
 	    sqlQuery.addEntity(Attendees.class);
 	    return sqlQuery.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Attendees> findAttendeesOnSundayServiceByName(long sunday_service_id, String keyword){
+		String sql = "select * from asystem.attendees where attendees_id NOT IN (select attendees_id from asystem.sunday_service_attendees where sunday_service_id = "+sunday_service_id+")"+
+					 " AND (LOWER(first_name)"+
+					 " like LOWER('%"+keyword+"%') OR LOWER(last_name)"+
+					 " like LOWER('%"+keyword+"%') OR LOWER(middle_name)"+
+					 " like LOWER('%"+keyword+"%') )";
+		SQLQuery sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(sql);
+	    sqlQuery.addEntity(Attendees.class);
+	    return sqlQuery.list();
+	}
+	
 	
 	public Attendees getAttendees(Long id){
 		return (Attendees) sessionFactory.getCurrentSession().get(Attendees.class, id);

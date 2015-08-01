@@ -30,7 +30,7 @@ public class AttendeesController extends BeanMapper{
 
 	
 	@RequestMapping(value = "/attendees", method = RequestMethod.GET)
-	public ModelAndView attendeeGet(){
+	public ModelAndView attendeeGet(@ModelAttribute("attendees") AttendeesBean attendeesBean,BindingResult result){
 		Map<String, Object> model = new HashMap<String, Object>();
 		try{
 			model.put("attendeesList", prepareListOfAttendees(attendeesService.listAttendees()));
@@ -41,9 +41,24 @@ public class AttendeesController extends BeanMapper{
 		return new ModelAndView("attendees", model);
 	}
 	
+	@RequestMapping(value = "/search_attendees", method = RequestMethod.GET)
+	public ModelAndView searchAttendeesPost(@ModelAttribute("attendees") AttendeesBean attendeesBean,BindingResult result){
+		Map<String, Object> model = new HashMap<String, Object>();
+		try{
+			System.out.println(attendeesBean.getKeywords());
+			model.put("attendeesList", prepareListOfAttendees(attendeesService.findAttendeesByName(attendeesBean.getKeywords().trim())));
+		}catch(Exception e){
+			System.out.println(e);
+		}
+		return new ModelAndView("attendees", model);
+	}
+	
+	
+	
 	@RequestMapping(value = "/add_attendees", method = RequestMethod.GET)
 	public ModelAndView addAttendeesGet(@ModelAttribute("attendees") AttendeesBean attendeesBean,BindingResult result){
 		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("groupList", prepareListOfGroup(groupService.listGroup()));
 		return new ModelAndView("add_attendees", model);
 	}
 

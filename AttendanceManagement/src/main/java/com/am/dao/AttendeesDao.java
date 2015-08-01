@@ -10,4 +10,6 @@ public interface AttendeesDao {
 	public void delete(Attendees entity);
 	public void update(Attendees entity);
 	public List<Attendees> findAttendeesOnSundayService(long sunday_service_id);
+	public List<Attendees> findAttendeesByName(String keyword);
+	public List<Attendees> findAttendeesOnSundayServiceByName(long sunday_service_id, String keyword);
 }
