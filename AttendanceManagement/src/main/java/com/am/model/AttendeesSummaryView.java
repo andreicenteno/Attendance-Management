@@ -1,5 +1,6 @@
 package com.am.model;
 
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,59 +10,67 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 
-
 @Entity
-@Table(name="v_service_attendees", schema="asystem")
-public class ServiceAttendanceView{
-	
+@Table(name = "v_attendees_summary", schema = "asystem")
+public class AttendeesSummaryView implements Serializable {
+
+	private static final long serialVersionUID = -723583058586873479L;
+
 	@Id
-	@Column(name="sunday_service_id", nullable=false, insertable=false, updatable=false)
+	@Column(name="total", nullable=false, insertable=false, updatable=false)
 	@Generated(GenerationTime.INSERT)	
-	private long sundayServiceId;
-	
-	@Column(name="total")
 	private long total;
 
-	@Column(name="total_of_kkb")
+	@Column(name = "total_of_kkb")
 	private long totalOfKkb;
-	
-	@Column(name="total_of_yam")
+
+	@Column(name = "total_of_yam")
 	private long totalOfYam;
-	
-	@Column(name="total_of_men")
+
+	@Column(name = "total_of_men")
 	private long totalOfMen;
-	
-	@Column(name="total_of_women")
+
+	@Column(name = "total_of_women")
 	private long totalOfWomen;
-	
-	@Column(name="total_of_children")
+
+	@Column(name = "total_of_children")
 	private long totalOfChildren;
-	
-	@Column(name="total_of_kkb_male")
+
+	@Column(name = "total_of_kkb_male")
 	private long totalOfKkbMale;
-	
-	@Column(name="total_of_kkb_female")
+
+	@Column(name = "total_of_kkb_female")
 	private long totalOfKkbFemale;
-	
-	@Column(name="total_of_yam_male")
+
+	@Column(name = "total_of_yam_male")
 	private long totalOfYamMale;
-	
-	@Column(name="total_of_yam_female")
+
+	@Column(name = "total_of_yam_female")
 	private long totalOfYamFemale;
-	
-	@Column(name="total_of_children_male")
+
+	@Column(name = "total_of_children_male")
 	private long totalOfChildrenMale;
-	
-	@Column(name="total_of_children_female")
+
+	@Column(name = "total_of_children_female")
 	private long totalOfChildrenFemale;
+	
+	@Column(name = "no_ministry")
+	private long noMinistry;
 
-	public long getSundayServiceId() {
-		return sundayServiceId;
-	}
-
-	public void setSundayServiceId(long sundayServiceId) {
-		this.sundayServiceId = sundayServiceId;
-	}
+	@Column(name = "total_of_jam")
+	private long totalOfJam;
+	
+	@Column(name = "total_of_triune")
+	private long totalOfTriune;
+	
+	@Column(name = "total_of_elyon")
+	private long totalOfElyon;
+	
+	@Column(name = "total_of_via")
+	private long totalOfVia;
+	
+	@Column(name = "total_of_can")
+	private long totalOfCan;
 
 	public long getTotal() {
 		return total;
@@ -159,27 +168,76 @@ public class ServiceAttendanceView{
 		this.totalOfChildrenFemale = totalOfChildrenFemale;
 	}
 
-	
+	public long getNoMinistry() {
+		return noMinistry;
+	}
+
+	public void setNoMinistry(long noMinistry) {
+		this.noMinistry = noMinistry;
+	}
+
+	public long getTotalOfJam() {
+		return totalOfJam;
+	}
+
+	public void setTotalOfJam(long totalOfJam) {
+		this.totalOfJam = totalOfJam;
+	}
+
+	public long getTotalOfTriune() {
+		return totalOfTriune;
+	}
+
+	public void setTotalOfTriune(long totalOfTriune) {
+		this.totalOfTriune = totalOfTriune;
+	}
+
+	public long getTotalOfElyon() {
+		return totalOfElyon;
+	}
+
+	public void setTotalOfElyon(long totalOfElyon) {
+		this.totalOfElyon = totalOfElyon;
+	}
+
+	public long getTotalOfVia() {
+		return totalOfVia;
+	}
+
+	public void setTotalOfVia(long totalOfVia) {
+		this.totalOfVia = totalOfVia;
+	}
+
+	public long getTotalOfCan() {
+		return totalOfCan;
+	}
+
+	public void setTotalOfCan(long totalOfCan) {
+		this.totalOfCan = totalOfCan;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	@Override
 	public String toString() {
-		return "ServiceAttendanceView [sundayServiceId=" + sundayServiceId
-				+ ", total=" + total + ", totalOfKkb=" + totalOfKkb
-				+ ", totalOfYam=" + totalOfYam + ", totalOfMen=" + totalOfMen
-				+ ", totalOfWomen=" + totalOfWomen + ", totalOfChildren="
-				+ totalOfChildren + ", totalOfKkbMale=" + totalOfKkbMale
-				+ ", totalOfKkbFemale=" + totalOfKkbFemale
+		return "AttendeesSummaryView [total=" + total + ", totalOfKkb="
+				+ totalOfKkb + ", totalOfYam=" + totalOfYam + ", totalOfMen="
+				+ totalOfMen + ", totalOfWomen=" + totalOfWomen
+				+ ", totalOfChildren=" + totalOfChildren + ", totalOfKkbMale="
+				+ totalOfKkbMale + ", totalOfKkbFemale=" + totalOfKkbFemale
 				+ ", totalOfYamMale=" + totalOfYamMale + ", totalOfYamFemale="
 				+ totalOfYamFemale + ", totalOfChildrenMale="
 				+ totalOfChildrenMale + ", totalOfChildrenFemale="
-				+ totalOfChildrenFemale + ", toString()=" + super.toString()
-				+ "]";
+				+ totalOfChildrenFemale + ", noMinistry=" + noMinistry
+				+ ", totalOfJam=" + totalOfJam + ", totalOfTriune="
+				+ totalOfTriune + ", totalOfElyon=" + totalOfElyon
+				+ ", totalOfVia=" + totalOfVia + ", totalOfCan=" + totalOfCan
+				+ ", toString()=" + super.toString() + "]";
 	}
 	
 	
 	
-	
-	
-	
-
 	
 }

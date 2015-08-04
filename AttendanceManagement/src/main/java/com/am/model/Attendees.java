@@ -67,6 +67,9 @@ private static final long serialVersionUID = -723583058586873479L;
 	@JoinColumn(name = "group_id", nullable=true)
 	private Group group;
 	
+	@ManyToOne
+	@JoinColumn(name = "ministry_id", nullable=true)
+	private Ministry ministry;
 	
 	@Generated(GenerationTime.INSERT)
 	@Column(name="create_time" , nullable = false, insertable=false, updatable=false)
@@ -85,6 +88,14 @@ private static final long serialVersionUID = -723583058586873479L;
 	}
 
 	
+	public Ministry getMinistry() {
+		return ministry;
+	}
+
+	public void setMinistry(Ministry ministry) {
+		this.ministry = ministry;
+	}
+
 	public Group getGroup() {
 		return group;
 	}

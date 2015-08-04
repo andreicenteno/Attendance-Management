@@ -15,6 +15,7 @@ import com.am.common.BeanMapper;
 import com.am.model.Attendees;
 import com.am.service.AttendeesService;
 import com.am.service.GroupService;
+import com.am.service.MinistryService;
 
 
 
@@ -28,6 +29,8 @@ public class AttendeesController extends BeanMapper{
 	@Autowired
 	private GroupService groupService;
 
+	@Autowired
+	private MinistryService ministryService;
 	
 	@RequestMapping(value = "/attendees", method = RequestMethod.GET)
 	public ModelAndView attendeeGet(@ModelAttribute("attendees") AttendeesBean attendeesBean,BindingResult result){
@@ -59,6 +62,7 @@ public class AttendeesController extends BeanMapper{
 	public ModelAndView addAttendeesGet(@ModelAttribute("attendees") AttendeesBean attendeesBean,BindingResult result){
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("groupList", prepareListOfGroup(groupService.listGroup()));
+		model.put("ministryList", prepareListOfMinistry(ministryService.listMinistry()));
 		return new ModelAndView("add_attendees", model);
 	}
 
@@ -80,6 +84,7 @@ public class AttendeesController extends BeanMapper{
 		try{
 			model.put("updateAttendees", prepareAttendeesBean(attendeesService.getAttendees(attendeesBean.getAttendeesId())));
 			model.put("groupList", prepareListOfGroup(groupService.listGroup()));
+			model.put("ministryList", prepareListOfMinistry(ministryService.listMinistry()));
 		}catch(Exception e){
 			System.out.println(e);
 		}

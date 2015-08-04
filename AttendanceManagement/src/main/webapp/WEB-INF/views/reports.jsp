@@ -12,31 +12,9 @@
 	content="Custom built online life group management for JIL or Jesus Is Lord">
 <meta name="author" content="Andrei Centeno">
 <link rel="icon" href="images/favicon.ico">
-<script>
-	function ddListGroup(value) {
-		var newValue = document.getElementById('groupId').value;
-		document.getElementById('groupIdPdfFile').value = newValue;
-		document.getElementById('groupIdCsvFile').value = newValue;
-		document.getElementById('groupIdView').value = newValue;
-
-	}
-	
-	function ddListMinistry(value) {
-		var newValue = document.getElementById('ministryId').value;
-		document.getElementById('ministryIdPdfFile').value = newValue;
-		document.getElementById('ministryIdCsvFile').value = newValue;
-		document.getElementById('ministryIdView').value = newValue;
-
-	}
-	
-	function ddListGender(value) {
-		var newValue = document.getElementById('gender').value;
-		document.getElementById('genderPdfFile').value = newValue;
-		document.getElementById('genderCsvFile').value = newValue;
-		document.getElementById('genderView').value = newValue;
-
-	}
-</script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/customize/common.js"
+	type="text/javascript"></script>
 <title>Reports</title>
 
 </head>
@@ -106,10 +84,10 @@
 									<form:option path="gender" value="all">
 										<c:out value='All' />
 									</form:option>
-									<form:option path="gender" value="male">
+									<form:option path="gender" value="true">
 										<c:out value='Male' />
 									</form:option>
-									<form:option path="gender" value="female">
+									<form:option path="gender" value="false">
 										<c:out value='Female' />
 
 									</form:option>

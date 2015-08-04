@@ -56,6 +56,7 @@
 							<th>Contact Number</th>
 							<th>Gender</th>
 							<th>Group</th>
+							<th>Ministry</th>
 							<th>Birthday</th>
 							<th>Action</th>
 						</tr>
@@ -74,6 +75,7 @@
 											<c:out value='Female' />
 										</c:if></th>
 									<th><c:out value='${attendeesList.groupBean.groupName}' /></th>
+									<th><c:out value='${attendeesList.ministryBean.ministryName}' /></th>
 									<th><c:out value='${attendeesList.birthday}' /></th>
 									<th><a
 										href="update_attendees.html?attendeesId=${attendeesList.attendeesId}">Update</a>

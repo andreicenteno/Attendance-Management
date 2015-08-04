@@ -23,8 +23,6 @@ public class AttendeesBean{
 	private long sundayServiceId;
 	
 	
-	
-	
 	public MinistryBean getMinistryBean() {
 		return ministryBean;
 	}

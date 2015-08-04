@@ -21,6 +21,62 @@
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 			<h1 class="page-header">View Attendees Report</h1>
 			
+			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all attendees: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_ALL}</span><br/>
+			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all KKB: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_KKB}</span><br/>
+			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all KKB MALE: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_KKB_MALE}</span><br/>
+			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all KKB FEMALE: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_KKB_FEMALE}</span><br/>
+			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all YAM: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_YAM}</span><br/>
+			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all YAM MALE: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_YAM_MALE}</span><br/>
+			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all YAM FEMALE: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_YAM_FEMALE}</span><br/>
+			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Children: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_CHILDREN}</span><br/>
+			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Children Male: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_CHILDREN_MALE}</span><br/>
+			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Children Female: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_CHILDREN_FEMALE}</span><br/>
+			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Men: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_MEN}</span><br/>
+			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Women: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_WOMEN}</span><br/>
+			
+			<label for="date-picker-2" class="control-label">List of All Attendees</label>
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Gender</th>
+							<th>Contact Number</th>
+							<th>Address</th>
+							<th>Birthday</th>
+							<th>Group</th>
+							<th>Ministry</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+						<c:if test="${!empty attendeesList}">
+							<c:forEach items="${attendeesList}" var="attendeesList">
+					
+								<tr>
+									<th><c:out value='${attendeesList.firstName}' /> <c:out value='${attendeesList.lastName}' /></th>
+									<th>
+									<c:if test="${attendeesList.gender eq true}">
+									<c:out value='Male' />
+									</c:if>
+									<c:if test="${attendeesList.gender eq false}">
+									<c:out value='Female' />
+									</c:if>
+									</th>
+									<th><c:out value='${attendeesList.contactNumber}' /></th>
+									<th><c:out value='${attendeesList.address}' /></th>
+									<th><c:out value='${attendeesList.birthday}' /></th>
+									<th><c:out value='${attendeesList.groupName}' /></th>
+									<th><c:out value='${attendeesList.ministryName}' /></th>
+								</tr>
+								</c:forEach>
+						</c:if>
+					</tbody>
+				</table>
+				<c:if test="${empty attendeesList}">
+					<center>No Record Found</center>
+				</c:if>
+			</div>
 
 
 		</div>

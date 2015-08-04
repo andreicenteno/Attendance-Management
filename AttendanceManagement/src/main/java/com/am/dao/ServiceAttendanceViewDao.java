@@ -6,4 +6,5 @@ import com.am.model.ServiceAttendanceView;
 public interface ServiceAttendanceViewDao {
 	public List<ServiceAttendanceView> listServiceAttendanceView(long id);
 	
+	
 }

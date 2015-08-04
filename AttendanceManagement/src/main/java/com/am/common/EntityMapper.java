@@ -65,6 +65,10 @@ public class EntityMapper {
 		group.setId(attendeesBean.getGroupBean().getGroupId());
 		entity.setGroup(group);
 		
+		Ministry ministry = new Ministry();
+		ministry.setId(attendeesBean.getMinistryBean().getMinistryId());
+		entity.setMinistry(ministry);
+		
 		return entity;
 	}
 	

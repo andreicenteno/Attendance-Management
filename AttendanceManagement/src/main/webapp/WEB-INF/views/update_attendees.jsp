@@ -86,6 +86,18 @@
 							</div>
 						</div>
 						
+						
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Birthday</label>
+							<div class="col-sm-10">
+								<div class="input-group">
+									<label for="date-picker-2" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span> </label>
+									<form:input path="birthday" id="date-picker-2" type="text" value="${updateAttendees.birthday}"
+										class="date-picker form-control"></form:input>
+								</div>
+							</div>
+						</div>
+						
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Group</label>
 							<div class="col-sm-10">
@@ -115,17 +127,36 @@
 							</div>
 						</div>
 						
-
 						<div class="form-group">
-							<label class="col-sm-2 control-label">Birthday</label>
+							<label class="col-sm-2 control-label">Ministry</label>
 							<div class="col-sm-10">
-								<div class="input-group">
-									<label for="date-picker-2" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span> </label>
-									<form:input path="birthday" id="date-picker-2" type="text" value="${updateAttendees.birthday}"
-										class="date-picker form-control"></form:input>
-								</div>
+								<form:select path="ministryBean.ministryId" id="ministryBean.ministryId" class="form-control">
+									<c:forEach items="${ministryList}" var="ministryList">
+										<c:if test="${!empty ministryList}">
+											<c:choose>
+											<c:when test="${ministryList.ministryId eq updateAttendees.ministryBean.ministryId}">
+												<form:option value="${ministryList.ministryId}" path="ministryBean.ministryId" selected="true">
+													<c:out value='${ministryList.ministryName}' />
+												</form:option>
+											</c:when>
+											<c:otherwise>
+												<form:option value="${ministryList.ministryId}" path="ministryBean.groupId">
+													<c:out value='${ministryList.ministryName}' />
+												</form:option>
+											</c:otherwise>
+											</c:choose>
+										</c:if>
+										<c:if test="${empty ministryList}">
+										<form:option path="ministryBean.ministryId" value="0">
+											<c:out value='None' />
+										</form:option>
+										</c:if>
+									</c:forEach>
+								</form:select>
 							</div>
 						</div>
+						
+
 
 						<div class="form-group">
 							<label class="col-sm-2 control-label">First Timer?</label>

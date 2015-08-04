@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.am.bean.AttendeesBean;
+import com.am.bean.AttendeesSummaryViewBean;
+import com.am.bean.AttendeesViewBean;
 import com.am.bean.GroupBean;
 import com.am.bean.MinistryBean;
 import com.am.bean.ServiceAttendanceViewBean;
@@ -22,6 +24,8 @@ import com.am.bean.ServiceBean;
 import com.am.bean.SundayServiceAttendeesBean;
 import com.am.bean.SundayServiceBean;
 import com.am.model.Attendees;
+import com.am.model.AttendeesSummaryView;
+import com.am.model.AttendeesView;
 import com.am.model.Group;
 import com.am.model.Ministry;
 import com.am.model.ServiceAttendanceView;
@@ -116,6 +120,15 @@ public class BeanMapper extends EntityMapper{
 				groupBean.setGroupId(entity.getId());
 				groupBean.setGroupName(entity.getGroup().getGroupName());
 				bean.setGroupBean(groupBean);
+				
+				MinistryBean ministryBean = new MinistryBean();
+				ministryBean.setMinistryId(entity.getMinistry().getId());
+				ministryBean.setMinistryName(entity.getMinistry().getMinistryName());
+				bean.setMinistryBean(ministryBean);
+				
+				
+				
+				
 				beans.add(bean);
 			}
 		}
@@ -288,8 +301,65 @@ public class BeanMapper extends EntityMapper{
 			}
 		}
 		return beans;
-
 	}
+	
+	public List<AttendeesViewBean> prepareListOfAttendeesView(List<AttendeesView> attendeesViews) {
+		List<AttendeesViewBean> beans = null;
+		if (attendeesViews != null && !attendeesViews.isEmpty()) {
+			beans = new ArrayList<AttendeesViewBean>();
+			AttendeesViewBean bean = null;
+			for (AttendeesView entity : attendeesViews) {
+				bean = new AttendeesViewBean();
+				bean.setAttendeesId(entity.getAttendeesId());
+				bean.setFirstName(entity.getFirstName());
+				bean.setLastName(entity.getLastName());
+				bean.setMiddleName(entity.getMiddleName());
+				bean.setAddress(entity.getAddress());
+				bean.setContactNumber(entity.getContactNumber());
+				bean.setBirthday(entity.getBirthday().toString());
+				bean.setGender(entity.getGender());
+				bean.setIsMember(entity.getIsMember());
+				bean.setGroupId(entity.getGroupId());
+				bean.setGroupName(entity.getGroupName());
+				bean.setMinistryId(entity.getMinistryId());
+				bean.setMinistryName(entity.getMinistryName());
+				beans.add(bean);
+			}
+		}
+		return beans;
+	}
+	
+	public List<AttendeesSummaryViewBean> prepareListOfAttendeesSummaryView(List<AttendeesSummaryView> attendeesSummaryViews) {
+		List<AttendeesSummaryViewBean> beans = null;
+		if (attendeesSummaryViews != null && !attendeesSummaryViews.isEmpty()) {
+			beans = new ArrayList<AttendeesSummaryViewBean>();
+			AttendeesSummaryViewBean bean = null;
+			for (AttendeesSummaryView entity : attendeesSummaryViews) {
+				bean = new AttendeesSummaryViewBean();
+				bean.setTotal(entity.getTotal());
+				bean.setTotalOfKkb(entity.getTotalOfKkb());
+				bean.setTotalOfYam(entity.getTotalOfYam());
+				bean.setTotalOfMen(entity.getTotalOfMen());
+				bean.setTotalOfWomen(entity.getTotalOfWomen());
+				bean.setTotalOfChildren(entity.getTotalOfChildren());
+				bean.setTotalOfKkbMale(entity.getTotalOfKkbMale());
+				bean.setTotalOfKkbFemale(entity.getTotalOfKkbFemale());
+				bean.setTotalOfYamMale(entity.getTotalOfYamMale());
+				bean.setTotalOfYamFemale(entity.getTotalOfYamFemale());
+				bean.setTotalOfChildrenMale(entity.getTotalOfChildrenMale());
+				bean.setTotalOfChildrenFemale(entity.getTotalOfChildrenFemale());
+				bean.setNoMinistry(entity.getNoMinistry());
+				bean.setTotalOfJam(entity.getTotalOfJam());
+				bean.setTotalOfTriune(entity.getTotalOfTriune());
+				bean.setTotalOfVia(entity.getTotalOfVia());
+				bean.setTotalOfCan(entity.getTotalOfCan());
+				bean.setTotalOfElyon(entity.getTotalOfElyon());
+				beans.add(bean);
+			}
+		}
+		return beans;
+	}
+	
 	
 	
 }
