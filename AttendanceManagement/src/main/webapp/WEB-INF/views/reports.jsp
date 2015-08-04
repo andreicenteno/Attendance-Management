@@ -116,9 +116,9 @@
 							
 							<form:form method="GET" class="form-horizontal" action="view_attendees_report.html" modelAttribute="attendees_report">
 							<button class="btn btn-default" type="submit">VIEW REPORT</button>
-							<form:input path="groupId" type="text" value="0" id="groupIdView"></form:input>
-							<form:input path="ministryId" type="text" value="0" id="ministryIdView"></form:input>
-							<form:input path="gender" type="text" value="all" id="genderView"></form:input>
+							<form:input path="groupId" type="hidden" value="0" id="groupIdView"></form:input>
+							<form:input path="ministryId" type="hidden" value="0" id="ministryIdView"></form:input>
+							<form:input path="gender" type="hidden" value="all" id="genderView"></form:input>
 							</form:form>
 						</center>
 					</div>

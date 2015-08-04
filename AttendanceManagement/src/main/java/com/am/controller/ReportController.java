@@ -15,7 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.am.bean.AttendeesReportBean;
 import com.am.bean.AttendeesSummaryViewBean;
 import com.am.common.BeanMapper;
-
+import com.am.model.AttendeesSummaryView;
+import com.am.model.AttendeesView;
 import com.am.service.AttendeesSummaryViewService;
 import com.am.service.AttendeesViewService;
 import com.am.service.GroupService;
@@ -47,9 +48,13 @@ public class ReportController extends BeanMapper{
 		return new ModelAndView("reports", model);
 	}
 	
-	private void mapAttendeesSummary(ModelMap modelMap, AttendeesSummaryViewBean attendeesSummaryViewBean){
+	private void mapAttendeesSummary(ModelMap modelMap, AttendeesSummaryViewBean attendeesSummaryViewBean, AttendeesReportBean attendeesReportBean, int totalOfRecord){
 		
-		modelMap.addAttribute("TOTAL_OF_ALL", attendeesSummaryViewBean.getTotal());
+		modelMap.addAttribute("GENDER", attendeesReportBean.getGender());
+		modelMap.addAttribute("GROUP_ID", attendeesReportBean.getGroupId());
+		modelMap.addAttribute("MINISTRY_ID", attendeesReportBean.getMinistryId());
+		
+		modelMap.addAttribute("TOTAL_OF_ALL", totalOfRecord);
 		modelMap.addAttribute("TOTAL_OF_KKB", attendeesSummaryViewBean.getTotalOfKkb());
 		modelMap.addAttribute("TOTAL_OF_KKB_MALE", attendeesSummaryViewBean.getTotalOfKkbMale());
 		modelMap.addAttribute("TOTAL_OF_KKB_FEMALE", attendeesSummaryViewBean.getTotalOfKkbFemale());
@@ -76,22 +81,44 @@ public class ReportController extends BeanMapper{
 				
 				if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() == 0 && attendeesReportBean.getGender().equals("all")){ // all
 					model.put("attendeesList", prepareListOfAttendeesView(attendeesViewService.listAttendeesSummaryView()));
-					mapAttendeesSummary(modelMap, attendeesSummaryViewBean);
+					List<AttendeesView> listAttendeesSummaryViews =  attendeesViewService.listAttendeesSummaryView();
+					mapAttendeesSummary(modelMap, attendeesSummaryViewBean, attendeesReportBean, listAttendeesSummaryViews.size());
 				}
-				else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() == 0 && attendeesReportBean.getGender().equals("all")) // group
+				else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() == 0 && attendeesReportBean.getGender().equals("all")){ // group
 					model.put("attendeesList", prepareListOfAttendeesView(attendeesViewService.listAttendeesViewByGroup(attendeesReportBean.getGroupId())));
-				else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() != 0 && attendeesReportBean.getGender().equals("all")) // ministry
+					List<AttendeesView> listAttendeesSummaryViews =  attendeesViewService.listAttendeesViewByGroup(attendeesReportBean.getGroupId());
+					mapAttendeesSummary(modelMap, attendeesSummaryViewBean, attendeesReportBean, listAttendeesSummaryViews.size());
+				}
+				else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() != 0 && attendeesReportBean.getGender().equals("all")){ // ministry
 					model.put("attendeesList", prepareListOfAttendeesView(attendeesViewService.listAttendeesViewByMinistry(attendeesReportBean.getMinistryId())));
-				else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() == 0 && !attendeesReportBean.getGender().equals("all")) // gender
+					List<AttendeesView> listAttendeesSummaryViews =  attendeesViewService.listAttendeesViewByMinistry(attendeesReportBean.getMinistryId());
+					mapAttendeesSummary(modelMap, attendeesSummaryViewBean, attendeesReportBean, listAttendeesSummaryViews.size());
+				}
+				else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() == 0 && !attendeesReportBean.getGender().equals("all")){ // gender
 					model.put("attendeesList", prepareListOfAttendeesView(attendeesViewService.listAttendeesViewByGender(Boolean.parseBoolean(attendeesReportBean.getGender()))));
-				else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() != 0 && attendeesReportBean.getGender().equals("all")) // group ministry
+					List<AttendeesView> listAttendeesSummaryViews =  attendeesViewService.listAttendeesViewByGender(Boolean.parseBoolean(attendeesReportBean.getGender()));
+					mapAttendeesSummary(modelMap, attendeesSummaryViewBean, attendeesReportBean, listAttendeesSummaryViews.size());
+				}
+				else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() != 0 && attendeesReportBean.getGender().equals("all")){ // group ministry
 					model.put("attendeesList", prepareListOfAttendeesView(attendeesViewService.listAttendeesViewwByGroupMinistry(attendeesReportBean.getGroupId(), attendeesReportBean.getMinistryId())));
-				else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() == 0 && !attendeesReportBean.getGender().equals("all")) // group gender
+					List<AttendeesView> listAttendeesSummaryViews =  attendeesViewService.listAttendeesViewwByGroupMinistry(attendeesReportBean.getGroupId(), attendeesReportBean.getMinistryId());
+					mapAttendeesSummary(modelMap, attendeesSummaryViewBean, attendeesReportBean, listAttendeesSummaryViews.size());
+				}
+				else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() == 0 && !attendeesReportBean.getGender().equals("all")){ // group gender
 					model.put("attendeesList", prepareListOfAttendeesView(attendeesViewService.listAttendeesViewByGenderGroup(Boolean.parseBoolean(attendeesReportBean.getGender()), attendeesReportBean.getGroupId())));
-				else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() != 0 && !attendeesReportBean.getGender().equals("all")) // ministry gender
+					List<AttendeesView> listAttendeesSummaryViews =  attendeesViewService.listAttendeesViewByGenderGroup(Boolean.parseBoolean(attendeesReportBean.getGender()), attendeesReportBean.getGroupId());
+					mapAttendeesSummary(modelMap, attendeesSummaryViewBean, attendeesReportBean, listAttendeesSummaryViews.size());
+				}
+				else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() != 0 && !attendeesReportBean.getGender().equals("all")){ // ministry gender
 					model.put("attendeesList", prepareListOfAttendeesView(attendeesViewService.listAttendeesViewByGenderMinistry(Boolean.parseBoolean(attendeesReportBean.getGender()), attendeesReportBean.getMinistryId())));
-				else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() != 0 && !attendeesReportBean.getGender().equals("all")) // group ministry gender
+					List<AttendeesView> listAttendeesSummaryViews =  attendeesViewService.listAttendeesViewByGenderMinistry(Boolean.parseBoolean(attendeesReportBean.getGender()), attendeesReportBean.getMinistryId());
+					mapAttendeesSummary(modelMap, attendeesSummaryViewBean, attendeesReportBean, listAttendeesSummaryViews.size());
+				}
+				else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() != 0 && !attendeesReportBean.getGender().equals("all")){ // group ministry gender
 					model.put("attendeesList", prepareListOfAttendeesView(attendeesViewService.listAttendeesViewByGroupMinistryGender(attendeesReportBean.getGroupId(), attendeesReportBean.getMinistryId(), Boolean.parseBoolean(attendeesReportBean.getGender()))));
+					List<AttendeesView> listAttendeesSummaryViews =  attendeesViewService.listAttendeesViewByGroupMinistryGender(attendeesReportBean.getGroupId(), attendeesReportBean.getMinistryId(), Boolean.parseBoolean(attendeesReportBean.getGender()));
+					mapAttendeesSummary(modelMap, attendeesSummaryViewBean, attendeesReportBean, listAttendeesSummaryViews.size());
+				}
 			}
 			
 			

@@ -94,7 +94,7 @@
 							<c:forEach items="${sundayServiceList}" var="sundayServiceList">
 								<tr>
 									<th><c:out value='${sundayServiceList.createTime}' /></th>
-									<th><c:out value='${sundayServiceList.serviceTitle}' /></th>
+									<th><a href="sunday_service_profile.html?sundayServiceId=${sundayServiceList.sundayServiceId}"><c:out value='${sundayServiceList.serviceTitle}' /> </a></th>
 									<th><c:out value='${sundayServiceList.serviceBean.serviceName}' /></th>
 									<th><a href="sunday_service_attendees.html?sundayServiceId=${sundayServiceList.sundayServiceId}">Add Attendees</a> &nbsp;
 										| &nbsp; <a href="update_sunday_service.html?sundayServiceId=${sundayServiceList.sundayServiceId}">Update</a> &nbsp; |

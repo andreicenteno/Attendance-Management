@@ -154,8 +154,12 @@ public class BeanMapper extends EntityMapper{
 		bean.setUpdateTime(entity.getUpdateTime());
 		
 		GroupBean groupBean = new GroupBean();
-		groupBean.setGroupId(entity.getId());
+		groupBean.setGroupId(entity.getGroup().getId());
 		bean.setGroupBean(groupBean);
+		
+		MinistryBean ministryBean = new MinistryBean();
+		ministryBean.setMinistryId(entity.getMinistry().getId());
+		bean.setMinistryBean(ministryBean);
 		return bean;
 	}
 	

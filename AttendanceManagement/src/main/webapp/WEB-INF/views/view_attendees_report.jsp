@@ -21,18 +21,43 @@
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 			<h1 class="page-header">View Attendees Report</h1>
 			
-			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all attendees: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_ALL}</span><br/>
-			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all KKB: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_KKB}</span><br/>
-			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all KKB MALE: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_KKB_MALE}</span><br/>
-			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all KKB FEMALE: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_KKB_FEMALE}</span><br/>
-			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all YAM: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_YAM}</span><br/>
-			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all YAM MALE: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_YAM_MALE}</span><br/>
-			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all YAM FEMALE: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_YAM_FEMALE}</span><br/>
-			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Children: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_CHILDREN}</span><br/>
-			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Children Male: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_CHILDREN_MALE}</span><br/>
-			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Children Female: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_CHILDREN_FEMALE}</span><br/>
-			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Men: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_MEN}</span><br/>
-			<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Women: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_WOMEN}</span><br/>
+			 <!-- View for All -->
+			<c:if test="${GENDER eq 'all' && GROUP_ID eq 0 && MINISTRY_ID eq 0}">
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all attendees: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_ALL}</span><br/>
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all KKB: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_KKB}</span><br/>
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all KKB MALE: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_KKB_MALE}</span><br/>
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all KKB FEMALE: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_KKB_FEMALE}</span><br/>
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all YAM: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_YAM}</span><br/>
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all YAM MALE: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_YAM_MALE}</span><br/>
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all YAM FEMALE: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_YAM_FEMALE}</span><br/>
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Children: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_CHILDREN}</span><br/>
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Children Male: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_CHILDREN_MALE}</span><br/>
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Children Female: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_CHILDREN_FEMALE}</span><br/>
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Men: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_MEN}</span><br/>
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Women: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_WOMEN}</span><br/>
+			</c:if>
+			<!-- Otherwise Show this -->
+			<c:if test="${GENDER ne 'all' || GROUP_ID ne 0 || MINISTRY_ID ne 0}">
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all records: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_ALL}</span><br/>
+			</c:if>
+			<!-- Gender Male -->
+			<c:if test="${GENDER eq 'true' && GROUP_ID eq 0 && MINISTRY_ID eq 0}">
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all KKB MALE: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_KKB_MALE}</span><br/>
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all YAM MALE: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_YAM_MALE}</span><br/>
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Children Male: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_CHILDREN_MALE}</span><br/>
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Men: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_MEN}</span><br/>	
+			</c:if>
+			
+			<!-- Gender Female -->
+			<c:if test="${GENDER eq 'false' && GROUP_ID eq 0 && MINISTRY_ID eq 0}">
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all KKB FEMALE: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_KKB_FEMALE}</span><br/>
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all YAM FEMALE: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_YAM_FEMALE}</span><br/>
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Children Female: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_CHILDREN_FEMALE}</span><br/>
+				<span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px;">Total of all Women: </span> <span style="font-size:18px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;">${TOTAL_OF_WOMEN}</span><br/>
+			</c:if>
+			
+			
+			
 			
 			<label for="date-picker-2" class="control-label">List of All Attendees</label>
 			<div class="table-responsive">
