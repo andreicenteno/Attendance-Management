@@ -327,6 +327,7 @@ public class BeanMapper extends EntityMapper{
 				bean.setGroupName(entity.getGroupName());
 				bean.setMinistryId(entity.getMinistryId());
 				bean.setMinistryName(entity.getMinistryName());
+				bean.setYearOld(entity.getYearOld());
 				beans.add(bean);
 			}
 		}

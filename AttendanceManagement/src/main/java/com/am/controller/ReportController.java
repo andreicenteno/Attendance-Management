@@ -1,7 +1,14 @@
 package com.am.controller;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,10 +24,22 @@ import com.am.bean.AttendeesSummaryViewBean;
 import com.am.common.BeanMapper;
 import com.am.model.AttendeesSummaryView;
 import com.am.model.AttendeesView;
+import com.am.model.Group;
+import com.am.model.Ministry;
 import com.am.service.AttendeesSummaryViewService;
 import com.am.service.AttendeesViewService;
 import com.am.service.GroupService;
 import com.am.service.MinistryService;
+import com.am.utils.HeaderFooter;
+import com.am.utils.PDFUtil;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfImportedPage;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfWriter;
+
 
 
 
@@ -38,6 +57,7 @@ public class ReportController extends BeanMapper{
 	
 	@Autowired
 	private AttendeesSummaryViewService attendeesSummaryViewService;
+
 	
 	
 	@RequestMapping(value = "/reports", method = RequestMethod.GET)
@@ -128,6 +148,159 @@ public class ReportController extends BeanMapper{
 		
 		return new ModelAndView("view_attendees_report", model);
 	}
+	
+	
+	@RequestMapping(value = "/generate_attendees", method = RequestMethod.POST)
+	public ModelAndView generateAttendees(@ModelAttribute("attendees_report") AttendeesReportBean attendeesReportBean,BindingResult result,
+			HttpServletRequest request, HttpServletResponse response, ModelMap modelMap){
+		Map<String, Object> model = new HashMap<String, Object>();
+		PdfWriter writer =null;
+		PdfReader reader = null;
+		try{
+		  
+		  ServletContext context = request.getServletContext();
+		  String outputFile = context.getRealPath("/resources/files/JILAttendanceManagement.pdf");
+		  Document document = new Document();
+		  /*Document document = new Document(PageSize.A5, leftmargin, right margin, top margin, bottom);*/
+		  document = new Document(PageSize.A4.rotate(), 20f, 20f, 10f, 35f);
+		  ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		  baos.writeTo(new FileOutputStream(outputFile));
+		  writer = PdfWriter.getInstance(document,baos);
+	      writer.setPageEvent(new HeaderFooter());
+	      document.open();
+	      
+	      String realpath = context.getRealPath("/resources/files/jil_report_baseline_landscape.pdf");
+	      
+	      // copying the template
+	      PdfContentByte cb = writer.getDirectContent();
+			
+	      //Get file from resources folder
+	      reader = new PdfReader(realpath);
+	      PdfImportedPage page = writer.getImportedPage(reader, 1);
+	      document.newPage();
+	      cb.addTemplate(page, 0, 0);
+	      
+	     
+	      
+	      // writing on the document
+	      List<AttendeesSummaryView> listAttendeesSummaryViews = attendeesSummaryViewService.listAttendeesSummaryView();
+	      if(listAttendeesSummaryViews != null){
+	    	  AttendeesSummaryView attendeesSummaryView = listAttendeesSummaryViews.get(0);
+	    	  document.add(new Paragraph(com.am.utils.PDFUtil.AccountStatement, com.am.utils.PDFUtil.AcctFont));
+	    	  String ReportQuery = null;
+	    	  System.out.println(attendeesReportBean.getGender()+" - "+attendeesReportBean.getGroupId()+" - "+attendeesReportBean.getMinistryId());
+	    	  if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() == 0 && attendeesReportBean.getGender().equals("all")){ // all
+					ReportQuery = "All Attendees";
+			     }else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() == 0 && !attendeesReportBean.getGender().equals("all")){ // gender
+			    	  if(attendeesReportBean.getGender().equals("true")){
+			    		  ReportQuery = "All Male Attendees";
+			    	  }else{
+			    		  ReportQuery = "All Female Attendees";
+			    	  }
+			     }else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() == 0 && attendeesReportBean.getGender().equals("all")){ // group
+			    	  Group group = groupService.getGroup(attendeesReportBean.getGroupId());
+			    	  ReportQuery = "All "+group.getGroupName()+" Attendees";
+			     }
+			     else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() != 0 && attendeesReportBean.getGender().equals("all")){ // ministry
+			    	  Ministry ministry = ministryService.getMinistry(attendeesReportBean.getMinistryId());
+			    	  ReportQuery = "All "+ministry.getMinistryName()+" Attendees";
+			     }else{
+			    	 Group group = new Group();
+			    	 if(attendeesReportBean.getGroupId()!= 0){
+			    		 group = groupService.getGroup(attendeesReportBean.getGroupId());
+			    	 }else{
+			    		 group.setGroupName("All");
+			    	 }
+			    	 Ministry ministry = new Ministry();
+			    	 if(attendeesReportBean.getMinistryId()!=0)
+			    		 ministry = ministryService.getMinistry(attendeesReportBean.getMinistryId());	 
+			    	 else
+			    		 ministry.setMinistryName("All");
+			    	 
+			    	 String gender = null;
+			    	 if(attendeesReportBean.getGender().equals("true")){
+			    		 gender = "Male";
+			    	  }else if(attendeesReportBean.getGender().equals("false")){
+			    		  gender = "Female";
+			    	  }else{
+			    		  gender = "All";
+			    	  }
+			    	 ReportQuery = "Group: "+group.getGroupName()+" - Ministry: "+ministry.getMinistryName()+" - Gender: "+gender+" Attendees";
+			    	 
+			     }
+				
+		      PDFUtil.addContentAttendeesReport(document, attendeesSummaryView, ReportQuery);
+		  }
+	      
+	      if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() == 0 && attendeesReportBean.getGender().equals("all")){ // all
+	    	  List<Group> listGroups = groupService.listGroup();
+		      if(listGroups!= null){
+		    	  for(Group group: listGroups){
+		    		  List<AttendeesView> listAttendeesViews = attendeesViewService.listAttendeesViewByGroup(group.getId());
+		    	      PDFUtil.addTableAttendeesReport(document, listAttendeesViews, group.getGroupName());
+		    	  }
+		      }
+	      }else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() == 0 && !attendeesReportBean.getGender().equals("all")){ // gender
+	    	  if(attendeesReportBean.getGender().equals("true")){
+	    		  List<Group> listGroups = groupService.listGroup();
+			      if(listGroups!= null){
+			    	  for(Group group: listGroups){
+			    		  if(group.getId()!=5){
+			    			  List<AttendeesView> listAttendeesViews =  attendeesViewService.listAttendeesViewByGenderGroup(Boolean.parseBoolean(attendeesReportBean.getGender()), group.getId());
+			    			  PDFUtil.addTableAttendeesReport(document, listAttendeesViews, group.getGroupName());
+			    		  }
+			    	  }
+			      }
+	    	  }else{
+	    		  List<Group> listGroups = groupService.listGroup();
+			      if(listGroups!= null){
+			    	  for(Group group: listGroups){
+			    		  if(group.getId()!=4){
+			    			  List<AttendeesView> listAttendeesViews =  attendeesViewService.listAttendeesViewByGenderGroup(Boolean.parseBoolean(attendeesReportBean.getGender()), group.getId());
+			    			  PDFUtil.addTableAttendeesReport(document, listAttendeesViews, group.getGroupName());
+			    		  }
+			    	  }
+			      }
+	    	  }
+	      }else{
+	    	  List<AttendeesView> listAttendeesViews = null;
+	    	  if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() == 0 && attendeesReportBean.getGender().equals("all")){ // group
+	    		  listAttendeesViews =  attendeesViewService.listAttendeesViewByGroup(attendeesReportBean.getGroupId());
+	    	  }else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() != 0 && attendeesReportBean.getGender().equals("all")){ // ministry
+	    		  listAttendeesViews =  attendeesViewService.listAttendeesViewByMinistry(attendeesReportBean.getMinistryId());
+	    	  }else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() != 0 && attendeesReportBean.getGender().equals("all")){ // group ministry
+	    		  listAttendeesViews =  attendeesViewService.listAttendeesViewwByGroupMinistry(attendeesReportBean.getGroupId(), attendeesReportBean.getMinistryId());
+	    	  }else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() == 0 && !attendeesReportBean.getGender().equals("all")){ // group gender
+	    		  listAttendeesViews =  attendeesViewService.listAttendeesViewByGenderGroup(Boolean.parseBoolean(attendeesReportBean.getGender()), attendeesReportBean.getGroupId());
+	    	  }else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() != 0 && !attendeesReportBean.getGender().equals("all")){ // ministry gender
+	    		  listAttendeesViews =  attendeesViewService.listAttendeesViewByGenderMinistry(Boolean.parseBoolean(attendeesReportBean.getGender()), attendeesReportBean.getMinistryId());
+	    	  }else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() != 0 && !attendeesReportBean.getGender().equals("all")){ // group ministry gender
+	    		  listAttendeesViews =  attendeesViewService.listAttendeesViewByGroupMinistryGender(attendeesReportBean.getGroupId(), attendeesReportBean.getMinistryId(), Boolean.parseBoolean(attendeesReportBean.getGender()));
+	    	  }
+	    	   
+	    	  PDFUtil.addTableAttendeesReportNotBreakdown(document, listAttendeesViews);
+	      }
+	      
+	      
+	      document.close();
+	      response.setHeader("Expires", "0");
+	      response.setHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
+	      response.setHeader("Pragma", "public");
+	      response.setHeader("Content-disposition",
+                  "attachment; filename="+"Jesus is Lord AttendanceManagement- [test].pdf" );
+	      response.setContentType("application/pdf");
+	      response.setContentLength(baos.size());
+	      ServletOutputStream out = response.getOutputStream();
+	      baos.writeTo(out);
+	      baos.close();
+		}catch(Exception e){
+			System.out.println(e);
+		}
+		
+		return new ModelAndView("reports", model);
+	
+	}
+
 	
 
 }

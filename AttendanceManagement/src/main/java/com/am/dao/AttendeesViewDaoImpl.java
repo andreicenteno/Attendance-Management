@@ -19,7 +19,7 @@ public class AttendeesViewDaoImpl implements AttendeesViewDao {
 	
 	@SuppressWarnings("unchecked")
 	public List<AttendeesView> listAttendeesSummaryView(){
-		String sql = "SELECT * FROM asystem.v_attendees";
+		String sql = "SELECT * FROM asystem.v_attendees order by last_name";
 		SQLQuery sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(sql);
 	    sqlQuery.addEntity(AttendeesView.class);
 	    return sqlQuery.list();

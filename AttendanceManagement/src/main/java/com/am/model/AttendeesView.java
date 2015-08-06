@@ -49,6 +49,9 @@ private static final long serialVersionUID = -723583058586873479L;
 	
 	@Column(name="group_id")
 	private long groupId;
+	
+	@Column(name="year_old")
+	private double yearOld;
 
 	@Column(name="group_name")
 	private String groupName;
@@ -59,6 +62,16 @@ private static final long serialVersionUID = -723583058586873479L;
 	
 	@Column(name="ministry_name")
 	private String ministryName;
+
+	
+	
+	public double getYearOld() {
+		return yearOld;
+	}
+
+	public void setYearOld(double yearOld) {
+		this.yearOld = yearOld;
+	}
 
 	public long getAttendeesId() {
 		return attendeesId;

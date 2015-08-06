@@ -1,0 +1,369 @@
+/*******************************************************************************
+ * Copyright (c) 2013 P3ople4u Inc.  All Rights Reserved.
+ *        DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *        
+ *        This code is NOT free software; you cannot redistribute, modify, 
+ *        decompile, copy or publish without the prior written consent of 
+ *        P3ople4u Inc.
+ *        
+ *        
+ *        This software is the confidential and proprietary information
+ *        of P3ople4u Inc. ("Confidential Information").  You shall 
+ *        not disclose such Confidential Information and shall use it 
+ *        only in accordance with the terms of the license agreement
+ *        you entered into with P3ople4u.
+ *        
+ *        Please contact P3ople4u Inc. 17th Floor PhilamLife Tower, 
+ *        8767 Paseo de Roxas Avenue,Makati City, Philippines 
+ *        if you need additional information or have any questions.
+ ******************************************************************************/
+package com.am.utils;
+
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.am.bean.AttendeesReportBean;
+import com.am.common.Constant;
+import com.am.model.AttendeesSummaryView;
+import com.am.model.AttendeesView;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.TabSettings;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+
+/**
+ * @author emersonsalvador
+ * 
+ */
+public class PDFUtil {
+
+	private static Logger LOGGER = Logger.getLogger(PDFUtil.class);
+
+	public static Font AcctFont = new Font(Font.FontFamily.HELVETICA, 11,
+			Font.BOLD);
+	private static Font SmallBFont = new Font(Font.FontFamily.HELVETICA, 10,
+			Font.BOLD);
+
+	private static Font GeneralBFont = new Font(Font.FontFamily.HELVETICA, 9,
+			Font.BOLD);
+
+	private static Font GeneralFont = new Font(Font.FontFamily.HELVETICA, 9);
+
+	private static final String DATE_FORMAT = "dd MMM YYYY HH:mm (z)";
+	private static final String NO_TIME_DATE_FORMAT = "dd MMM YYYY ";
+	private static final String AMOUNT_FORMAT = "#";
+
+	public static final String SPACE = " ";
+	public static final String FILE_SEPARATOR = System
+			.getProperty("file.separator");
+	public static final String PDF_FILE_EXT = ".pdf";
+
+	public static final String DateTitle = "Date: ";
+	public static final String ReportTitle = "Report: ";
+	public static final String SummaryTitle = "Summary: ";
+	public static final String TotalofKKB = "Total of KKB: ";
+	public static final String TotalofKKBMale = "Total of KKB Male: ";
+	public static final String TotalofKKBFemale = "Total of KKB Female: ";
+	public static final String TotalofYAM = "Total of YAM: ";
+	public static final String TotalofYAMMale = "Total of YAM Male: ";
+	public static final String TotalofYAMFemale = "Total of YAM Female: ";
+	public static final String TotalofChildren = "Total of Children: ";
+	public static final String TotalofChildrenMale = "Total of Children Male: ";
+	public static final String TotalofChildrenFemale = "Total of Children Female: ";
+	public static final String TotalofMen = "Total of Men: ";
+	public static final String TotalofWomen = "Total of Women: ";
+	public static final String TotalofAllRecords = "Total of all records: ";
+	public static final String ToTitle = " - ";
+
+	public static final String AccountStatement = "\n\n\n" + "ATTENDEES REPORT";
+
+	public static final String NameHeader = "Name";
+	public static final String AddressHeader = "Address";
+	public static final String ContactNumberHeader = "Contact Number";
+	public static final String GenderHeader = "Gender";
+	public static final String BirthdayHeader = "Birthday";
+	public static final String AgeHeader = "Age";
+	public static final String MinistryHeader = "Ministry";
+
+	private PDFUtil() {
+
+	}
+
+	// -- basic information in the header
+	public static void addContentAttendeesReport(Document docu,
+			AttendeesSummaryView attendeesSummaryView, String ReportQuery) {
+		try {
+			// content
+			DateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+			formatter.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+			Date dateNow = Calendar.getInstance().getTime();
+			String strDateNow = formatter.format(dateNow);
+			Paragraph content = new Paragraph();
+			content.add(new Paragraph(DateTitle + strDateNow, GeneralFont));
+			content.add(new Paragraph(ReportTitle + ReportQuery, GeneralFont));
+			content.add(new Paragraph(Constant.NEW_LINE + SummaryTitle,
+					SmallBFont));
+
+			content.setTabSettings(new TabSettings(60f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofKKB
+					+ attendeesSummaryView.getTotalOfKkb(), GeneralBFont));
+			content.setTabSettings(new TabSettings(60f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofKKBMale
+					+ attendeesSummaryView.getTotalOfKkbMale(), GeneralBFont));
+			content.setTabSettings(new TabSettings(90f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofKKBFemale
+					+ attendeesSummaryView.getTotalOfKkbFemale(), GeneralBFont));
+			content.setTabSettings(new TabSettings(90f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofMen
+					+ attendeesSummaryView.getTotalOfMen(), GeneralBFont));
+
+			content.add(Constant.NEW_LINE);
+			content.setTabSettings(new TabSettings(60f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofYAM
+					+ attendeesSummaryView.getTotalOfYam(), GeneralBFont));
+			content.setTabSettings(new TabSettings(60f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofYAMMale
+					+ attendeesSummaryView.getTotalOfYamMale(), GeneralBFont));
+			content.setTabSettings(new TabSettings(90f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofYAMFemale
+					+ attendeesSummaryView.getTotalOfYamFemale(), GeneralBFont));
+			content.setTabSettings(new TabSettings(90f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofWomen
+					+ attendeesSummaryView.getTotalOfWomen(), GeneralBFont));
+
+			content.add(Constant.NEW_LINE);
+			content.setTabSettings(new TabSettings(60f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofChildren
+					+ attendeesSummaryView.getTotalOfChildren(), GeneralBFont));
+			content.setTabSettings(new TabSettings(60f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofChildrenMale
+					+ attendeesSummaryView.getTotalOfChildrenMale(),
+					GeneralBFont));
+			content.setTabSettings(new TabSettings(90f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofChildrenFemale
+					+ attendeesSummaryView.getTotalOfChildrenFemale(),
+					GeneralBFont));
+
+			content.add(Constant.NEW_LINE);
+			content.add(Constant.NEW_LINE);
+			content.setTabSettings(new TabSettings(60f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofAllRecords
+					+ attendeesSummaryView.getTotal(), SmallBFont));
+
+			docu.add(content);
+		} catch (Exception e) {
+			System.out.println("ERROR: " + e);
+		}
+
+	}
+
+	public static void addTableAttendeesReport(Document document,
+			List<AttendeesView> attendeesViews, String GroupName)
+			throws BadElementException, DocumentException {
+		// table
+		PdfPTable table = new PdfPTable(7);
+		float[] w = new float[] { 25f, 35f, 15f, 10f, 15f, 8f, 20f };
+		table.setWidths(w);
+		table.setWidthPercentage(100);
+		table.setSpacingBefore(10f);
+		table.setSpacingAfter(10f);
+
+		Paragraph contentTitle = new Paragraph();
+		contentTitle.add(new Paragraph(GroupName, SmallBFont));
+
+		PdfPCell cell1 = createCell(NameHeader, 3, 3);
+		PdfPCell cell2 = createCell(AddressHeader, 3, 3);
+		PdfPCell cell3 = createCell(ContactNumberHeader, 3, 3);
+		PdfPCell cell4 = createCell(GenderHeader, 3, 3);
+		PdfPCell cell5 = createCell(BirthdayHeader, 3, 3);
+		PdfPCell cell6 = createCell(AgeHeader, 3, 3);
+		PdfPCell cell7 = createCell(MinistryHeader, 3, 3);
+
+		cell1.setGrayFill(0.85f);
+		cell2.setGrayFill(0.85f);
+		cell3.setGrayFill(0.85f);
+		cell4.setGrayFill(0.85f);
+		cell5.setGrayFill(0.85f);
+		cell6.setGrayFill(0.85f);
+		cell7.setGrayFill(0.85f);
+
+		table.addCell(cell1);
+		table.addCell(cell2);
+		table.addCell(cell3);
+		table.addCell(cell4);
+		table.addCell(cell5);
+		table.addCell(cell6);
+		table.addCell(cell7);
+
+		DecimalFormat decimalFormat = new DecimalFormat(AMOUNT_FORMAT);
+		SimpleDateFormat format = new SimpleDateFormat(NO_TIME_DATE_FORMAT);
+		format.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+		for (AttendeesView attendeesView : attendeesViews) {
+			String FULL_NAME = attendeesView.getLastName() + ", "
+					+ attendeesView.getFirstName() + " "
+					+ attendeesView.getMiddleName();
+			/*
+			 * PdfPCell cell =
+			 * createCell(format.format(accountInfo.getUpdateTime()).toString(),
+			 * 3, 3);
+			 */
+			PdfPCell Cell1 = createCell(FULL_NAME, 3, 3);
+			Cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell1);
+
+			PdfPCell Cell2 = createCell(attendeesView.getAddress(), 3, 3);
+			Cell2.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell2);
+
+			PdfPCell Cell3 = createCell(attendeesView.getContactNumber(), 3, 3);
+			Cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell3);
+
+			String GENDER = (attendeesView.getGender()) ? "Male" : "Female";
+			PdfPCell Cell4 = createCell(GENDER, 2, 3);
+			Cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell4);
+
+			PdfPCell Cell5 = createCell(
+					format.format(attendeesView.getBirthday()).toString(), 3, 3);
+			Cell5.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell5);
+
+			PdfPCell Cell6 = createCell(String.valueOf(decimalFormat
+					.format(attendeesView.getYearOld())), 3, 3);
+			Cell6.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell6);
+
+			PdfPCell Cell7 = createCell(attendeesView.getMinistryName(), 3, 3);
+			Cell7.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell7);
+
+		}
+
+		document.add(contentTitle);
+		document.add(table);
+
+	}
+
+	// ---
+
+	public static void addTableAttendeesReportNotBreakdown(Document document,List<AttendeesView> attendeesViews) throws BadElementException, DocumentException {
+		// table
+		PdfPTable table = new PdfPTable(7);
+		float[] w = new float[] { 25f, 35f, 15f, 10f, 15f, 8f, 20f };
+		table.setWidths(w);
+		table.setWidthPercentage(100);
+		table.setSpacingBefore(10f);
+		table.setSpacingAfter(10f);
+
+		Paragraph contentTitle = new Paragraph();
+		
+		PdfPCell cell1 = createCell(NameHeader, 3, 3);
+		PdfPCell cell2 = createCell(AddressHeader, 3, 3);
+		PdfPCell cell3 = createCell(ContactNumberHeader, 3, 3);
+		PdfPCell cell4 = createCell(GenderHeader, 3, 3);
+		PdfPCell cell5 = createCell(BirthdayHeader, 3, 3);
+		PdfPCell cell6 = createCell(AgeHeader, 3, 3);
+		PdfPCell cell7 = createCell(MinistryHeader, 3, 3);
+
+		cell1.setGrayFill(0.85f);
+		cell2.setGrayFill(0.85f);
+		cell3.setGrayFill(0.85f);
+		cell4.setGrayFill(0.85f);
+		cell5.setGrayFill(0.85f);
+		cell6.setGrayFill(0.85f);
+		cell7.setGrayFill(0.85f);
+
+		table.addCell(cell1);
+		table.addCell(cell2);
+		table.addCell(cell3);
+		table.addCell(cell4);
+		table.addCell(cell5);
+		table.addCell(cell6);
+		table.addCell(cell7);
+
+		DecimalFormat decimalFormat = new DecimalFormat(AMOUNT_FORMAT);
+		SimpleDateFormat format = new SimpleDateFormat(NO_TIME_DATE_FORMAT);
+		format.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+		for (AttendeesView attendeesView : attendeesViews) {
+			String FULL_NAME = attendeesView.getLastName() + ", "
+					+ attendeesView.getFirstName() + " "
+					+ attendeesView.getMiddleName();
+			/*
+			 * PdfPCell cell =
+			 * createCell(format.format(accountInfo.getUpdateTime()).toString(),
+			 * 3, 3);
+			 */
+			PdfPCell Cell1 = createCell(FULL_NAME, 3, 3);
+			Cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell1);
+
+			PdfPCell Cell2 = createCell(attendeesView.getAddress(), 3, 3);
+			Cell2.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell2);
+
+			PdfPCell Cell3 = createCell(attendeesView.getContactNumber(), 3, 3);
+			Cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell3);
+
+			String GENDER = (attendeesView.getGender()) ? "Male" : "Female";
+			PdfPCell Cell4 = createCell(GENDER, 2, 3);
+			Cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell4);
+
+			PdfPCell Cell5 = createCell(
+					format.format(attendeesView.getBirthday()).toString(), 3, 3);
+			Cell5.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell5);
+
+			PdfPCell Cell6 = createCell(String.valueOf(decimalFormat
+					.format(attendeesView.getYearOld())), 3, 3);
+			Cell6.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell6);
+
+			PdfPCell Cell7 = createCell(attendeesView.getMinistryName(), 3, 3);
+			Cell7.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell7);
+
+		}
+
+		document.add(contentTitle);
+		document.add(table);
+
+	}
+
+	private static PdfPCell createCell(String string, int alignment, int span) {
+		PdfPCell cell = new PdfPCell(new Phrase(string, GeneralFont));
+		cell.setHorizontalAlignment(alignment);
+		cell.setPadding(span);
+		return cell;
+	}
+
+}

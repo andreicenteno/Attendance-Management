@@ -100,11 +100,11 @@
 
 					<div class="col-md-12">
 						<center>
-						<form:form method="POST" class="form-horizontal" action="genreate_attendance.html" modelAttribute="attendees_report">
+						<form:form method="POST" class="form-horizontal" action="generate_attendees.html" modelAttribute="attendees_report">
 							<button class="btn btn-default" type="submit">GENERATE .PDF FILE</button>
-							<input type="hidden" value="0" id="groupIdPdfFile">
-							<input type="hidden" value="0" id="ministryIdPdfFile">
-							<input type="hidden" value="all" id="genderPdfFile">
+							<form:input path="groupId" type="hidden" value="0" id="groupIdPdfFile"></form:input>
+							<form:input path="ministryId" type="hidden" value="0" id="ministryIdPdfFile"></form:input>
+							<form:input path="gender" type="hidden" value="all" id="genderPdfFile"></form:input>
 						</form:form>
 							
 							<form:form method="POST" class="form-horizontal" action="genreate_attendance.html" modelAttribute="attendees_report">

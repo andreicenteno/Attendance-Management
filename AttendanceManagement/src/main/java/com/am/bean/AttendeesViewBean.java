@@ -14,8 +14,16 @@ public class AttendeesViewBean{
 	private String groupName;
 	private long ministryId;
 	private String ministryName;
+	private double yearOld;
 	
 	
+	
+	public double getYearOld() {
+		return yearOld;
+	}
+	public void setYearOld(double yearOld) {
+		this.yearOld = yearOld;
+	}
 	public long getAttendeesId() {
 		return attendeesId;
 	}
