@@ -21,8 +21,6 @@ import com.am.model.Group;
 import com.am.model.Ministry;
 import com.am.model.ServiceEntity;
 
-
-
 @Controller
 public class MaintenanceController extends BeanMapper{
 
