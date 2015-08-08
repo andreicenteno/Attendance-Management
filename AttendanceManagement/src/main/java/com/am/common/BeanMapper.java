@@ -14,9 +14,12 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.am.bean.AttendeesBean;
 import com.am.bean.AttendeesSummaryViewBean;
 import com.am.bean.AttendeesViewBean;
+import com.am.bean.FirstTimerBean;
 import com.am.bean.GroupBean;
 import com.am.bean.MinistryBean;
 import com.am.bean.ServiceAttendanceViewBean;
@@ -26,6 +29,7 @@ import com.am.bean.SundayServiceBean;
 import com.am.model.Attendees;
 import com.am.model.AttendeesSummaryView;
 import com.am.model.AttendeesView;
+import com.am.model.FirstTimer;
 import com.am.model.Group;
 import com.am.model.Ministry;
 import com.am.model.ServiceAttendanceView;
@@ -365,6 +369,73 @@ public class BeanMapper extends EntityMapper{
 			}
 		}
 		return beans;
+	}
+	
+	public List<FirstTimerBean> prepareListOfFirstTimer(List<FirstTimer> firstTimers) {
+		List<FirstTimerBean> beans = null;
+		if (firstTimers != null && !firstTimers.isEmpty()) {
+			beans = new ArrayList<FirstTimerBean>();
+			FirstTimerBean bean = null;
+			for (FirstTimer entity : firstTimers) {
+				
+				
+				bean = new FirstTimerBean();
+				bean.setFirst_timer_id(entity.getId());
+				
+				SundayServiceBean sundayServiceBean = new SundayServiceBean();
+				sundayServiceBean.setSundayServiceId(entity.getSundayService().getId());
+				sundayServiceBean.setServiceTitle(entity.getSundayService().getServiceTitle());
+				bean.setSundayServiceBean(sundayServiceBean);
+				
+				
+				/*if(StringUtils.isNotEmpty(entity.getAttendees().getId().toString())){
+					AttendeesBean attendeesBean = new AttendeesBean();
+					attendeesBean.setAttendeesId(entity.getAttendees().getId());
+					attendeesBean.setFirstName(entity.getAttendees().getFirstName());
+					attendeesBean.setLastName(entity.getAttendees().getLastName());
+					bean.setAttendeesBean(attendeesBean);
+				}*/
+				
+				AttendeesBean guestBean = new AttendeesBean();
+				guestBean.setAttendeesId(entity.getAttendeesGuest().getId());
+				guestBean.setFirstName(entity.getAttendeesGuest().getFirstName());
+				guestBean.setLastName(entity.getAttendeesGuest().getLastName());
+				guestBean.setAddress(entity.getAttendeesGuest().getAddress());
+				bean.setGuestBean(guestBean);
+				
+				bean.setRemarks(entity.getRemarks());
+			
+				bean.setCreateTime(entity.getCreateTime());
+				bean.setUpdateTime(entity.getUpdateTime());
+				beans.add(bean);
+			}
+		}
+		return beans;
+	}
+	
+	public FirstTimerBean prepareFirstTimerBean(FirstTimer firstTimer){
+		FirstTimerBean bean = new FirstTimerBean();
+		bean.setFirst_timer_id(firstTimer.getId());
+		bean.setRemarks(firstTimer.getRemarks());
+		
+		SundayServiceBean sundayServiceBean = new SundayServiceBean();
+		sundayServiceBean.setSundayServiceId(firstTimer.getSundayService().getId());
+		sundayServiceBean.setServiceTitle(firstTimer.getSundayService().getServiceTitle());
+		bean.setSundayServiceBean(sundayServiceBean);
+		
+		AttendeesBean attendeesBean = new AttendeesBean();
+		attendeesBean.setAttendeesId(firstTimer.getAttendees().getId());
+		attendeesBean.setFirstName(firstTimer.getAttendees().getFirstName());
+		attendeesBean.setLastName(firstTimer.getAttendees().getLastName());
+		bean.setAttendeesBean(attendeesBean);
+		
+		AttendeesBean guestBean = new AttendeesBean();
+		guestBean.setAttendeesId(firstTimer.getAttendeesGuest().getId());
+		guestBean.setFirstName(firstTimer.getAttendeesGuest().getFirstName());
+		guestBean.setLastName(firstTimer.getAttendeesGuest().getLastName());
+		bean.setGuestBean(guestBean);
+		
+		return bean;
 	}
 	
 	

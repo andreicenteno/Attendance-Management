@@ -29,6 +29,7 @@ import com.am.model.ServiceAttendanceView;
 import com.am.model.SundayService;
 import com.am.model.SundayServiceAttendees;
 import com.am.service.AttendeesService;
+import com.am.service.FirstTimerService;
 import com.am.service.GroupService;
 import com.am.service.ServiceAttendanceViewService;
 import com.am.service.ServiceService;
@@ -62,6 +63,9 @@ public class SundayServiceController extends BeanMapper {
 	
 	@Autowired
 	private GroupService groupService;
+	
+	@Autowired
+	private FirstTimerService firstTimerService;
 	
 	
 	@Autowired
@@ -149,6 +153,24 @@ public class SundayServiceController extends BeanMapper {
 		}
 		return new ModelAndView("sunday_service_attendees", model);
 	}
+	
+	@RequestMapping(value = "/service_first_timer", method = RequestMethod.GET)
+	public ModelAndView firstTimerAttendeesGET(@ModelAttribute("attendees") AttendeesBean attendeesBean,
+			@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
+			@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,
+			BindingResult result, ModelMap modelMap){
+		Map<String, Object> model = new HashMap<String, Object>();
+		try{
+		model.put("sundayServiceDetails", prepareSundayServiceBean(sundayServiceService.getSundayService(sundayServiceBean.getSundayServiceId())));
+		model.put("firstTimerList", prepareListOfFirstTimer(firstTimerService.findFirstTimerBySundayServiceId(sundayServiceBean.getSundayServiceId())));
+		modelMap.addAttribute("SUNDAY_SERVICE_ID", sundayServiceBean.getSundayServiceId());
+		}catch(Exception e){
+			System.out.println(e);
+		}
+		return new ModelAndView("service_first_timer", model);
+	}
+	
+	
 	
 	@RequestMapping(value = "/search_service_attendees", method = RequestMethod.GET)
 	public ModelAndView searchsundayServiceGet(@ModelAttribute("attendees") AttendeesBean attendeesBean,
