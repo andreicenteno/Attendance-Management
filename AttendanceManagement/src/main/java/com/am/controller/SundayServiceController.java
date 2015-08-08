@@ -1,7 +1,14 @@
 package com.am.controller;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,16 +24,25 @@ import com.am.bean.ServiceAttendanceViewBean;
 import com.am.bean.SundayServiceAttendeesBean;
 import com.am.bean.SundayServiceBean;
 import com.am.common.BeanMapper;
+import com.am.model.Group;
 import com.am.model.ServiceAttendanceView;
 import com.am.model.SundayService;
+import com.am.model.SundayServiceAttendees;
 import com.am.service.AttendeesService;
+import com.am.service.GroupService;
 import com.am.service.ServiceAttendanceViewService;
 import com.am.service.ServiceService;
 import com.am.service.SundayServiceAttendeesService;
 import com.am.service.SundayServiceService;
-
-
-
+import com.am.utils.HeaderFooter;
+import com.am.utils.PDFUtil;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfImportedPage;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfWriter;
 
 
 @Controller
@@ -43,6 +59,9 @@ public class SundayServiceController extends BeanMapper {
 	
 	@Autowired
 	private ServiceAttendanceViewService serviceAttendanceViewService;
+	
+	@Autowired
+	private GroupService groupService;
 	
 	
 	@Autowired
@@ -196,6 +215,77 @@ public class SundayServiceController extends BeanMapper {
 			System.out.println(e);
 		}
 		return new ModelAndView("redirect:/sunday_service_profile.html?sundayServiceId="+sundayServiceAttendeesBean.getSundayServiceBean().getSundayServiceId());
+	}
+	
+	@RequestMapping(value = "/generate_service_report", method = RequestMethod.POST)
+	public ModelAndView generateServiceReport(@ModelAttribute("attendees") AttendeesBean attendeesBean,
+			@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
+			@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,
+			BindingResult result, HttpServletRequest request, ModelMap modelMap, HttpServletResponse response){
+		Map<String, Object> model = new HashMap<String, Object>();
+		PdfWriter writer =null;
+		PdfReader reader = null;
+		try{
+			 
+			  ServletContext context = request.getServletContext();
+			  String outputFile = context.getRealPath("/resources/files/JILAttendanceManagement.pdf");
+			  Document document = new Document();
+			  /*Document document = new Document(PageSize.A5, leftmargin, right margin, top margin, bottom);*/
+			  document = new Document(PageSize.A4.rotate(), 20f, 20f, 10f, 35f);
+			  ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			  baos.writeTo(new FileOutputStream(outputFile));
+			  writer = PdfWriter.getInstance(document,baos);
+		      writer.setPageEvent(new HeaderFooter());
+		      document.open();
+		      
+		      String realpath = context.getRealPath("/resources/files/jil_report_baseline_landscape.pdf");
+		      
+		      // copying the template
+		      PdfContentByte cb = writer.getDirectContent();
+				
+		      //Get file from resources folder
+		      reader = new PdfReader(realpath);
+		      PdfImportedPage page = writer.getImportedPage(reader, 1);
+		      document.newPage();
+		      cb.addTemplate(page, 0, 0);
+		      
+		      
+		      // writing on the document
+		      List<ServiceAttendanceView> listServiceAttendanceViews = serviceAttendanceViewService.listServiceAttendanceView(sundayServiceAttendeesBean.getSundayServiceBean().getSundayServiceId());
+		     if(listServiceAttendanceViews!=null){
+		    	 SundayService sundayService = sundayServiceService.getSundayService(sundayServiceAttendeesBean.getSundayServiceBean().getSundayServiceId());
+			     ServiceAttendanceView serviceAttendanceView = listServiceAttendanceViews.get(0);
+		    	 document.add(new Paragraph(com.am.utils.PDFUtil.AccountStatementSundayServiceProfileReport, com.am.utils.PDFUtil.AcctFont));
+		    	 int recordSize = listServiceAttendanceViews.size();
+		    	 PDFUtil.addContentServiceProfileReport(document, serviceAttendanceView, sundayService, recordSize);
+			 }
+		     
+		     
+		     List<Group> listGroups = groupService.listGroup();
+			 if(listGroups!= null){
+			 		for(Group group: listGroups){
+			    		  List<SundayServiceAttendees> listSundayServiceAttendees = sundayServiceAttendeesService.findSundayServiceAttendeesByServiceIdGroupId(sundayServiceAttendeesBean.getSundayServiceBean().getSundayServiceId(), group.getId());
+			    		  PDFUtil.addTableServiceProfileReport(document, listSundayServiceAttendees, group.getGroupName());
+			 		}
+			 	}
+		     
+		     
+		      document.close();
+		      response.setHeader("Expires", "0");
+		      response.setHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
+		      response.setHeader("Pragma", "public");
+		      response.setHeader("Content-disposition",
+	                  "attachment; filename="+"Jesus is Lord Service Profile Report- [test].pdf" );
+		      response.setContentType("application/pdf");
+		      response.setContentLength(baos.size());
+		      ServletOutputStream out = response.getOutputStream();
+		      baos.writeTo(out);
+		      baos.close();
+		      
+		}catch(Exception e){
+			System.out.println(e);
+		}
+		return new ModelAndView("sunday_service_attendees", model);
 	}
 	
 

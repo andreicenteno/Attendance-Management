@@ -359,6 +359,8 @@ public class BeanMapper extends EntityMapper{
 				bean.setTotalOfVia(entity.getTotalOfVia());
 				bean.setTotalOfCan(entity.getTotalOfCan());
 				bean.setTotalOfElyon(entity.getTotalOfElyon());
+				bean.setTotalOfMale(entity.getTotalOfMale());
+				bean.setTotalOfFemale(entity.getTotalOfFemale());
 				beans.add(bean);
 			}
 		}

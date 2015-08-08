@@ -28,12 +28,13 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import com.am.bean.AttendeesReportBean;
 import com.am.common.Constant;
 import com.am.model.AttendeesSummaryView;
 import com.am.model.AttendeesView;
+import com.am.model.ServiceAttendanceView;
+import com.am.model.SundayService;
+import com.am.model.SundayServiceAttendees;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -69,13 +70,17 @@ public class PDFUtil {
 	private static final String AMOUNT_FORMAT = "#";
 
 	public static final String SPACE = " ";
-	public static final String FILE_SEPARATOR = System
-			.getProperty("file.separator");
+	public static final String FILE_SEPARATOR = System.getProperty("file.separator");
 	public static final String PDF_FILE_EXT = ".pdf";
 
+	
+	
 	public static final String DateTitle = "Date: ";
 	public static final String ReportTitle = "Report: ";
 	public static final String SummaryTitle = "Summary: ";
+	public static final String ServiceTitle = "Title: ";
+	
+	// ----------------- Attendees Report ------------- 
 	public static final String TotalofKKB = "Total of KKB: ";
 	public static final String TotalofKKBMale = "Total of KKB Male: ";
 	public static final String TotalofKKBFemale = "Total of KKB Female: ";
@@ -88,10 +93,9 @@ public class PDFUtil {
 	public static final String TotalofMen = "Total of Men: ";
 	public static final String TotalofWomen = "Total of Women: ";
 	public static final String TotalofAllRecords = "Total of all records: ";
-	public static final String ToTitle = " - ";
-
-	public static final String AccountStatement = "\n\n\n" + "ATTENDEES REPORT";
-
+	
+	public static final String AccountStatementAttendeesReport = "\n\n\n" + "ATTENDEES REPORT";
+	
 	public static final String NameHeader = "Name";
 	public static final String AddressHeader = "Address";
 	public static final String ContactNumberHeader = "Contact Number";
@@ -99,14 +103,24 @@ public class PDFUtil {
 	public static final String BirthdayHeader = "Birthday";
 	public static final String AgeHeader = "Age";
 	public static final String MinistryHeader = "Ministry";
+	public static final String GroupHeader = "Group";
+	
+	
+	// ----------------- Sunday Service Report ------------- 
+	
+	public static final String AccountStatementSundayServiceProfileReport = "\n\n\n" + "SERVICE PROFILE REPORT";
+	
+	
 
 	private PDFUtil() {
 
 	}
 
-	// -- basic information in the header
+	
+	
+	// -- ATTENDEES REPORT Header | Content
 	public static void addContentAttendeesReport(Document docu,
-			AttendeesSummaryView attendeesSummaryView, String ReportQuery) {
+			AttendeesSummaryView attendeesSummaryView, String ReportQuery, String view, int listSize) {
 		try {
 			// content
 			DateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
@@ -119,63 +133,123 @@ public class PDFUtil {
 			content.add(new Paragraph(Constant.NEW_LINE + SummaryTitle,
 					SmallBFont));
 
-			content.setTabSettings(new TabSettings(60f));
-			content.add(Chunk.TABBING);
-			content.add(new Chunk(TotalofKKB
-					+ attendeesSummaryView.getTotalOfKkb(), GeneralBFont));
-			content.setTabSettings(new TabSettings(60f));
-			content.add(Chunk.TABBING);
-			content.add(new Chunk(TotalofKKBMale
-					+ attendeesSummaryView.getTotalOfKkbMale(), GeneralBFont));
-			content.setTabSettings(new TabSettings(90f));
-			content.add(Chunk.TABBING);
-			content.add(new Chunk(TotalofKKBFemale
-					+ attendeesSummaryView.getTotalOfKkbFemale(), GeneralBFont));
-			content.setTabSettings(new TabSettings(90f));
-			content.add(Chunk.TABBING);
-			content.add(new Chunk(TotalofMen
-					+ attendeesSummaryView.getTotalOfMen(), GeneralBFont));
+			if(view.equals("all")){ // all
+				content.setTabSettings(new TabSettings(60f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofKKB
+						+ attendeesSummaryView.getTotalOfKkb(), GeneralBFont));
+				content.setTabSettings(new TabSettings(60f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofKKBMale
+						+ attendeesSummaryView.getTotalOfKkbMale(), GeneralBFont));
+				content.setTabSettings(new TabSettings(90f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofKKBFemale
+						+ attendeesSummaryView.getTotalOfKkbFemale(), GeneralBFont));
+				content.setTabSettings(new TabSettings(90f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofMen
+						+ attendeesSummaryView.getTotalOfMen(), GeneralBFont));
 
-			content.add(Constant.NEW_LINE);
-			content.setTabSettings(new TabSettings(60f));
-			content.add(Chunk.TABBING);
-			content.add(new Chunk(TotalofYAM
-					+ attendeesSummaryView.getTotalOfYam(), GeneralBFont));
-			content.setTabSettings(new TabSettings(60f));
-			content.add(Chunk.TABBING);
-			content.add(new Chunk(TotalofYAMMale
-					+ attendeesSummaryView.getTotalOfYamMale(), GeneralBFont));
-			content.setTabSettings(new TabSettings(90f));
-			content.add(Chunk.TABBING);
-			content.add(new Chunk(TotalofYAMFemale
-					+ attendeesSummaryView.getTotalOfYamFemale(), GeneralBFont));
-			content.setTabSettings(new TabSettings(90f));
-			content.add(Chunk.TABBING);
-			content.add(new Chunk(TotalofWomen
-					+ attendeesSummaryView.getTotalOfWomen(), GeneralBFont));
+				content.add(Constant.NEW_LINE);
+				content.setTabSettings(new TabSettings(60f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofYAM
+						+ attendeesSummaryView.getTotalOfYam(), GeneralBFont));
+				content.setTabSettings(new TabSettings(60f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofYAMMale
+						+ attendeesSummaryView.getTotalOfYamMale(), GeneralBFont));
+				content.setTabSettings(new TabSettings(90f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofYAMFemale
+						+ attendeesSummaryView.getTotalOfYamFemale(), GeneralBFont));
+				content.setTabSettings(new TabSettings(90f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofWomen
+						+ attendeesSummaryView.getTotalOfWomen(), GeneralBFont));
 
-			content.add(Constant.NEW_LINE);
-			content.setTabSettings(new TabSettings(60f));
-			content.add(Chunk.TABBING);
-			content.add(new Chunk(TotalofChildren
-					+ attendeesSummaryView.getTotalOfChildren(), GeneralBFont));
-			content.setTabSettings(new TabSettings(60f));
-			content.add(Chunk.TABBING);
-			content.add(new Chunk(TotalofChildrenMale
-					+ attendeesSummaryView.getTotalOfChildrenMale(),
-					GeneralBFont));
-			content.setTabSettings(new TabSettings(90f));
-			content.add(Chunk.TABBING);
-			content.add(new Chunk(TotalofChildrenFemale
-					+ attendeesSummaryView.getTotalOfChildrenFemale(),
-					GeneralBFont));
+				content.add(Constant.NEW_LINE);
+				content.setTabSettings(new TabSettings(60f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofChildren
+						+ attendeesSummaryView.getTotalOfChildren(), GeneralBFont));
+				content.setTabSettings(new TabSettings(60f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofChildrenMale
+						+ attendeesSummaryView.getTotalOfChildrenMale(),
+						GeneralBFont));
+				content.setTabSettings(new TabSettings(90f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofChildrenFemale
+						+ attendeesSummaryView.getTotalOfChildrenFemale(),
+						GeneralBFont));
 
-			content.add(Constant.NEW_LINE);
-			content.add(Constant.NEW_LINE);
-			content.setTabSettings(new TabSettings(60f));
-			content.add(Chunk.TABBING);
-			content.add(new Chunk(TotalofAllRecords
-					+ attendeesSummaryView.getTotal(), SmallBFont));
+				content.add(Constant.NEW_LINE);
+				content.add(Constant.NEW_LINE);
+				content.setTabSettings(new TabSettings(60f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofAllRecords
+						+ attendeesSummaryView.getTotal(), SmallBFont));
+			}else if(view.equals("male")){ // male
+				content.setTabSettings(new TabSettings(90f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofKKBMale
+						+ attendeesSummaryView.getTotalOfKkbMale(), GeneralBFont));
+				content.setTabSettings(new TabSettings(90f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofYAMMale
+						+ attendeesSummaryView.getTotalOfYamMale(), GeneralBFont));
+				content.setTabSettings(new TabSettings(90f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofChildrenMale
+						+ attendeesSummaryView.getTotalOfChildrenMale(),
+						GeneralBFont));
+				content.setTabSettings(new TabSettings(90f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofMen
+						+ attendeesSummaryView.getTotalOfMen(), GeneralBFont));
+				
+				content.add(Constant.NEW_LINE);
+				content.add(Constant.NEW_LINE);
+				content.setTabSettings(new TabSettings(60f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofAllRecords
+						+ attendeesSummaryView.getTotalOfMale(), SmallBFont));
+				
+			}else if(view.equals("female")){ // female
+				content.setTabSettings(new TabSettings(90f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofKKBFemale
+						+ attendeesSummaryView.getTotalOfKkbFemale(), GeneralBFont));
+				content.setTabSettings(new TabSettings(90f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofYAMFemale
+						+ attendeesSummaryView.getTotalOfYamFemale(), GeneralBFont));
+				content.setTabSettings(new TabSettings(90f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofChildrenFemale
+						+ attendeesSummaryView.getTotalOfChildrenFemale(),
+						GeneralBFont));
+				content.setTabSettings(new TabSettings(90f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofWomen
+						+ attendeesSummaryView.getTotalOfWomen(), GeneralBFont));
+				
+				
+				content.add(Constant.NEW_LINE);
+				content.add(Constant.NEW_LINE);
+				content.setTabSettings(new TabSettings(60f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofAllRecords
+						+ attendeesSummaryView.getTotalOfFemale(), SmallBFont));
+			}else{ //- others
+				content.setTabSettings(new TabSettings(60f));
+				content.add(Chunk.TABBING);
+				content.add(new Chunk(TotalofAllRecords
+						+ listSize, SmallBFont));
+			}
+		
 
 			docu.add(content);
 		} catch (Exception e) {
@@ -188,8 +262,8 @@ public class PDFUtil {
 			List<AttendeesView> attendeesViews, String GroupName)
 			throws BadElementException, DocumentException {
 		// table
-		PdfPTable table = new PdfPTable(7);
-		float[] w = new float[] { 25f, 35f, 15f, 10f, 15f, 8f, 20f };
+		PdfPTable table = new PdfPTable(8);
+		float[] w = new float[] { 20f, 45f, 20f, 7f, 10f, 4f, 10f, 10f };
 		table.setWidths(w);
 		table.setWidthPercentage(100);
 		table.setSpacingBefore(10f);
@@ -205,6 +279,7 @@ public class PDFUtil {
 		PdfPCell cell5 = createCell(BirthdayHeader, 3, 3);
 		PdfPCell cell6 = createCell(AgeHeader, 3, 3);
 		PdfPCell cell7 = createCell(MinistryHeader, 3, 3);
+		PdfPCell cell8 = createCell(GroupHeader, 3, 3);
 
 		cell1.setGrayFill(0.85f);
 		cell2.setGrayFill(0.85f);
@@ -213,6 +288,7 @@ public class PDFUtil {
 		cell5.setGrayFill(0.85f);
 		cell6.setGrayFill(0.85f);
 		cell7.setGrayFill(0.85f);
+		cell8.setGrayFill(0.85f);
 
 		table.addCell(cell1);
 		table.addCell(cell2);
@@ -221,6 +297,7 @@ public class PDFUtil {
 		table.addCell(cell5);
 		table.addCell(cell6);
 		table.addCell(cell7);
+		table.addCell(cell8);
 
 		DecimalFormat decimalFormat = new DecimalFormat(AMOUNT_FORMAT);
 		SimpleDateFormat format = new SimpleDateFormat(NO_TIME_DATE_FORMAT);
@@ -264,6 +341,10 @@ public class PDFUtil {
 			PdfPCell Cell7 = createCell(attendeesView.getMinistryName(), 3, 3);
 			Cell7.setHorizontalAlignment(Element.ALIGN_LEFT);
 			table.addCell(Cell7);
+			
+			PdfPCell Cell8 = createCell(attendeesView.getGroupName(), 3, 3);
+			Cell8.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell8);
 
 		}
 
@@ -271,13 +352,11 @@ public class PDFUtil {
 		document.add(table);
 
 	}
-
-	// ---
-
+	
 	public static void addTableAttendeesReportNotBreakdown(Document document,List<AttendeesView> attendeesViews) throws BadElementException, DocumentException {
 		// table
-		PdfPTable table = new PdfPTable(7);
-		float[] w = new float[] { 25f, 35f, 15f, 10f, 15f, 8f, 20f };
+		PdfPTable table = new PdfPTable(8);
+		float[] w = new float[] { 20f, 45f, 20f, 7f, 10f, 4f, 10f, 10f };
 		table.setWidths(w);
 		table.setWidthPercentage(100);
 		table.setSpacingBefore(10f);
@@ -292,6 +371,7 @@ public class PDFUtil {
 		PdfPCell cell5 = createCell(BirthdayHeader, 3, 3);
 		PdfPCell cell6 = createCell(AgeHeader, 3, 3);
 		PdfPCell cell7 = createCell(MinistryHeader, 3, 3);
+		PdfPCell cell8 = createCell(GroupHeader, 3, 3);
 
 		cell1.setGrayFill(0.85f);
 		cell2.setGrayFill(0.85f);
@@ -300,6 +380,7 @@ public class PDFUtil {
 		cell5.setGrayFill(0.85f);
 		cell6.setGrayFill(0.85f);
 		cell7.setGrayFill(0.85f);
+		cell8.setGrayFill(0.85f);
 
 		table.addCell(cell1);
 		table.addCell(cell2);
@@ -308,6 +389,7 @@ public class PDFUtil {
 		table.addCell(cell5);
 		table.addCell(cell6);
 		table.addCell(cell7);
+		table.addCell(cell8);
 
 		DecimalFormat decimalFormat = new DecimalFormat(AMOUNT_FORMAT);
 		SimpleDateFormat format = new SimpleDateFormat(NO_TIME_DATE_FORMAT);
@@ -351,6 +433,10 @@ public class PDFUtil {
 			PdfPCell Cell7 = createCell(attendeesView.getMinistryName(), 3, 3);
 			Cell7.setHorizontalAlignment(Element.ALIGN_LEFT);
 			table.addCell(Cell7);
+			
+			PdfPCell Cell8 = createCell(attendeesView.getGroupName(), 3, 3);
+			Cell8.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell8);
 
 		}
 
@@ -366,4 +452,168 @@ public class PDFUtil {
 		return cell;
 	}
 
+	
+	// -- SUNDAY SERVICE PROFILE REPORT
+	
+	public static void addContentServiceProfileReport(Document docu, ServiceAttendanceView serviceAttendanceView,
+			SundayService sundayService, int listSize) {
+		try {
+			// content
+			DateFormat formatter = new SimpleDateFormat(NO_TIME_DATE_FORMAT);
+			formatter.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+			Date dateNow = Calendar.getInstance().getTime();
+			String strDateNow = formatter.format(dateNow);
+			Paragraph content = new Paragraph();
+			content.add(new Paragraph(DateTitle + strDateNow, GeneralFont));
+			content.add(new Paragraph(ServiceTitle + sundayService.getServiceTitle(), GeneralFont));
+			content.add(new Paragraph(ReportTitle + sundayService.getServiceEntity().getServiceName()+" - "+formatter.format(sundayService.getCreateTime()), GeneralFont));
+			content.add(new Paragraph(Constant.NEW_LINE + SummaryTitle,
+					SmallBFont));
+
+			content.setTabSettings(new TabSettings(60f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofKKB+ serviceAttendanceView.getTotalOfKkb(), GeneralBFont));
+			content.setTabSettings(new TabSettings(60f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofKKBMale+ serviceAttendanceView.getTotalOfKkbMale(), GeneralBFont));
+			content.setTabSettings(new TabSettings(90f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofKKBFemale+serviceAttendanceView.getTotalOfKkbFemale(), GeneralBFont));
+			content.setTabSettings(new TabSettings(90f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofMen+ serviceAttendanceView.getTotalOfMen(), GeneralBFont));
+
+			content.add(Constant.NEW_LINE);
+			content.setTabSettings(new TabSettings(60f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofYAM+serviceAttendanceView.getTotalOfYam(), GeneralBFont));
+			content.setTabSettings(new TabSettings(60f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofYAMMale
+						+ serviceAttendanceView.getTotalOfYamMale(), GeneralBFont));
+			content.setTabSettings(new TabSettings(90f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofYAMFemale
+					+ serviceAttendanceView.getTotalOfYamFemale(), GeneralBFont));
+			content.setTabSettings(new TabSettings(90f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofWomen
+					+ serviceAttendanceView.getTotalOfWomen(), GeneralBFont));
+				content.add(Constant.NEW_LINE);
+			content.setTabSettings(new TabSettings(60f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofChildren
+					+ serviceAttendanceView.getTotalOfChildren(), GeneralBFont));
+			content.setTabSettings(new TabSettings(60f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofChildrenMale
+					+ serviceAttendanceView.getTotalOfChildrenMale(),
+					GeneralBFont));
+			content.setTabSettings(new TabSettings(90f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofChildrenFemale
+					+ serviceAttendanceView.getTotalOfChildrenFemale(),
+					GeneralBFont));
+
+			content.add(Constant.NEW_LINE);
+			content.add(Constant.NEW_LINE);
+			content.setTabSettings(new TabSettings(60f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofAllRecords
+				+ serviceAttendanceView.getTotal(), SmallBFont));
+			
+
+			docu.add(content);
+		} catch (Exception e) {
+			System.out.println("ERROR: " + e);
+		}
+
+	}
+	
+	
+	public static void addTableServiceProfileReport(Document document, List<SundayServiceAttendees> sundayServiceAttendees, String GroupName)
+			throws BadElementException, DocumentException {
+		// table
+		PdfPTable table = new PdfPTable(7);
+		float[] w = new float[] { 20f, 45f, 20f, 7f, 10f, 10f, 10f };
+		table.setWidths(w);
+		table.setWidthPercentage(100);
+		table.setSpacingBefore(10f);
+		table.setSpacingAfter(10f);
+
+		Paragraph contentTitle = new Paragraph();
+		contentTitle.add(new Paragraph(GroupName, SmallBFont));
+
+		PdfPCell cell1 = createCell(NameHeader, 3, 3);
+		PdfPCell cell2 = createCell(AddressHeader, 3, 3);
+		PdfPCell cell3 = createCell(ContactNumberHeader, 3, 3);
+		PdfPCell cell4 = createCell(GenderHeader, 3, 3);
+		PdfPCell cell5 = createCell(BirthdayHeader, 3, 3);
+		/*PdfPCell cell6 = createCell(AgeHeader, 3, 3);*/
+		PdfPCell cell7 = createCell(MinistryHeader, 3, 3);
+		PdfPCell cell8 = createCell(GroupHeader, 3, 3);
+
+		cell1.setGrayFill(0.85f);
+		cell2.setGrayFill(0.85f);
+		cell3.setGrayFill(0.85f);
+		cell4.setGrayFill(0.85f);
+		cell5.setGrayFill(0.85f);
+		/*cell6.setGrayFill(0.85f);*/
+		cell7.setGrayFill(0.85f);
+		cell8.setGrayFill(0.85f);
+
+		table.addCell(cell1);
+		table.addCell(cell2);
+		table.addCell(cell3);
+		table.addCell(cell4);
+		table.addCell(cell5);
+		/*table.addCell(cell6);*/
+		table.addCell(cell7);
+		table.addCell(cell8);
+		
+		SimpleDateFormat format = new SimpleDateFormat(NO_TIME_DATE_FORMAT);
+		format.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+		for (SundayServiceAttendees sundayServiceAttendee : sundayServiceAttendees) {
+			String FULL_NAME = sundayServiceAttendee.getAttendees().getLastName() + ", "
+					+ sundayServiceAttendee.getAttendees().getFirstName() + " "
+					+ sundayServiceAttendee.getAttendees().getMiddleName();
+		
+			PdfPCell Cell1 = createCell(FULL_NAME, 3, 3);
+			Cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell1);
+
+			PdfPCell Cell2 = createCell(sundayServiceAttendee.getAttendees().getAddress(), 3, 3);
+			Cell2.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell2);
+
+			PdfPCell Cell3 = createCell(sundayServiceAttendee.getAttendees().getContactNumber(), 3, 3);
+			Cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell3);
+
+			String GENDER = (sundayServiceAttendee.getAttendees().getGender()) ? "Male" : "Female";
+			PdfPCell Cell4 = createCell(GENDER, 2, 3);
+			Cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell4);
+
+			PdfPCell Cell5 = createCell(
+					format.format(sundayServiceAttendee.getAttendees().getBirthday()).toString(), 3, 3);
+			Cell5.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell5);
+			
+			PdfPCell Cell7 = createCell(sundayServiceAttendee.getAttendees().getMinistry().getMinistryName(), 3, 3);
+			Cell7.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell7);
+			
+			PdfPCell Cell8 = createCell(sundayServiceAttendee.getAttendees().getGroup().getGroupName(), 3, 3);
+			Cell8.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell8);
+
+		}
+
+		document.add(contentTitle);
+		document.add(table);
+
+	}
+
+	
 }

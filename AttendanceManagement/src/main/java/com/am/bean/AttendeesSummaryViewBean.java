@@ -19,6 +19,23 @@ public class AttendeesSummaryViewBean{
 	private long totalOfElyon;
 	private long totalOfVia;
 	private long totalOfCan;
+	private long totalOfMale;
+	private long totalOfFemale;
+	
+	
+	
+	public long getTotalOfMale() {
+		return totalOfMale;
+	}
+	public void setTotalOfMale(long totalOfMale) {
+		this.totalOfMale = totalOfMale;
+	}
+	public long getTotalOfFemale() {
+		return totalOfFemale;
+	}
+	public void setTotalOfFemale(long totalOfFemale) {
+		this.totalOfFemale = totalOfFemale;
+	}
 	public long getTotal() {
 		return total;
 	}

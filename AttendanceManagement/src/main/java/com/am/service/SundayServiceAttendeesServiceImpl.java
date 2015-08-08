@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.am.dao.SundayServiceAttendeesDao;
 import com.am.model.SundayServiceAttendees;
 
@@ -41,5 +42,9 @@ public class SundayServiceAttendeesServiceImpl implements SundayServiceAttendees
 	
 	public List<SundayServiceAttendees> listSundayServiceAttendees(){
 		return sundayServiceAttendeesDao.listSundayServiceAttendees();
+	}
+	
+	public List<SundayServiceAttendees> findSundayServiceAttendeesByServiceIdGroupId(long sunday_service_id, long group_id){
+		return sundayServiceAttendeesDao.findSundayServiceAttendeesByServiceIdGroupId(sunday_service_id, group_id);
 	}
 }

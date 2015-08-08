@@ -38,6 +38,23 @@ public class SundayServiceAttendeesDaoImpl implements SundayServiceAttendeesDao 
 	    return sqlQuery.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<SundayServiceAttendees> findSundayServiceAttendeesByServiceIdGroupId(long sunday_service_id, long group_id){
+		String sql = "SELECT * FROM asystem.sunday_service_attendees ssa"+
+					" LEFT JOIN asystem.attendees a ON a.attendees_id = ssa.attendees_id"+
+					" LEFT JOIN asystem.sunday_services ss ON ss.sunday_service_id = ssa.sunday_service_id"+
+					" LEFT JOIN asystem.groups g ON g.group_id = a.group_id"+
+					" LEFT JOIN asystem.ministries m ON m.ministry_id = a.ministry_id"+
+					" WHERE ssa.sunday_service_id = ? AND g.group_id = ?"+
+					" ORDER BY last_name";
+		SQLQuery sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(sql);
+	    sqlQuery.addEntity(SundayServiceAttendees.class);
+	    sqlQuery.setLong(0, sunday_service_id);
+	    sqlQuery.setLong(1, group_id);
+	    return sqlQuery.list();
+	}
+	
+	
 	public SundayServiceAttendees getSundayServiceAttendees(Long id){
 		return (SundayServiceAttendees) sessionFactory.getCurrentSession().get(SundayServiceAttendees.class, id);
 	}

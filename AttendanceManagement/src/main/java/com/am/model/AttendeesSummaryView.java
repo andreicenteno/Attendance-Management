@@ -72,6 +72,31 @@ public class AttendeesSummaryView implements Serializable {
 	@Column(name = "total_of_can")
 	private long totalOfCan;
 
+	@Column(name = "total_of_male")
+	private long totalOfMale;
+	
+	@Column(name = "total_of_female")
+	private long totalOfFemale;
+	
+
+	
+	
+	public long getTotalOfMale() {
+		return totalOfMale;
+	}
+
+	public void setTotalOfMale(long totalOfMale) {
+		this.totalOfMale = totalOfMale;
+	}
+
+	public long getTotalOfFemale() {
+		return totalOfFemale;
+	}
+
+	public void setTotalOfFemale(long totalOfFemale) {
+		this.totalOfFemale = totalOfFemale;
+	}
+
 	public long getTotal() {
 		return total;
 	}

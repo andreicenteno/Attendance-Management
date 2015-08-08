@@ -30,7 +30,13 @@
 			    <br/>
 			    <a href="sunday_service_attendees.html?sundayServiceId=${SUNDAY_SERVICE_ID}"><button type="submit" class="btn btn-default">Service Attendance</button></a>
 				<hr/>
-				<center><a href="#"><button type="submit" class="btn btn-default">GENERATE REPORT</button></a></center>
+				<center>
+					<form:form method="POST" style="align-items: center;" class="form-horizontal" action="generate_service_report.html"
+						modelAttribute="sunday_services_attendees">
+						<form:input path="sundayServiceBean.sundayServiceId" value="${SUNDAY_SERVICE_ID}" type="hidden"/>
+						<button type="submit" class="btn btn-default">GENERATE REPORT</button>
+					</form:form>
+				</center>
 			 </div>
 				
 				<div class="row">

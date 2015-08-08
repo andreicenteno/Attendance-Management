@@ -9,4 +9,5 @@ public interface SundayServiceAttendeesDao {
 	public void delete(SundayServiceAttendees entity);
 	public void update(SundayServiceAttendees entity);
 	public List<SundayServiceAttendees> findSundayServiceAttendeesById(long sunday_service_id);
+	public List<SundayServiceAttendees> findSundayServiceAttendeesByServiceIdGroupId(long sunday_service_id, long group_id);
 }

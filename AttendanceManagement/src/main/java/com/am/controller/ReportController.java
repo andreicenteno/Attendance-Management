@@ -41,8 +41,6 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
 
 
-
-
 @Controller
 public class ReportController extends BeanMapper{
 
@@ -186,25 +184,33 @@ public class ReportController extends BeanMapper{
 	      List<AttendeesSummaryView> listAttendeesSummaryViews = attendeesSummaryViewService.listAttendeesSummaryView();
 	      if(listAttendeesSummaryViews != null){
 	    	  AttendeesSummaryView attendeesSummaryView = listAttendeesSummaryViews.get(0);
-	    	  document.add(new Paragraph(com.am.utils.PDFUtil.AccountStatement, com.am.utils.PDFUtil.AcctFont));
-	    	  String ReportQuery = null;
+	    	  document.add(new Paragraph(com.am.utils.PDFUtil.AccountStatementAttendeesReport, com.am.utils.PDFUtil.AcctFont));
+	    	  String ReportQuery = null, views= null;
+	    	  List<AttendeesView> listAttendeesViews = null;
+	    	  int recordSize = 0;
 	    	  System.out.println(attendeesReportBean.getGender()+" - "+attendeesReportBean.getGroupId()+" - "+attendeesReportBean.getMinistryId());
 	    	  if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() == 0 && attendeesReportBean.getGender().equals("all")){ // all
 					ReportQuery = "All Attendees";
+					views = "all";
 			     }else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() == 0 && !attendeesReportBean.getGender().equals("all")){ // gender
 			    	  if(attendeesReportBean.getGender().equals("true")){
 			    		  ReportQuery = "All Male Attendees";
+			    		  views = "male";
 			    	  }else{
 			    		  ReportQuery = "All Female Attendees";
+			    		  views = "female";
 			    	  }
 			     }else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() == 0 && attendeesReportBean.getGender().equals("all")){ // group
 			    	  Group group = groupService.getGroup(attendeesReportBean.getGroupId());
 			    	  ReportQuery = "All "+group.getGroupName()+" Attendees";
+			    	  views = "others";
 			     }
 			     else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() != 0 && attendeesReportBean.getGender().equals("all")){ // ministry
 			    	  Ministry ministry = ministryService.getMinistry(attendeesReportBean.getMinistryId());
 			    	  ReportQuery = "All "+ministry.getMinistryName()+" Attendees";
+			    	  views = "others";
 			     }else{
+			    	 views = "others";
 			    	 Group group = new Group();
 			    	 if(attendeesReportBean.getGroupId()!= 0){
 			    		 group = groupService.getGroup(attendeesReportBean.getGroupId());
@@ -226,10 +232,11 @@ public class ReportController extends BeanMapper{
 			    		  gender = "All";
 			    	  }
 			    	 ReportQuery = "Group: "+group.getGroupName()+" - Ministry: "+ministry.getMinistryName()+" - Gender: "+gender+" Attendees";
-			    	 
+			    	 listAttendeesViews = prepareListAttendeesView(attendeesReportBean);
+			    	 recordSize = listAttendeesViews.size();
 			     }
 				
-		      PDFUtil.addContentAttendeesReport(document, attendeesSummaryView, ReportQuery);
+		      PDFUtil.addContentAttendeesReport(document, attendeesSummaryView, ReportQuery, views, recordSize);
 		  }
 	      
 	      if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() == 0 && attendeesReportBean.getGender().equals("all")){ // all
@@ -264,21 +271,8 @@ public class ReportController extends BeanMapper{
 	    	  }
 	      }else{
 	    	  List<AttendeesView> listAttendeesViews = null;
-	    	  if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() == 0 && attendeesReportBean.getGender().equals("all")){ // group
-	    		  listAttendeesViews =  attendeesViewService.listAttendeesViewByGroup(attendeesReportBean.getGroupId());
-	    	  }else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() != 0 && attendeesReportBean.getGender().equals("all")){ // ministry
-	    		  listAttendeesViews =  attendeesViewService.listAttendeesViewByMinistry(attendeesReportBean.getMinistryId());
-	    	  }else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() != 0 && attendeesReportBean.getGender().equals("all")){ // group ministry
-	    		  listAttendeesViews =  attendeesViewService.listAttendeesViewwByGroupMinistry(attendeesReportBean.getGroupId(), attendeesReportBean.getMinistryId());
-	    	  }else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() == 0 && !attendeesReportBean.getGender().equals("all")){ // group gender
-	    		  listAttendeesViews =  attendeesViewService.listAttendeesViewByGenderGroup(Boolean.parseBoolean(attendeesReportBean.getGender()), attendeesReportBean.getGroupId());
-	    	  }else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() != 0 && !attendeesReportBean.getGender().equals("all")){ // ministry gender
-	    		  listAttendeesViews =  attendeesViewService.listAttendeesViewByGenderMinistry(Boolean.parseBoolean(attendeesReportBean.getGender()), attendeesReportBean.getMinistryId());
-	    	  }else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() != 0 && !attendeesReportBean.getGender().equals("all")){ // group ministry gender
-	    		  listAttendeesViews =  attendeesViewService.listAttendeesViewByGroupMinistryGender(attendeesReportBean.getGroupId(), attendeesReportBean.getMinistryId(), Boolean.parseBoolean(attendeesReportBean.getGender()));
-	    	  }
-	    	   
-	    	  PDFUtil.addTableAttendeesReportNotBreakdown(document, listAttendeesViews);
+	    	 listAttendeesViews = prepareListAttendeesView(attendeesReportBean);
+	    	 PDFUtil.addTableAttendeesReportNotBreakdown(document, listAttendeesViews);
 	      }
 	      
 	      
@@ -299,6 +293,25 @@ public class ReportController extends BeanMapper{
 		
 		return new ModelAndView("reports", model);
 	
+	}
+	
+	
+	private List<AttendeesView> prepareListAttendeesView(AttendeesReportBean attendeesReportBean){
+		 List<AttendeesView> listAttendeesViews = null;
+		  if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() == 0 && attendeesReportBean.getGender().equals("all")){ // group
+	   		  listAttendeesViews =  attendeesViewService.listAttendeesViewByGroup(attendeesReportBean.getGroupId());
+	   	  }else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() != 0 && attendeesReportBean.getGender().equals("all")){ // ministry
+	   		  listAttendeesViews =  attendeesViewService.listAttendeesViewByMinistry(attendeesReportBean.getMinistryId());
+	   	  }else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() != 0 && attendeesReportBean.getGender().equals("all")){ // group ministry
+	   		  listAttendeesViews =  attendeesViewService.listAttendeesViewwByGroupMinistry(attendeesReportBean.getGroupId(), attendeesReportBean.getMinistryId());
+	   	  }else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() == 0 && !attendeesReportBean.getGender().equals("all")){ // group gender
+	   		  listAttendeesViews =  attendeesViewService.listAttendeesViewByGenderGroup(Boolean.parseBoolean(attendeesReportBean.getGender()), attendeesReportBean.getGroupId());
+	   	  }else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() != 0 && !attendeesReportBean.getGender().equals("all")){ // ministry gender
+	   		  listAttendeesViews =  attendeesViewService.listAttendeesViewByGenderMinistry(Boolean.parseBoolean(attendeesReportBean.getGender()), attendeesReportBean.getMinistryId());
+	   	  }else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() != 0 && !attendeesReportBean.getGender().equals("all")){ // group ministry gender
+	   		  listAttendeesViews =  attendeesViewService.listAttendeesViewByGroupMinistryGender(attendeesReportBean.getGroupId(), attendeesReportBean.getMinistryId(), Boolean.parseBoolean(attendeesReportBean.getGender()));
+	   	  }
+		 return listAttendeesViews;
 	}
 
 	
