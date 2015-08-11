@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.am.bean.AttendeesBean;
+import com.am.bean.FirstTimerBean;
 import com.am.bean.ServiceAttendanceViewBean;
 import com.am.bean.SundayServiceAttendeesBean;
 import com.am.bean.SundayServiceBean;
 import com.am.common.BeanMapper;
+import com.am.model.FirstTimer;
 import com.am.model.Group;
 import com.am.model.ServiceAttendanceView;
 import com.am.model.SundayService;
@@ -31,6 +33,7 @@ import com.am.model.SundayServiceAttendees;
 import com.am.service.AttendeesService;
 import com.am.service.FirstTimerService;
 import com.am.service.GroupService;
+import com.am.service.MinistryService;
 import com.am.service.ServiceAttendanceViewService;
 import com.am.service.ServiceService;
 import com.am.service.SundayServiceAttendeesService;
@@ -66,6 +69,9 @@ public class SundayServiceController extends BeanMapper {
 	
 	@Autowired
 	private FirstTimerService firstTimerService;
+	
+	@Autowired
+	private MinistryService ministryService;
 	
 	
 	@Autowired
@@ -170,6 +176,46 @@ public class SundayServiceController extends BeanMapper {
 		return new ModelAndView("service_first_timer", model);
 	}
 	
+	@RequestMapping(value = "/add_first_timer", method = RequestMethod.GET)
+	public ModelAndView addfirstTimerAttendeesGET(@ModelAttribute("first_timer") FirstTimerBean firstTimerBean,
+			@ModelAttribute("attendees") AttendeesBean attendeesBean,
+			@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
+			@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,
+			BindingResult result, ModelMap modelMap){
+		Map<String, Object> model = new HashMap<String, Object>();
+		try{
+			model.put("groupList", prepareListOfGroup(groupService.listGroup()));
+			model.put("ministryList", prepareListOfMinistry(ministryService.listMinistry()));
+			model.put("sundayServiceDetails", prepareSundayServiceBean(sundayServiceService.getSundayService(sundayServiceBean.getSundayServiceId())));
+			modelMap.addAttribute("SUNDAY_SERVICE_ID", sundayServiceBean.getSundayServiceId());
+		}catch(Exception e){
+			System.out.println(e);
+		}
+		return new ModelAndView("add_first_timer", model);
+	}
+	
+	@RequestMapping(value = "/insert_first_timer", method = RequestMethod.POST)
+	public ModelAndView insertfirstTimerAttendeesGET(@ModelAttribute("first_timer") FirstTimerBean firstTimerBean,
+			@ModelAttribute("attendees") AttendeesBean attendeesBean,
+			@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
+			@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,
+			BindingResult result, ModelMap modelMap){
+		Map<String, Object> model = new HashMap<String, Object>();
+		try{
+			model.put("sundayServiceDetails", prepareSundayServiceBean(sundayServiceService.getSundayService(firstTimerBean.getSundayServiceBean().getSundayServiceId())));
+			modelMap.addAttribute("SUNDAY_SERVICE_ID", firstTimerBean.getSundayServiceBean().getSundayServiceId());
+			//-- Insert to attendees table
+			String resultQuery = prepareAttendeesFirstTimerModel(firstTimerBean);
+			if(resultQuery.equals("OK")){
+				System.out.println(resultQuery);
+			}else{
+				System.out.println(resultQuery);
+			}
+		}catch(Exception e){
+			System.out.println(e);
+		}
+		return new ModelAndView("redirect:/service_first_timer.html?sundayServiceId="+sundayServiceAttendeesBean.getSundayServiceBean().getSundayServiceId());
+	}
 	
 	
 	@RequestMapping(value = "/search_service_attendees", method = RequestMethod.GET)
@@ -199,15 +245,27 @@ public class SundayServiceController extends BeanMapper {
 		model.put("sundayServiceDetails", prepareSundayServiceBean(sundayServiceService.getSundayService(sundayServiceBean.getSundayServiceId())));
 		model.put("sundayServiceAttendeesList", prepareListOfSundayServiceAttendees(sundayServiceAttendeesService.findSundayServiceAttendeesById(sundayServiceBean.getSundayServiceId())));
 		modelMap.addAttribute("SUNDAY_SERVICE_ID", sundayServiceBean.getSundayServiceId());
-		ServiceAttendanceViewBean serviceAttendanceViewBean = prepareListOfServiceAttendanceView(serviceAttendanceViewService.listServiceAttendanceView(sundayServiceBean.getSundayServiceId())).get(0);
-		if(serviceAttendanceViewBean != null){
-			modelMap.addAttribute("TOTAL_OF_ALL_ATTENDEES", serviceAttendanceViewBean.getTotal());
-			modelMap.addAttribute("TOTAL_OF_KKB", serviceAttendanceViewBean.getTotalOfKkb());
-			modelMap.addAttribute("TOTAL_OF_YAM", serviceAttendanceViewBean.getTotalOfYam());
-			modelMap.addAttribute("TOTAL_OF_MEN", serviceAttendanceViewBean.getTotalOfMen());
-			modelMap.addAttribute("TOTAL_OF_WOMEN", serviceAttendanceViewBean.getTotalOfWomen());
-			modelMap.addAttribute("TOTAL_OF_CHILDREN", serviceAttendanceViewBean.getTotalOfChildren());
+		List<ServiceAttendanceViewBean> serviceAttendanceViewBeans =  prepareListOfServiceAttendanceView(serviceAttendanceViewService.listServiceAttendanceView(sundayServiceBean.getSundayServiceId()));
+		if(serviceAttendanceViewBeans!=null){
+			ServiceAttendanceViewBean serviceAttendanceViewBean = serviceAttendanceViewBeans.get(0);
+					if(serviceAttendanceViewBean != null){
+						modelMap.addAttribute("TOTAL_OF_ALL_ATTENDEES", serviceAttendanceViewBean.getTotal());
+						modelMap.addAttribute("TOTAL_OF_KKB", serviceAttendanceViewBean.getTotalOfKkb());
+						modelMap.addAttribute("TOTAL_OF_YAM", serviceAttendanceViewBean.getTotalOfYam());
+						modelMap.addAttribute("TOTAL_OF_MEN", serviceAttendanceViewBean.getTotalOfMen());
+						modelMap.addAttribute("TOTAL_OF_WOMEN", serviceAttendanceViewBean.getTotalOfWomen());
+						modelMap.addAttribute("TOTAL_OF_CHILDREN", serviceAttendanceViewBean.getTotalOfChildren());
+					}
+		}else{
+			String ZERO = "0";
+			modelMap.addAttribute("TOTAL_OF_ALL_ATTENDEES", ZERO);
+			modelMap.addAttribute("TOTAL_OF_KKB", ZERO);
+			modelMap.addAttribute("TOTAL_OF_YAM", ZERO);
+			modelMap.addAttribute("TOTAL_OF_MEN", ZERO);
+			modelMap.addAttribute("TOTAL_OF_WOMEN", ZERO);
+			modelMap.addAttribute("TOTAL_OF_CHILDREN", ZERO);
 		}
+		
 		
 		}catch(Exception e){
 			System.out.println(e);
@@ -279,7 +337,10 @@ public class SundayServiceController extends BeanMapper {
 			     ServiceAttendanceView serviceAttendanceView = listServiceAttendanceViews.get(0);
 		    	 document.add(new Paragraph(com.am.utils.PDFUtil.AccountStatementSundayServiceProfileReport, com.am.utils.PDFUtil.AcctFont));
 		    	 int recordSize = listServiceAttendanceViews.size();
-		    	 PDFUtil.addContentServiceProfileReport(document, serviceAttendanceView, sundayService, recordSize);
+		    	 List<FirstTimer> listFirstTimers = firstTimerService.findFirstTimerBySundayServiceId(sundayServiceAttendeesBean.getSundayServiceBean().getSundayServiceId());
+		    	 int firstTimer = (listFirstTimers!=null) ? listFirstTimers.size(): 0;
+		    	 
+		    	 PDFUtil.addContentServiceProfileReport(document, serviceAttendanceView, sundayService, recordSize, firstTimer);
 			 }
 		     
 		     
@@ -289,9 +350,13 @@ public class SundayServiceController extends BeanMapper {
 			    		  List<SundayServiceAttendees> listSundayServiceAttendees = sundayServiceAttendeesService.findSundayServiceAttendeesByServiceIdGroupId(sundayServiceAttendeesBean.getSundayServiceBean().getSundayServiceId(), group.getId());
 			    		  PDFUtil.addTableServiceProfileReport(document, listSundayServiceAttendees, group.getGroupName());
 			 		}
-			 	}
-		     
-		     
+			 }
+			 
+			 List<FirstTimer> listFirstTimers = firstTimerService.findFirstTimerBySundayServiceId(sundayServiceAttendeesBean.getSundayServiceBean().getSundayServiceId());
+			 if(listFirstTimers!=null){
+				 PDFUtil.addTableServiceProfileFirstTimerReport(document, listFirstTimers, "First Timers");
+			 }
+			 
 		      document.close();
 		      response.setHeader("Expires", "0");
 		      response.setHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");

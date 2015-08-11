@@ -123,9 +123,7 @@
 							</div>
 						</div>
 
-						
-
-						<div class="form-group">
+						<%-- <div class="form-group">
 							<label class="col-sm-2 control-label">First Timer?</label>
 							<div class="col-sm-10">
 								<form:checkbox path="isFirstTimer" id="isFirstTimer"
@@ -142,7 +140,7 @@
 									onchange="changeValueMember(this)" value="false"
 									class="checkbox form-control"></form:checkbox>
 							</div>
-						</div>
+						</div> --%>
 
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">

@@ -28,13 +28,17 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.am.common.Constant;
+import com.am.model.Attendees;
 import com.am.model.AttendeesSummaryView;
 import com.am.model.AttendeesView;
+import com.am.model.FirstTimer;
 import com.am.model.ServiceAttendanceView;
 import com.am.model.SundayService;
 import com.am.model.SundayServiceAttendees;
+import com.am.service.AttendeesService;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -52,7 +56,7 @@ import com.itextpdf.text.pdf.PdfPTable;
  * 
  */
 public class PDFUtil {
-
+	
 	private static Logger LOGGER = Logger.getLogger(PDFUtil.class);
 
 	public static Font AcctFont = new Font(Font.FontFamily.HELVETICA, 11,
@@ -92,6 +96,7 @@ public class PDFUtil {
 	public static final String TotalofChildrenFemale = "Total of Children Female: ";
 	public static final String TotalofMen = "Total of Men: ";
 	public static final String TotalofWomen = "Total of Women: ";
+	public static final String TotalofFirstTimer = "Total of First Timer: ";
 	public static final String TotalofAllRecords = "Total of all records: ";
 	
 	public static final String AccountStatementAttendeesReport = "\n\n\n" + "ATTENDEES REPORT";
@@ -104,6 +109,9 @@ public class PDFUtil {
 	public static final String AgeHeader = "Age";
 	public static final String MinistryHeader = "Ministry";
 	public static final String GroupHeader = "Group";
+	
+	public static final String RemarksHeader = "Remarks";
+	public static final String InvitedByHeader = "Invited By";
 	
 	
 	// ----------------- Sunday Service Report ------------- 
@@ -456,7 +464,7 @@ public class PDFUtil {
 	// -- SUNDAY SERVICE PROFILE REPORT
 	
 	public static void addContentServiceProfileReport(Document docu, ServiceAttendanceView serviceAttendanceView,
-			SundayService sundayService, int listSize) {
+			SundayService sundayService, int listSize, int firstTimer) {
 		try {
 			// content
 			DateFormat formatter = new SimpleDateFormat(NO_TIME_DATE_FORMAT);
@@ -514,7 +522,12 @@ public class PDFUtil {
 			content.add(new Chunk(TotalofChildrenFemale
 					+ serviceAttendanceView.getTotalOfChildrenFemale(),
 					GeneralBFont));
-
+			content.setTabSettings(new TabSettings(90f));
+			content.add(Chunk.TABBING);
+			content.add(new Chunk(TotalofFirstTimer+firstTimer,
+					GeneralBFont));
+			
+			
 			content.add(Constant.NEW_LINE);
 			content.add(Constant.NEW_LINE);
 			content.setTabSettings(new TabSettings(60f));
@@ -608,6 +621,112 @@ public class PDFUtil {
 			Cell8.setHorizontalAlignment(Element.ALIGN_LEFT);
 			table.addCell(Cell8);
 
+		}
+
+		document.add(contentTitle);
+		document.add(table);
+
+	}
+	
+	public static void addTableServiceProfileFirstTimerReport(Document document, List<FirstTimer> firstTimers, String GroupName)
+			throws BadElementException, DocumentException {
+		
+		// table
+		PdfPTable table = new PdfPTable(9);
+		float[] w = new float[] { 20f, 45f, 20f, 7f, 10f, 10f, 10f, 10f,10f };
+		table.setWidths(w);
+		table.setWidthPercentage(100);
+		table.setSpacingBefore(10f);
+		table.setSpacingAfter(10f);
+
+		Paragraph contentTitle = new Paragraph();
+		contentTitle.add(new Paragraph(GroupName, SmallBFont));
+
+		PdfPCell cell1 = createCell(NameHeader, 3, 3);
+		PdfPCell cell2 = createCell(AddressHeader, 3, 3);
+		PdfPCell cell3 = createCell(ContactNumberHeader, 3, 3);
+		PdfPCell cell4 = createCell(GenderHeader, 3, 3);
+		PdfPCell cell5 = createCell(BirthdayHeader, 3, 3);
+		PdfPCell cell7 = createCell(MinistryHeader, 3, 3);
+		/*PdfPCell cell6 = createCell(AgeHeader, 3, 3);*/
+		PdfPCell cell8 = createCell(GroupHeader, 3, 3);
+		PdfPCell cell9 = createCell(RemarksHeader, 3, 3);
+		PdfPCell cell10 = createCell(InvitedByHeader, 3, 3);
+		
+		cell1.setGrayFill(0.85f);
+		cell2.setGrayFill(0.85f);
+		cell3.setGrayFill(0.85f);
+		cell4.setGrayFill(0.85f);
+		cell5.setGrayFill(0.85f);
+		/*cell6.setGrayFill(0.85f);*/
+		cell7.setGrayFill(0.85f);
+		cell8.setGrayFill(0.85f);
+		cell9.setGrayFill(0.85f);
+		cell10.setGrayFill(0.85f);
+
+		table.addCell(cell1);
+		table.addCell(cell2);
+		table.addCell(cell3);
+		table.addCell(cell4);
+		table.addCell(cell5);
+		/*table.addCell(cell6);*/
+		table.addCell(cell7);
+		table.addCell(cell8);
+		table.addCell(cell9);
+		table.addCell(cell10);
+		
+		SimpleDateFormat format = new SimpleDateFormat(NO_TIME_DATE_FORMAT);
+		format.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+		for (FirstTimer firstTimer : firstTimers) {
+			String FULL_NAME = firstTimer.getAttendeesGuest().getLastName() + ", "
+					+ firstTimer.getAttendeesGuest().getFirstName() + " "
+					+ firstTimer.getAttendeesGuest().getMiddleName();
+		
+			PdfPCell Cell1 = createCell(FULL_NAME, 3, 3);
+			Cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell1);
+
+			PdfPCell Cell2 = createCell(firstTimer.getAttendeesGuest().getAddress(), 3, 3);
+			Cell2.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell2);
+
+			PdfPCell Cell3 = createCell(firstTimer.getAttendeesGuest().getContactNumber(), 3, 3);
+			Cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell3);
+
+			String GENDER = (firstTimer.getAttendeesGuest().getGender()) ? "Male" : "Female";
+			PdfPCell Cell4 = createCell(GENDER, 2, 3);
+			Cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell4);
+
+			PdfPCell Cell5 = createCell(
+					format.format(firstTimer.getAttendeesGuest().getBirthday()).toString(), 3, 3);
+			Cell5.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell5);
+			
+			PdfPCell Cell7 = createCell(firstTimer.getAttendeesGuest().getMinistry().getMinistryName(), 3, 3);
+			Cell7.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell7);
+			
+			PdfPCell Cell8 = createCell(firstTimer.getAttendeesGuest().getGroup().getGroupName(), 3, 3);
+			Cell8.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell8);
+			
+			PdfPCell Cell9 = createCell(firstTimer.getRemarks(), 3, 3);
+			Cell9.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell9);
+			
+			if(firstTimer.getRemarks().equals("Invited")){
+				PdfPCell Cell10 = createCell(firstTimer.getFirstNameInvite(), 3, 3);
+				Cell10.setHorizontalAlignment(Element.ALIGN_LEFT);
+				table.addCell(Cell10);
+			}else{
+				PdfPCell Cell10 = createCell("NONE", 3, 3);
+				Cell10.setHorizontalAlignment(Element.ALIGN_LEFT);
+				table.addCell(Cell10);
+			}
+			
+			
 		}
 
 		document.add(contentTitle);

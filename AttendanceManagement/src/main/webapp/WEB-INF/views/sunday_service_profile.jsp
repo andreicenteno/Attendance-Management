@@ -28,10 +28,10 @@
 			    <span style="font-size:24px;   padding-bottom: 9px;  margin: 40px 0 20px;">Service: </span> <span style="font-size:24px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;"><c:out value='${sundayServiceDetails.serviceBean.serviceName}' /></span><br/>
 			    </div>
 			    <br/>
-			      <a href="sunday_service_profile.html?sundayServiceId=${SUNDAY_SERVICE_ID}"><button type="submit" class="btn btn-default">View Service Profile</button></a>
-				<a href="sunday_service_attendees.html?sundayServiceId=${SUNDAY_SERVICE_ID}"><button type="submit" class="btn btn-default">Service Attendees</button></a>
+			    <a href="sunday_service.html"><button type="submit" class="btn btn-default">View All Sunday Service</button></a>
+			    <a href="sunday_service_attendees.html?sundayServiceId=${SUNDAY_SERVICE_ID}"><button type="submit" class="btn btn-default">Service Attendees</button></a>
 				<a href="service_first_timer.html?sundayServiceId=${SUNDAY_SERVICE_ID}"><button type="submit" class="btn btn-default">Service First Timer</button></a>
-				<a href="sunday_service.html"><button type="submit" class="btn btn-default">View All Sunday Service</button></a>
+				<a href="sunday_service_profile.html?sundayServiceId=${SUNDAY_SERVICE_ID}"><button type="submit" class="btn btn-default">View Service Profile</button></a>
 				<hr/>
 				<center>
 					<form:form method="POST" style="align-items: center;" class="form-horizontal" action="generate_service_report.html"

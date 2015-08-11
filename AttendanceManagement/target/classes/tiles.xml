@@ -37,6 +37,10 @@
         <put-attribute name="body" value="/WEB-INF/views/service_first_timer.jsp"></put-attribute> 
  </definition> 
 
+<definition extends="base.definition" name="add_first_timer">  
+  		<put-attribute name="title" value="Add First Timer"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/add_first_timer.jsp"></put-attribute> 
+ </definition> 
 
 <definition extends="base.definition" name="add_sunday_service">  
   		<put-attribute name="title" value="Add Sunday Service"></put-attribute>  

@@ -71,6 +71,7 @@ public class AttendeesController extends BeanMapper{
 		try{
 			Attendees attendees = prepareAttendeesModel(attendeesBean);
 			attendeesService.insert(attendees);
+			
 		}catch(Exception e){
 			System.out.println(e);
 		}

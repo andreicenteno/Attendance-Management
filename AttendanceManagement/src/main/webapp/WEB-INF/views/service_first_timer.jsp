@@ -28,12 +28,16 @@
 			    <span style="font-size:24px;   padding-bottom: 9px;  margin: 40px 0 20px;">Service: </span> <span style="font-size:24px;   padding-bottom: 9px;  margin: 40px 0 20px; color:green;"><c:out value='${sundayServiceDetails.serviceBean.serviceName}' /></span><br/>
 			    </div>
 			    <br/>
-			    <a href="sunday_service_profile.html?sundayServiceId=${SUNDAY_SERVICE_ID}"><button type="submit" class="btn btn-default">View Service Profile</button></a>
-				<a href="sunday_service_attendees.html?sundayServiceId=${SUNDAY_SERVICE_ID}"><button type="submit" class="btn btn-default">Service Attendees</button></a>
+			      <a href="sunday_service.html"><button type="submit" class="btn btn-default">View All Sunday Service</button></a>
+			    <a href="sunday_service_attendees.html?sundayServiceId=${SUNDAY_SERVICE_ID}"><button type="submit" class="btn btn-default">Service Attendees</button></a>
 				<a href="service_first_timer.html?sundayServiceId=${SUNDAY_SERVICE_ID}"><button type="submit" class="btn btn-default">Service First Timer</button></a>
-				<a href="sunday_service.html"><button type="submit" class="btn btn-default">View All Sunday Service</button></a>
-				<hr/>
+				<a href="sunday_service_profile.html?sundayServiceId=${SUNDAY_SERVICE_ID}"><button type="submit" class="btn btn-default">View Service Profile</button></a>
+			<hr/>
 			 </div>
+			 <label><a href="add_first_timer.html?sundayServiceId=${SUNDAY_SERVICE_ID}"><button type="submit"
+								class="btn btn-default">Add First Timer</button></a><br /></label>
+			<br/>
+			 
 				<div class="row">
 					<div class="date-form">
 						<div class="form-horizontal">
@@ -52,7 +56,7 @@
 						</div>
 					</div>
 			</div>
-			
+		
 			<label for="date-picker-2" class="control-label">List of All First Timers</label>
 			<div class="table-responsive">
 				<table class="table table-striped">
@@ -60,7 +64,9 @@
 						<tr>
 							<th>Name</th>
 							<th class="hidden-xs hidden-sm">Address</th>
-							<th>Action</th>
+							<th>Remarks</th>
+							<th>Invited by</th>
+							
 						</tr>
 					</thead>
 					<tbody>
@@ -72,7 +78,8 @@
 									<c:out value='${firstTimerList.guestBean.lastName}' /></th>
 									<th class="hidden-xs hidden-sm"><c:out
 											value='${firstTimerList.guestBean.address}' /></th>
-									<th><a href="delete_ministry.html?ministryId=${firstTimerList.first_timer_id}">Delete</a></th>
+									<th><c:out value='${firstTimerList.remarks}' /></th>
+									<th><c:out value='${firstTimerList.attendeesBean.firstName}' /> &nbsp; <c:out value='${firstTimerList.attendeesBean.lastName}' /></th>
 								</tr>
 							</c:forEach>
 					</c:if>

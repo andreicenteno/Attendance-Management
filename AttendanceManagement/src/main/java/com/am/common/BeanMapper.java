@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.am.bean.AttendeesBean;
 import com.am.bean.AttendeesSummaryViewBean;
@@ -36,9 +37,14 @@ import com.am.model.ServiceAttendanceView;
 import com.am.model.ServiceEntity;
 import com.am.model.SundayService;
 import com.am.model.SundayServiceAttendees;
+import com.am.service.AttendeesService;
 import com.am.utils.ConvertionUtil;
 
 public class BeanMapper extends EntityMapper{
+	
+	@Autowired
+	private AttendeesService attendeesService;
+	
 
    //Ministry
 	public List<MinistryBean> prepareListOfMinistry(List<Ministry> ministries) {
@@ -387,14 +393,16 @@ public class BeanMapper extends EntityMapper{
 				sundayServiceBean.setServiceTitle(entity.getSundayService().getServiceTitle());
 				bean.setSundayServiceBean(sundayServiceBean);
 				
-				
-				/*if(StringUtils.isNotEmpty(entity.getAttendees().getId().toString())){
-					AttendeesBean attendeesBean = new AttendeesBean();
-					attendeesBean.setAttendeesId(entity.getAttendees().getId());
-					attendeesBean.setFirstName(entity.getAttendees().getFirstName());
-					attendeesBean.setLastName(entity.getAttendees().getLastName());
-					bean.setAttendeesBean(attendeesBean);
-				}*/
+				if(entity.getAttendeesId() != 0){
+					Attendees attendees = attendeesService.getAttendees(entity.getAttendeesId());
+					if(attendees!= null){
+						AttendeesBean attendeesBean = new AttendeesBean();
+						attendeesBean.setAttendeesId(attendees.getId());
+						attendeesBean.setFirstName(attendees.getFirstName());
+						attendeesBean.setLastName(attendees.getLastName());
+						bean.setAttendeesBean(attendeesBean);
+					}
+				}
 				
 				AttendeesBean guestBean = new AttendeesBean();
 				guestBean.setAttendeesId(entity.getAttendeesGuest().getId());
@@ -423,11 +431,15 @@ public class BeanMapper extends EntityMapper{
 		sundayServiceBean.setServiceTitle(firstTimer.getSundayService().getServiceTitle());
 		bean.setSundayServiceBean(sundayServiceBean);
 		
-		AttendeesBean attendeesBean = new AttendeesBean();
-		attendeesBean.setAttendeesId(firstTimer.getAttendees().getId());
-		attendeesBean.setFirstName(firstTimer.getAttendees().getFirstName());
-		attendeesBean.setLastName(firstTimer.getAttendees().getLastName());
-		bean.setAttendeesBean(attendeesBean);
+		
+		Attendees attendees = attendeesService.getAttendees(firstTimer.getAttendeesId());
+ 		if(attendees!=null){
+			AttendeesBean attendeesBean = new AttendeesBean();
+			attendeesBean.setAttendeesId(firstTimer.getAttendeesId());
+			attendeesBean.setFirstName(attendees.getFirstName());
+			attendeesBean.setLastName(attendees.getLastName());
+			bean.setAttendeesBean(attendeesBean);
+ 		}
 		
 		AttendeesBean guestBean = new AttendeesBean();
 		guestBean.setAttendeesId(firstTimer.getAttendeesGuest().getId());

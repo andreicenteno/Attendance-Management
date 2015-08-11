@@ -1,28 +1,35 @@
 package com.am.common;
 import java.text.ParseException;
 
-
-
-
-
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.am.bean.AttendeesBean;
+import com.am.bean.FirstTimerBean;
 import com.am.bean.GroupBean;
 import com.am.bean.MinistryBean;
 import com.am.bean.ServiceBean;
 import com.am.bean.SundayServiceAttendeesBean;
 import com.am.bean.SundayServiceBean;
 import com.am.model.Attendees;
+import com.am.model.FirstTimer;
 import com.am.model.Group;
 import com.am.model.Ministry;
 import com.am.model.ServiceEntity;
 import com.am.model.SundayService;
 import com.am.model.SundayServiceAttendees;
+import com.am.service.AttendeesService;
+import com.am.service.FirstTimerService;
 import com.am.utils.ConvertionUtil;
 
 
 
 public class EntityMapper {
+	
+	@Autowired
+	private FirstTimerService firstTimerService;
+	
+	@Autowired
+	private AttendeesService attendeesService;
 	
 	
 	public Ministry prepareMinistryModel(MinistryBean ministryBean){
@@ -69,6 +76,8 @@ public class EntityMapper {
 		ministry.setId(attendeesBean.getMinistryBean().getMinistryId());
 		entity.setMinistry(ministry);
 		
+		
+		
 		return entity;
 	}
 	
@@ -111,5 +120,45 @@ public class EntityMapper {
 		group.setUpdateTime(groupBean.getUpdateTime());
 		return group;
 	}
+	
+	
+	public String prepareAttendeesFirstTimerModel(FirstTimerBean firstTimerBean){
+		try{
+			Attendees attendeesGuest = new Attendees();
+			attendeesGuest.setFirstName(firstTimerBean.getGuestBean().getFirstName());
+			attendeesGuest.setLastName(firstTimerBean.getGuestBean().getLastName());
+			attendeesGuest.setMiddleName(firstTimerBean.getGuestBean().getMiddleName());
+			attendeesGuest.setAddress(firstTimerBean.getGuestBean().getAddress());
+			attendeesGuest.setContactNumber(firstTimerBean.getGuestBean().getContactNumber());
+			attendeesGuest.setGender(firstTimerBean.getGuestBean().getGender());
+			attendeesGuest.setBirthday(ConvertionUtil.convertFormatter1().parse(firstTimerBean.getGuestBean().getBirthday()));
+			Group group = new Group();
+			group.setId(firstTimerBean.getGuestBean().getGroupBean().getGroupId());
+			attendeesGuest.setGroup(group);
+			
+			Ministry ministry = new Ministry();
+			ministry.setId(firstTimerBean.getGuestBean().getMinistryBean().getMinistryId());
+			attendeesGuest.setMinistry(ministry);
+			
+			attendeesService.insert(attendeesGuest);
+			
+			FirstTimer firstTimer = new FirstTimer();
+			firstTimer.setRemarks(firstTimerBean.getRemarks());
+			SundayService sundayService = new SundayService();
+			sundayService.setId(firstTimerBean.getSundayServiceBean().getSundayServiceId());
+			firstTimer.setAttendeesGuest(attendeesGuest);
+			firstTimer.setSundayService(sundayService);
+			if(firstTimerBean.getRemarks().equals("Invited"))
+				firstTimer.setAttendeesId(firstTimerBean.getAttendeesBean().getAttendeesId());
+			
+			firstTimerService.insert(firstTimer);
+		}catch(Exception e){
+			return "ERROR";
+		}
+		
+		return "OK";
+		
+	}
+	
 
 }

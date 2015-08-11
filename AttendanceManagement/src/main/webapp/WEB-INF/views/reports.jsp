@@ -132,8 +132,9 @@
 		<br /> <br /> <br />
 		<hr />
 		<h3>ATTENDANCE REPORT</h3>
-
-		<div class="row">
+		<center><h1>ATTENDANCE REPORT IS COMING SOON</h1>
+		<h3>You can generate report for sunday services by date. (MONTHLY, YEARLY, QUARTERLY)</h3>
+		<%-- <div class="row">
 			<div class="date-form">
 				<div class="form-horizontal">
 					<div class="col-md-4">
@@ -184,7 +185,7 @@
 
 				</div>
 			</div>
-		</div>
+		</div> --%>
 
 
 	</div>

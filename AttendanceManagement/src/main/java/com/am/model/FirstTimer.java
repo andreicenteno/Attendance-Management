@@ -39,10 +39,11 @@ private static final long serialVersionUID = -723583058586873479L;
 	@JoinColumn(name = "sunday_service_id", nullable=false)
 	private SundayService sundayService;
 	
-	@ManyToOne
-	@JoinColumn(name = "attendees_id", nullable=true)
-	private Attendees attendees;
+	@Column(name="attendees_id", nullable=true)
+	private long attendeesId;
 
+	
+	
 	@ManyToOne
 	@JoinColumn(name = "guest_id", nullable=true)
 	private Attendees attendeesGuest;
@@ -54,6 +55,20 @@ private static final long serialVersionUID = -723583058586873479L;
 	@Generated(GenerationTime.ALWAYS)
 	@Column(name="update_time",  nullable = false, insertable=false, updatable=false)
 	private Timestamp updateTime;
+
+	
+	@Column(name="fname_invite", nullable = true)
+	private String firstNameInvite;
+	
+	
+	
+	public String getFirstNameInvite() {
+		return firstNameInvite;
+	}
+
+	public void setFirstNameInvite(String firstNameInvite) {
+		this.firstNameInvite = firstNameInvite;
+	}
 
 	public Long getId() {
 		return id;
@@ -79,12 +94,14 @@ private static final long serialVersionUID = -723583058586873479L;
 		this.sundayService = sundayService;
 	}
 
-	public Attendees getAttendees() {
-		return attendees;
+	
+
+	public long getAttendeesId() {
+		return attendeesId;
 	}
 
-	public void setAttendees(Attendees attendees) {
-		this.attendees = attendees;
+	public void setAttendeesId(long attendeesId) {
+		this.attendeesId = attendeesId;
 	}
 
 	public Attendees getAttendeesGuest() {
