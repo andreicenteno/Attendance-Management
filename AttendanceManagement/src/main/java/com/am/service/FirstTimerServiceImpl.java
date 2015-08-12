@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.am.dao.FirstTimerDao;
 import com.am.model.FirstTimer;
 
@@ -41,5 +42,9 @@ public class FirstTimerServiceImpl implements FirstTimerService{
 	
 	public List<FirstTimer> listFirstTimer(){
 		return firstTimerDao.listFirstTimer();
+	}
+	
+	public List<FirstTimer> findFirstTimerByName(long sunday_service_id, String keyword){
+		return firstTimerDao.findFirstTimerByName(sunday_service_id, keyword);
 	}
 }

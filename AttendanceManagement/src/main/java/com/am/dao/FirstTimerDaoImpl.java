@@ -45,7 +45,17 @@ public class FirstTimerDaoImpl implements FirstTimerDao {
 	    return sqlQuery.list();
 	}
 	
-	
+	@SuppressWarnings("unchecked")
+	public List<FirstTimer> findFirstTimerByName(long sunday_service_id, String keyword){
+		String sql = "SELECT *, b.first_name||' '||b.last_name as fname_invite FROM asystem.first_timers f LEFT JOIN asystem.attendees a ON f.guest_id = a.attendees_id"+
+					" LEFT JOIN asystem.attendees b ON b.attendees_id = f.attendees_id WHERE f.sunday_service_id = ?"+ 
+					" AND (LOWER(a.first_name)like LOWER('%"+keyword+"%') OR LOWER(a.last_name)"+
+					" like LOWER('%"+keyword+"%') OR LOWER(a.middle_name) like LOWER('%"+keyword+"%')) order by f.create_time desc";
+				SQLQuery sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(sql);
+				sqlQuery.addEntity(FirstTimer.class);
+				sqlQuery.setLong(0, sunday_service_id);
+				return sqlQuery.list();
+	}
 	
 	
 	public FirstTimer getFirstTimer(Long id){

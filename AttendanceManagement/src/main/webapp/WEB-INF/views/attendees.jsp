@@ -12,11 +12,15 @@
 	content="Custom built online life group management for JIL or Jesus Is Lord">
 <meta name="author" content="Andrei Centeno">
 <link rel="icon" href="images/favicon.ico">
+<script src="${pageContext.request.contextPath}/resources/js/customize/notification_message.js" type="text/javascript"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/notification.css">
 
 <title>Attendees</title>
 
 </head>
 <body>
+	<div id="maintenance_success" style="display:none;">${response}</div>
+	<div id="maintenance_error" style="display:none;">${response}</div>
 	<div class="container-fluid">
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 			<h1 class="page-header">Attendees</h1>
@@ -80,7 +84,7 @@
 									<th><a
 										href="update_attendees.html?attendeesId=${attendeesList.attendeesId}">Update</a>
 										&nbsp;&nbsp; | &nbsp;&nbsp;<a
-										href="delete_ministry.html?ministryId=${attendeesList.attendeesId}">Delete</a></th>
+										href="delete_attendees.html?attendeesId=${attendeesList.attendeesId}">Delete</a></th>
 								</tr>
 							</c:forEach>
 						</c:if>

@@ -363,12 +363,6 @@ public class BeanMapper extends EntityMapper{
 				bean.setTotalOfYamFemale(entity.getTotalOfYamFemale());
 				bean.setTotalOfChildrenMale(entity.getTotalOfChildrenMale());
 				bean.setTotalOfChildrenFemale(entity.getTotalOfChildrenFemale());
-				bean.setNoMinistry(entity.getNoMinistry());
-				bean.setTotalOfJam(entity.getTotalOfJam());
-				bean.setTotalOfTriune(entity.getTotalOfTriune());
-				bean.setTotalOfVia(entity.getTotalOfVia());
-				bean.setTotalOfCan(entity.getTotalOfCan());
-				bean.setTotalOfElyon(entity.getTotalOfElyon());
 				bean.setTotalOfMale(entity.getTotalOfMale());
 				bean.setTotalOfFemale(entity.getTotalOfFemale());
 				beans.add(bean);

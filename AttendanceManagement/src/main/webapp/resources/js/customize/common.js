@@ -34,7 +34,7 @@ function changeValueMember(checkbox){
 function ddListGroup(value) {
 	var newValue = document.getElementById('groupId').value;
 	document.getElementById('groupIdPdfFile').value = newValue;
-	document.getElementById('groupIdCsvFile').value = newValue;
+	/*document.getElementById('groupIdCsvFile').value = newValue;*/
 	document.getElementById('groupIdView').value = newValue;
 
 }
@@ -42,7 +42,7 @@ function ddListGroup(value) {
 function ddListMinistry(value) {
 	var newValue = document.getElementById('ministryId').value;
 	document.getElementById('ministryIdPdfFile').value = newValue;
-	document.getElementById('ministryIdCsvFile').value = newValue;
+	/*document.getElementById('ministryIdCsvFile').value = newValue;*/
 	document.getElementById('ministryIdView').value = newValue;
 
 }
@@ -50,7 +50,7 @@ function ddListMinistry(value) {
 function ddListGender(value) {
 	var newValue = document.getElementById('gender').value;
 	document.getElementById('genderPdfFile').value = newValue;
-	document.getElementById('genderCsvFile').value = newValue;
+	/*document.getElementById('genderCsvFile').value = newValue;*/
 	document.getElementById('genderView').value = newValue;
 
 }

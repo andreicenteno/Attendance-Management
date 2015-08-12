@@ -9,7 +9,18 @@ public class SundayServiceBean{
 	private ServiceBean serviceBean;
 	private String createTime;
 	private Timestamp updateTime;
+	private String keywords;
 	
+	
+	
+	
+	
+	public String getKeywords() {
+		return keywords;
+	}
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
 	public long getSundayServiceId() {
 		return sundayServiceId;
 	}

@@ -2,44 +2,57 @@ package com.am.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.am.common.BaseResponse;
 import com.am.common.BeanMapper;
+import com.am.common.Constant;
+import com.am.common.ErrorHandler;
+import com.am.common.ResponseCode;
 import com.am.service.GroupService;
 import com.am.service.MinistryService;
 import com.am.service.ServiceService;
 import com.am.bean.GroupBean;
 import com.am.bean.MinistryBean;
 import com.am.bean.ServiceBean;
-import com.am.model.Group;
-import com.am.model.Ministry;
-import com.am.model.ServiceEntity;
+import com.am.operation.MaintenanceOperation;
 
 @Controller
 public class MaintenanceController extends BeanMapper{
 
+	private static Logger LOGGER = Logger.getLogger(MaintenanceController.class);
+	
 	@Autowired
 	private MinistryService ministryService;
 	
 	@Autowired
 	private ServiceService serviceService;
 	
+	@Autowired
+	private MaintenanceOperation maintenanceOperation;
 	
 	@Autowired
 	private GroupService groupService;
 	
 	@RequestMapping(value = "/maintenance", method = RequestMethod.GET)
-	public ModelAndView maintenanceGet(){
+	public ModelAndView maintenanceGet(HttpServletRequest request,HttpServletResponse response, ModelMap modelMap){
 		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("ministryList", prepareListOfMinistry(ministryService.listMinistry()));
+		model.put("ministryList", prepareListOfMinistry(ministryService.listMinistryWithoutNone()));
 		model.put("serviceList", prepareListOfService(serviceService.listService()));
 		model.put("groupList", prepareListOfGroup(groupService.listGroup()));
+		ErrorHandler.setupModelMapResponseMessage(modelMap, request);
 		return new ModelAndView("maintenance", model);
 	}
 	
@@ -57,42 +70,63 @@ public class MaintenanceController extends BeanMapper{
 		try{
 			model.put("updateMinistry", prepareMinistryBean(ministryService.getMinistry(ministryBean.getMinistryId())));
 		}catch(Exception e){
-			System.out.println(e);
+			LOGGER.error(e);
 		}
 		return new ModelAndView("update_ministry", model);
 	}
 	
 	@RequestMapping(value = "/insert_ministry", method = RequestMethod.POST)
-	public ModelAndView insertMinistry(@ModelAttribute("ministry") MinistryBean ministryBean,BindingResult result){
+	public ModelAndView insertMinistry(HttpServletResponse response, @ModelAttribute("ministry") MinistryBean ministryBean,
+			BindingResult result, ModelMap modelMap){
+		BaseResponse baseResponse = null;
 		try{
-			Ministry ministry = prepareMinistryModel(ministryBean);
-			ministryService.insert(ministry);
-				
+			baseResponse = maintenanceOperation.insertMinistry(ministryBean);
+			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
+				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+			}else{
+				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
+			}
 		}catch(Exception e){
-			System.out.println(e);
+			LOGGER.error(e);
 		}
 		
 		return new ModelAndView("redirect:/maintenance.html");
 	}
 	
 	@RequestMapping(value = "/save_ministry", method = RequestMethod.POST)
-	public ModelAndView saveMinistry(@ModelAttribute("ministry") MinistryBean ministryBean,BindingResult result){
+	public ModelAndView saveMinistry(HttpServletResponse response, @ModelAttribute("ministry") MinistryBean ministryBean,
+			BindingResult result, ModelMap modelMap){
+		BaseResponse baseResponse = null;
 		try{
-			Ministry ministry = prepareMinistryModel(ministryBean);
-			ministryService.update(ministry);
-		}catch(Exception e){
+			baseResponse = maintenanceOperation.updateMinistry(ministryBean);
+			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
+				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+			}else{
+				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
+			}
 			
+		}catch(Exception e){
+			LOGGER.error(e);
 		}
 		return new ModelAndView("redirect:/maintenance.html");
 	}
 
 	@RequestMapping(value = "/delete_ministry", method = RequestMethod.GET)
-	public ModelAndView deleteMinistry(@ModelAttribute("ministry") MinistryBean ministryBean,BindingResult result){
+	public ModelAndView deleteMinistry(@ModelAttribute("ministry") MinistryBean ministryBean,
+			HttpServletResponse response, BindingResult result, ModelMap modelMap){
+		BaseResponse baseResponse = null;
 		try{
-			Ministry ministry = prepareMinistryModel(ministryBean);
-			ministryService.delete(ministry);
+			baseResponse = maintenanceOperation.deleteMinistry(ministryBean);
+			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
+				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+			}else{
+				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
+			}
 		}catch(Exception e){
-			
+			LOGGER.error(e);
 		}
 		return new ModelAndView("redirect:/maintenance.html");
 	}
@@ -106,15 +140,20 @@ public class MaintenanceController extends BeanMapper{
 	}
 	
 	@RequestMapping(value = "/insert_group", method = RequestMethod.POST)
-	public ModelAndView insertGroup(@ModelAttribute("group") GroupBean groupBean,BindingResult result){
+	public ModelAndView insertGroup(HttpServletResponse response,@ModelAttribute("group") GroupBean groupBean,
+			 BindingResult result, ModelMap modelMap){
+		BaseResponse baseResponse = null;
 		try{
-			Group group= prepareGroupModel(groupBean);
-			groupService.insert(group);
-				
+			baseResponse = maintenanceOperation.insertGroup(groupBean);
+			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
+				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+			}else{
+				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
+			}
 		}catch(Exception e){
-			System.out.println(e);
+			LOGGER.error(e);
 		}
-		
 		return new ModelAndView("redirect:/maintenance.html");
 	}
 	
@@ -124,30 +163,44 @@ public class MaintenanceController extends BeanMapper{
 		try{
 			model.put("updateGroup", prepareGroupBean(groupService.getGroup(groupBean.getGroupId())));
 		}catch(Exception e){
-			System.out.println(e);
+			LOGGER.error(e);
 		}
 		return new ModelAndView("update_group", model);
 	}
 	
 	@RequestMapping(value = "/save_group", method = RequestMethod.POST)
-	public ModelAndView saveGroup(@ModelAttribute("group") GroupBean groupBean,BindingResult result){
+	public ModelAndView saveGroup(HttpServletResponse response,@ModelAttribute("group") GroupBean groupBean,
+			 BindingResult result, ModelMap modelMap){
+		BaseResponse baseResponse = null;
 		try{
-			Group group= prepareGroupModel(groupBean);
-			groupService.update(group);
+			baseResponse = maintenanceOperation.updateGroup(groupBean);
+			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
+				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+			}else{
+				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
+			}
 		}catch(Exception e){
-			
+			LOGGER.error(e);
 		}
 		return new ModelAndView("redirect:/maintenance.html");
 	}
 	
 	
 	@RequestMapping(value = "/delete_group", method = RequestMethod.GET)
-	public ModelAndView deleteGroup(@ModelAttribute("group") GroupBean groupBean,BindingResult result){
+	public ModelAndView deleteGroup(HttpServletResponse response,@ModelAttribute("group") GroupBean groupBean,
+			 BindingResult result, ModelMap modelMap){
+		BaseResponse baseResponse = null;
 		try{
-			Group group = prepareGroupModel(groupBean);
-			groupService.delete(group);
+			baseResponse = maintenanceOperation.deleteGroup(groupBean);
+			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
+				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+			}else{
+				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
+			}
 		}catch(Exception e){
-			
+			LOGGER.error(e);
 		}
 		return new ModelAndView("redirect:/maintenance.html");
 	}
@@ -162,49 +215,66 @@ public class MaintenanceController extends BeanMapper{
 	}
 	
 	@RequestMapping(value = "/insert_service", method = RequestMethod.POST)
-	public ModelAndView insertService(@ModelAttribute("service") ServiceBean serviceBean,BindingResult result){
+	public ModelAndView insertService(HttpServletResponse response, @ModelAttribute("service") ServiceBean serviceBean,BindingResult result, ModelMap modelMap){
+		BaseResponse baseResponse = null;
 		try{
-			ServiceEntity serviceEntity = prepareServiceModel(serviceBean);
-			serviceService.insert(serviceEntity);
+			baseResponse = maintenanceOperation.insertService(serviceBean);
+			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
+				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+			}else{
+				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
+			}
 		}catch(Exception e){
-			System.out.println(e);
+			LOGGER.error(e);
 		}
-		
 		return new ModelAndView("redirect:/maintenance.html");
 	}
 	
 	
 	@RequestMapping(value = "/update_service", method = RequestMethod.GET)
-	public ModelAndView updateService(@ModelAttribute("service") ServiceBean serviceBean,BindingResult result){
+	public ModelAndView updateService(HttpServletResponse response, @ModelAttribute("service") ServiceBean serviceBean,BindingResult result, ModelMap modelMap){
 		Map<String, Object> model = new HashMap<String, Object>();
 		try{
 			model.put("updateService", prepareServiceBean(serviceService.getService(serviceBean.getServiceId())));
 		}catch(Exception e){
-			System.out.println(e);
+			LOGGER.error(e);
 		}
 		return new ModelAndView("update_service", model);
 	}
 	
 	
 	@RequestMapping(value = "/save_service", method = RequestMethod.POST)
-	public ModelAndView saveService(@ModelAttribute("service") ServiceBean serviceBean,BindingResult result){
+	public ModelAndView saveService(HttpServletResponse response, @ModelAttribute("service") ServiceBean serviceBean,BindingResult result, ModelMap modelMap){
+		BaseResponse baseResponse = null;
 		try{
-			ServiceEntity entity = prepareServiceModel(serviceBean);
-			serviceService.update(entity);
+			baseResponse = maintenanceOperation.updateService(serviceBean);
+			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
+				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+			}else{
+				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
+			}
 		}catch(Exception e){
-			System.out.println(e);
+			LOGGER.error(e);
 		}
 		return new ModelAndView("redirect:/maintenance.html");
 	}
 	
 	
 	@RequestMapping(value = "/delete_service", method = RequestMethod.GET)
-	public ModelAndView deleteService(@ModelAttribute("service") ServiceBean serviceBean,BindingResult result){
+	public ModelAndView deleteService(HttpServletResponse response, @ModelAttribute("service") ServiceBean serviceBean,BindingResult result, ModelMap modelMap){
+		BaseResponse baseResponse = null;
 		try{
-			ServiceEntity entity = prepareServiceModel(serviceBean);
-			serviceService.delete(entity);
+			baseResponse = maintenanceOperation.deleteService(serviceBean);
+			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
+				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+			}else{
+				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
+			}
 		}catch(Exception e){
-			System.out.println(e);
+			LOGGER.error(e);
 		}
 		return new ModelAndView("redirect:/maintenance.html");
 	}

@@ -35,6 +35,9 @@ public class MinistryServiceImpl implements MinistryService{
 		ministryDao.update(entity);
 	}
 	
+	public List<Ministry> listMinistryWithoutNone(){
+		return ministryDao.listMinistryWithoutNone();
+	}
 	
 	public List<Ministry> listMinistry(){
 		return ministryDao.listMinistry();

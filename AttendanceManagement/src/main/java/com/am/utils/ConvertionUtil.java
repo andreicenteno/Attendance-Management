@@ -26,7 +26,9 @@ public final class ConvertionUtil{
 		cal.setTime(Timestamp.valueOf("2015-03-02 00:00:00"));
 		Date dateNow = cal.getTime();
 		System.out.println(convertFormatter1().format(dateNow)+getCurrentTimeStamp());
-		
+		String theFirst = "Java Programming";
+		String ROM = "\"";
+		System.out.println(ROM+theFirst+ROM);
 		
 	}
 	

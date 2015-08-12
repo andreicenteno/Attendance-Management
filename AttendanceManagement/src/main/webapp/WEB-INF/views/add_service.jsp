@@ -20,10 +20,8 @@
 <body>
 	<div class="container-fluid">
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-
 			<h1 class="page-header">Add Service</h1>
 			<div class="row">
-
 				<div class="col-md-8">
 						<form:form method="POST" class="form-horizontal" action="insert_service.html" modelAttribute="service">
 							<div class="form-group">
@@ -43,14 +41,12 @@
 							<div class="form-group">
 								<div class="col-sm-offset-2 col-sm-10">
 									<button type="submit" class="btn btn-default">Add</button>
-									<button class="btn btn-default" type="reset">Cancel</button>
+									<a href="maintenance.html"><button class="btn btn-default" type="button" >Cancel</button></a>
 								</div>
 							</div>
 						</form:form>
 				</div>
-
 			</div>
-
 
 		</div>
 	</div>

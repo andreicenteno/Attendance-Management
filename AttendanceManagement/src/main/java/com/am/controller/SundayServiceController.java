@@ -7,9 +7,11 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,12 +26,17 @@ import com.am.bean.FirstTimerBean;
 import com.am.bean.ServiceAttendanceViewBean;
 import com.am.bean.SundayServiceAttendeesBean;
 import com.am.bean.SundayServiceBean;
+import com.am.common.BaseResponse;
 import com.am.common.BeanMapper;
+import com.am.common.Constant;
+import com.am.common.ErrorHandler;
+import com.am.common.ResponseCode;
 import com.am.model.FirstTimer;
 import com.am.model.Group;
 import com.am.model.ServiceAttendanceView;
 import com.am.model.SundayService;
 import com.am.model.SundayServiceAttendees;
+import com.am.operation.SundayServiceOperation;
 import com.am.service.AttendeesService;
 import com.am.service.FirstTimerService;
 import com.am.service.GroupService;
@@ -52,6 +59,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 @Controller
 public class SundayServiceController extends BeanMapper {
 
+	private static Logger LOGGER = Logger.getLogger(SundayServiceController.class);
 	@Autowired
 	private SundayServiceService sundayServiceService;
 	
@@ -73,14 +81,19 @@ public class SundayServiceController extends BeanMapper {
 	@Autowired
 	private MinistryService ministryService;
 	
+	@Autowired
+	private SundayServiceOperation sundayServiceOperation;
+	
 	
 	@Autowired
 	private SundayServiceAttendeesService sundayServiceAttendeesService;
 	
 	@RequestMapping(value = "/sunday_service", method = RequestMethod.GET)
-	public ModelAndView sundayServiceGet(@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean){
+	public ModelAndView sundayServiceGet(@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,
+			HttpServletRequest request,HttpServletResponse response, ModelMap modelMap){
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("sundayServiceList", prepareListOfSundayService(sundayServiceService.listSundayService()));
+		ErrorHandler.setupModelMapResponseMessage(modelMap, request);
 		return new ModelAndView("sunday_service", model);
 	}
 	
@@ -94,13 +107,19 @@ public class SundayServiceController extends BeanMapper {
 	}
 	
 	@RequestMapping(value = "/insert_sunday_service", method = RequestMethod.POST)
-	public ModelAndView insertSundayService(@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,BindingResult result){
+	public ModelAndView insertSundayService(HttpServletResponse response, @ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
+			BindingResult result, ModelMap modelMap){
+		BaseResponse baseResponse = null;
 		try{
-			SundayService sundayService = prepareSundayServiceModel(sundayServiceBean);
-			sundayServiceService.insert(sundayService);
-				
+			baseResponse = sundayServiceOperation.insertSundayService(sundayServiceBean);
+			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
+				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+			}else{
+				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
+			}
 		}catch(Exception e){
-			System.out.println(e);
+			LOGGER.error(e);
 		}
 		
 		return new ModelAndView("redirect:/sunday_service.html");
@@ -120,23 +139,36 @@ public class SundayServiceController extends BeanMapper {
 	}
 	
 	@RequestMapping(value = "/save_sunday_service", method = RequestMethod.POST)
-	public ModelAndView saveSundayService(@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,BindingResult result){
+	public ModelAndView saveSundayService(HttpServletResponse response, @ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
+			BindingResult result, ModelMap modelMap){
+		BaseResponse baseResponse = null;
 		try{
-			SundayService sundayService = prepareSundayServiceModel(sundayServiceBean);
-			sundayServiceService.update(sundayService);
+			baseResponse = sundayServiceOperation.updateSundayService(sundayServiceBean);
+			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
+				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+			}else{
+				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
+			}
 		}catch(Exception e){
-			System.out.println(e);
+			LOGGER.error(e);
 		}
+		
 		return new ModelAndView("redirect:/sunday_service.html");
 	}
 	
 	@RequestMapping(value = "/delete_sunday_service", method = RequestMethod.GET)
-	public ModelAndView deleteSundayService(@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,BindingResult result){
+	public ModelAndView deleteSundayService(HttpServletResponse response, @ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
+			BindingResult result, ModelMap modelMap){
+		BaseResponse baseResponse = null;
 		try{
-			
-			SundayService entity = new SundayService();
-			entity.setId(sundayServiceBean.getSundayServiceId());
-			sundayServiceService.delete(entity);
+			baseResponse = sundayServiceOperation.deleteSundayService(sundayServiceBean);
+			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
+				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+			}else{
+				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
+			}
 		}catch(Exception e){
 			System.out.println(e);
 		}
@@ -217,6 +249,22 @@ public class SundayServiceController extends BeanMapper {
 		return new ModelAndView("redirect:/service_first_timer.html?sundayServiceId="+sundayServiceAttendeesBean.getSundayServiceBean().getSundayServiceId());
 	}
 	
+	@RequestMapping(value = "/search_first_timer", method = RequestMethod.GET)
+	public ModelAndView searchFirstTimerAttendeesGet(@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
+			@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,
+			BindingResult result, ModelMap modelMap){
+		Map<String, Object> model = new HashMap<String, Object>();
+		try{
+			model.put("sundayServiceDetails", prepareSundayServiceBean(sundayServiceService.getSundayService(sundayServiceBean.getSundayServiceId())));
+			System.out.println(sundayServiceBean.getKeywords());
+			model.put("firstTimerList", prepareListOfFirstTimer(firstTimerService.findFirstTimerByName(sundayServiceBean.getSundayServiceId(), sundayServiceBean.getKeywords())));
+			modelMap.addAttribute("SUNDAY_SERVICE_ID", sundayServiceBean.getSundayServiceId());
+		}catch(Exception e){
+			System.out.println(e);
+		}
+		return new ModelAndView("service_first_timer", model);
+	}
+	
 	
 	@RequestMapping(value = "/search_service_attendees", method = RequestMethod.GET)
 	public ModelAndView searchsundayServiceGet(@ModelAttribute("attendees") AttendeesBean attendeesBean,
@@ -272,6 +320,44 @@ public class SundayServiceController extends BeanMapper {
 		}
 		return new ModelAndView("sunday_service_profile", model);
 	}
+	
+	
+	@RequestMapping(value = "/search_profile_attendees", method = RequestMethod.GET)
+	public ModelAndView searchServiceAttendeesGet(@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
+			@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,
+			BindingResult result, ModelMap modelMap){
+		Map<String, Object> model = new HashMap<String, Object>();
+		try{
+			model.put("sundayServiceDetails", prepareSundayServiceBean(sundayServiceService.getSundayService(sundayServiceBean.getSundayServiceId())));
+			System.out.println(sundayServiceBean.getKeywords());
+			model.put("sundayServiceAttendeesList", prepareListOfSundayServiceAttendees(sundayServiceAttendeesService.findSundayServiceAttendeesByName(sundayServiceBean.getKeywords().trim(), sundayServiceBean.getSundayServiceId())));
+			modelMap.addAttribute("SUNDAY_SERVICE_ID", sundayServiceBean.getSundayServiceId());
+			List<ServiceAttendanceViewBean> serviceAttendanceViewBeans =  prepareListOfServiceAttendanceView(serviceAttendanceViewService.listServiceAttendanceView(sundayServiceBean.getSundayServiceId()));
+			if(serviceAttendanceViewBeans!=null){
+				ServiceAttendanceViewBean serviceAttendanceViewBean = serviceAttendanceViewBeans.get(0);
+						if(serviceAttendanceViewBean != null){
+							modelMap.addAttribute("TOTAL_OF_ALL_ATTENDEES", serviceAttendanceViewBean.getTotal());
+							modelMap.addAttribute("TOTAL_OF_KKB", serviceAttendanceViewBean.getTotalOfKkb());
+							modelMap.addAttribute("TOTAL_OF_YAM", serviceAttendanceViewBean.getTotalOfYam());
+							modelMap.addAttribute("TOTAL_OF_MEN", serviceAttendanceViewBean.getTotalOfMen());
+							modelMap.addAttribute("TOTAL_OF_WOMEN", serviceAttendanceViewBean.getTotalOfWomen());
+							modelMap.addAttribute("TOTAL_OF_CHILDREN", serviceAttendanceViewBean.getTotalOfChildren());
+						}
+			}else{
+				String ZERO = "0";
+				modelMap.addAttribute("TOTAL_OF_ALL_ATTENDEES", ZERO);
+				modelMap.addAttribute("TOTAL_OF_KKB", ZERO);
+				modelMap.addAttribute("TOTAL_OF_YAM", ZERO);
+				modelMap.addAttribute("TOTAL_OF_MEN", ZERO);
+				modelMap.addAttribute("TOTAL_OF_WOMEN", ZERO);
+				modelMap.addAttribute("TOTAL_OF_CHILDREN", ZERO);
+			}
+		}catch(Exception e){
+			System.out.println(e);
+		}
+		return new ModelAndView("sunday_service_profile", model);
+	}
+	
 	
 	
 

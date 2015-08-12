@@ -42,17 +42,24 @@
 					<div class="date-form">
 						<div class="form-horizontal">
 							<label for="date-picker-2" class="control-label">Name</label>
+							
 							<div class="control-group">
-								<div class="controls">
-									<div class="input-group">
-										<input type="text" class="form-control"
-											placeholder="Search name..."> <span
-											class="input-group-btn">
-											<button class="btn btn-default" type="button">Go!</button>
-										</span>
+								<form:form method="GET" style="align-items: center;" class="form-horizontal" 
+											action="search_first_timer.html" modelAttribute="sunday_services">
+									<form:input path="sundayServiceId" value="${SUNDAY_SERVICE_ID}" type="hidden"/>		
+									<div class="controls">
+										<div class="input-group">
+											<form:input path="keywords" type="text" class="form-control"
+												placeholder="Search name..."></form:input>
+											<span class="input-group-btn">
+												<button class="btn btn-default" type="submit">Go!</button>
+											</span>
+										</div>
 									</div>
-								</div>
+								</form:form>
 							</div>
+							
+							
 						</div>
 					</div>
 			</div>

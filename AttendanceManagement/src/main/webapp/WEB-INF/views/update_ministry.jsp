@@ -30,6 +30,7 @@
 									<label class="col-sm-2 control-label">Ministry Name</label>
 									<div class="col-sm-10">
 										<form:input path="ministryName" type="text" class="form-control" value="${updateMinistry.ministryName}" placeholder="Ministry Name"></form:input>
+									<%-- <form:label path="ministryName" class="col-sm-2 control-label" value="${updateMinistry.ministryName}">${updateMinistry.ministryName}</form:label> --%>
 									</div>
 								</div>
 								<div class="form-group">
@@ -42,7 +43,7 @@
 								<div class="form-group">
 									<div class="col-sm-offset-2 col-sm-10">
 										<button type="submit" class="btn btn-default">Update</button>
-										<button class="btn btn-default" type="reset">Cancel</button>
+										<a href="maintenance.html"><button class="btn btn-default" type="button" >Cancel</button></a>
 									</div>
 								</div>
 					</form:form>

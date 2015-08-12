@@ -12,24 +12,30 @@
 <meta name="author" content="Andrei Centeno">
 <link rel="icon" href="images/favicon.ico">
 
+<script src="${pageContext.request.contextPath}/resources/js/customize/notification_message.js" type="text/javascript"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/notification.css">
+
 <title>Maintenance</title>
 
 
 </head>
 <body>
+	<div id="maintenance_success" style="display:none;">${response}</div>
+	<div id="maintenance_error" style="display:none;">${response}</div>
 	<div class="container-fluid">
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 			<h1 class="page-header">Maintenance</h1>
-
-			<h3>Ministries</h3>
-
+			
+			
+			<h3>Church Ministry</h3>
 			<div class="row">
 				<div class="date-form">
 					<div class="form-horizontal">
 
-						<a href="add_ministry.html"><button type="submit"
-								class="btn btn-default">Add Ministry</button></a><br /> <label
-							for="date-picker-3" class="control-label">Name</label>
+					 <a href="add_ministry.html"><button type="submit"
+								class="btn btn-default">Add Ministry</button></a><br /> 
+							<!--
+						<label for="date-picker-3" class="control-label">Name</label>
 						<div class="control-group">
 							<div class="controls">
 								<div class="input-group">
@@ -41,7 +47,9 @@
 
 								</div>
 							</div>
-						</div>
+						</div> -->
+						
+						
 					</div>
 				</div>
 			</div>
@@ -66,8 +74,8 @@
 											value='${ministryList.description}' /></th>
 									<th><a
 										href="update_ministry.html?ministryId=${ministryList.ministryId}">Update</a>
-										&nbsp;&nbsp; | &nbsp;&nbsp;<a
-										href="delete_ministry.html?ministryId=${ministryList.ministryId}">Delete</a></th>
+										&nbsp;&nbsp; | &nbsp;&nbsp;
+										<a href="delete_ministry.html?ministryId=${ministryList.ministryId}">Delete</a></th>
 								</tr>
 							</c:forEach>
 						</c:if>
@@ -81,13 +89,13 @@
 			
 			<hr/>
 			
-			<h3>Groups</h3>
+			<h3>Life Group Network (LGN)</h3>
 
 			<div class="row">
 				<div class="date-form">
 					<div class="form-horizontal">
 
-						<a href="add_group.html"><button type="submit"
+						<!-- <a href="add_group.html"><button type="submit"
 								class="btn btn-default">Add Group</button></a><br /> <label
 							for="date-picker-3" class="control-label">Name</label>
 						<div class="control-group">
@@ -101,7 +109,9 @@
 
 								</div>
 							</div>
-						</div>
+						</div> -->
+						
+						
 					</div>
 				</div>
 			</div>
@@ -126,8 +136,8 @@
 											value='${groupList.description}' /></th>
 									<th><a
 										href="update_group.html?groupId=${groupList.groupId}">Update</a>
-										&nbsp;&nbsp; | &nbsp;&nbsp;<a
-										href="delete_group.html?groupId=${groupList.groupId}">Delete</a></th>
+										&nbsp;&nbsp; <%-- | &nbsp;&nbsp;<a
+										href="delete_group.html?groupId=${groupList.groupId}">Delete</a> --%></th>
 								</tr>
 							</c:forEach>
 						</c:if>
@@ -154,7 +164,7 @@
 						<a href="add_service.html"><button type="submit"
 								class="btn btn-default">Add Service</button></a><br /> <label
 							for="date-picker-3" class="control-label">Name</label>
-						<div class="control-group">
+						<!-- <div class="control-group">
 							<div class="controls">
 								<div class="input-group">
 									<input type="text" class="form-control"
@@ -165,7 +175,7 @@
 
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>

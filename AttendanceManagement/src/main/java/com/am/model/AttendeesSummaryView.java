@@ -54,24 +54,6 @@ public class AttendeesSummaryView implements Serializable {
 	@Column(name = "total_of_children_female")
 	private long totalOfChildrenFemale;
 	
-	@Column(name = "no_ministry")
-	private long noMinistry;
-
-	@Column(name = "total_of_jam")
-	private long totalOfJam;
-	
-	@Column(name = "total_of_triune")
-	private long totalOfTriune;
-	
-	@Column(name = "total_of_elyon")
-	private long totalOfElyon;
-	
-	@Column(name = "total_of_via")
-	private long totalOfVia;
-	
-	@Column(name = "total_of_can")
-	private long totalOfCan;
-
 	@Column(name = "total_of_male")
 	private long totalOfMale;
 	
@@ -193,53 +175,7 @@ public class AttendeesSummaryView implements Serializable {
 		this.totalOfChildrenFemale = totalOfChildrenFemale;
 	}
 
-	public long getNoMinistry() {
-		return noMinistry;
-	}
-
-	public void setNoMinistry(long noMinistry) {
-		this.noMinistry = noMinistry;
-	}
-
-	public long getTotalOfJam() {
-		return totalOfJam;
-	}
-
-	public void setTotalOfJam(long totalOfJam) {
-		this.totalOfJam = totalOfJam;
-	}
-
-	public long getTotalOfTriune() {
-		return totalOfTriune;
-	}
-
-	public void setTotalOfTriune(long totalOfTriune) {
-		this.totalOfTriune = totalOfTriune;
-	}
-
-	public long getTotalOfElyon() {
-		return totalOfElyon;
-	}
-
-	public void setTotalOfElyon(long totalOfElyon) {
-		this.totalOfElyon = totalOfElyon;
-	}
-
-	public long getTotalOfVia() {
-		return totalOfVia;
-	}
-
-	public void setTotalOfVia(long totalOfVia) {
-		this.totalOfVia = totalOfVia;
-	}
-
-	public long getTotalOfCan() {
-		return totalOfCan;
-	}
-
-	public void setTotalOfCan(long totalOfCan) {
-		this.totalOfCan = totalOfCan;
-	}
+	
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -255,12 +191,12 @@ public class AttendeesSummaryView implements Serializable {
 				+ ", totalOfYamMale=" + totalOfYamMale + ", totalOfYamFemale="
 				+ totalOfYamFemale + ", totalOfChildrenMale="
 				+ totalOfChildrenMale + ", totalOfChildrenFemale="
-				+ totalOfChildrenFemale + ", noMinistry=" + noMinistry
-				+ ", totalOfJam=" + totalOfJam + ", totalOfTriune="
-				+ totalOfTriune + ", totalOfElyon=" + totalOfElyon
-				+ ", totalOfVia=" + totalOfVia + ", totalOfCan=" + totalOfCan
-				+ ", toString()=" + super.toString() + "]";
+				+ totalOfChildrenFemale + ", totalOfMale=" + totalOfMale
+				+ ", totalOfFemale=" + totalOfFemale + ", toString()="
+				+ super.toString() + "]";
 	}
+
+	
 	
 	
 	

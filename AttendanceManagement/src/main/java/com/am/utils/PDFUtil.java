@@ -28,17 +28,13 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.am.common.Constant;
-import com.am.model.Attendees;
 import com.am.model.AttendeesSummaryView;
 import com.am.model.AttendeesView;
 import com.am.model.FirstTimer;
 import com.am.model.ServiceAttendanceView;
 import com.am.model.SundayService;
 import com.am.model.SundayServiceAttendees;
-import com.am.service.AttendeesService;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;

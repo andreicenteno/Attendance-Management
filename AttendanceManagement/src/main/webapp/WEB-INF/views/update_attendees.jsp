@@ -158,7 +158,7 @@
 						
 
 
-						<div class="form-group">
+<%-- 						<div class="form-group">
 							<label class="col-sm-2 control-label">First Timer?</label>
 							<div class="col-sm-10">
 							<c:if test="${updateAttendees.isFirstTimer eq true}">
@@ -183,12 +183,12 @@
 								class="checkbox form-control"></form:checkbox>
 							</c:if>
 							</div>
-						</div>
+						</div> --%>
 
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
 								<button type="submit" class="btn btn-default">Update</button>
-								<button class="btn btn-default" type="reset">Cancel</button>
+								<a href="attendees.html"><button class="btn btn-default" type="button" >Cancel</button></a>
 							</div>
 						</div>
 					</form:form>

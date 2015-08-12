@@ -9,7 +9,26 @@ public class SundayServiceAttendeesBean{
 	private Timestamp createTime;
 	private Timestamp updateTime;
 	
+	private String keywords;
+	private String sundayServiceId;
 	
+	
+	
+	
+	
+	
+	public String getSundayServiceId() {
+		return sundayServiceId;
+	}
+	public void setSundayServiceId(String sundayServiceId) {
+		this.sundayServiceId = sundayServiceId;
+	}
+	public String getKeywords() {
+		return keywords;
+	}
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
 	public long getSundayServiceAttendeesId() {
 		return sundayServiceAttendeesId;
 	}

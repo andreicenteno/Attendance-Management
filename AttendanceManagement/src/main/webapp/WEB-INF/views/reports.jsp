@@ -100,26 +100,35 @@
 
 					<div class="col-md-12">
 						<center>
-						<form:form method="POST" class="form-horizontal" action="generate_attendees.html" modelAttribute="attendees_report">
-							<button class="btn btn-default" type="submit">GENERATE .PDF FILE</button>
-							<form:input path="groupId" type="hidden" value="0" id="groupIdPdfFile"></form:input>
-							<form:input path="ministryId" type="hidden" value="0" id="ministryIdPdfFile"></form:input>
-							<form:input path="gender" type="hidden" value="all" id="genderPdfFile"></form:input>
-						</form:form>
+						<table>
+							<tr>
+								<td>
+									<form:form method="POST" class="form-horizontal" action="generate_attendees.html" modelAttribute="attendees_report">
+										<button class="btn btn-default" type="submit">GENERATE .PDF FILE</button>
+										<form:input path="groupId" type="hidden" value="0" id="groupIdPdfFile"></form:input>
+										<form:input path="ministryId" type="hidden" value="0" id="ministryIdPdfFile"></form:input>
+										<form:input path="gender" type="hidden" value="all" id="genderPdfFile"></form:input>
+									</form:form>
+								</td>
+								<td>
+									<form:form method="GET" class="form-horizontal" action="view_attendees_report.html" modelAttribute="attendees_report">
+									<button class="btn btn-default" type="submit">VIEW REPORT</button>
+									<form:input path="groupId" type="hidden" value="0" id="groupIdView"></form:input>
+									<form:input path="ministryId" type="hidden" value="0" id="ministryIdView"></form:input>
+									<form:input path="gender" type="hidden" value="all" id="genderView"></form:input>
+									</form:form>
+								</td>
+							</tr>
+						</table>
 							
-							<form:form method="POST" class="form-horizontal" action="genreate_attendance.html" modelAttribute="attendees_report">
+						<%-- 	<form:form method="POST" class="form-horizontal" action="genreate_attendance.html" modelAttribute="attendees_report">
 							<button class="btn btn-default" type="submit">GENERATE .CSV FILE</button>
 							<input type="hidden" value="0" id="groupIdCsvFile">
 							<input type="hidden" value="0" id="ministryIdCsvFile">
 							<input type="hidden" value="all" id="genderCsvFile">
-							</form:form>
+							</form:form> --%>
 							
-							<form:form method="GET" class="form-horizontal" action="view_attendees_report.html" modelAttribute="attendees_report">
-							<button class="btn btn-default" type="submit">VIEW REPORT</button>
-							<form:input path="groupId" type="hidden" value="0" id="groupIdView"></form:input>
-							<form:input path="ministryId" type="hidden" value="0" id="ministryIdView"></form:input>
-							<form:input path="gender" type="hidden" value="all" id="genderView"></form:input>
-							</form:form>
+							
 						</center>
 					</div>
 				 

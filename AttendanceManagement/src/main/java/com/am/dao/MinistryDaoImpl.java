@@ -30,6 +30,15 @@ public class MinistryDaoImpl implements MinistryDao {
 	    return sqlQuery.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Ministry> listMinistryWithoutNone(){
+		String sql = "SELECT * FROM asystem.ministries where ministry_id != -1 order by update_time desc";
+		SQLQuery sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(sql);
+	    sqlQuery.addEntity(Ministry.class);
+	    return sqlQuery.list();
+	}
+	
+	
 	public Ministry getMinistry(Long id){
 		return (Ministry) sessionFactory.getCurrentSession().get(Ministry.class, id);
 	}

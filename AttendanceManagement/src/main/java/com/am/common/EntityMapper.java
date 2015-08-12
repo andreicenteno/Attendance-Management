@@ -53,6 +53,7 @@ public class EntityMapper {
 	}
 	
 	public Attendees prepareAttendeesModel(AttendeesBean attendeesBean) throws ParseException{
+		
 		Attendees entity = new Attendees();
 		entity.setId(attendeesBean.getAttendeesId());
 		entity.setFirstName(attendeesBean.getFirstName());
@@ -66,8 +67,6 @@ public class EntityMapper {
 		entity.setFirstTimerDate(attendeesBean.getFirstTimerDate());
 		entity.setIsMember(attendeesBean.getIsMember());
 		entity.setMemberDate(attendeesBean.getMemberDate());
-		entity.setCreateTime(attendeesBean.getCreateTime());
-		entity.setUpdateTime(attendeesBean.getUpdateTime());
 		Group group = new Group();
 		group.setId(attendeesBean.getGroupBean().getGroupId());
 		entity.setGroup(group);

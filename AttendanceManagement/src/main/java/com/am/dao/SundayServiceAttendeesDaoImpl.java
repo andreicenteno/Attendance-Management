@@ -39,6 +39,18 @@ public class SundayServiceAttendeesDaoImpl implements SundayServiceAttendeesDao 
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<SundayServiceAttendees> findSundayServiceAttendeesByName(String keyword, long sunday_service_id){
+		String sql = "SELECT * FROM asystem.sunday_service_attendees ssa"+  
+				" LEFT JOIN asystem.attendees a ON a.attendees_id = ssa.attendees_id"+
+				" WHERE ssa.sunday_service_id = ? AND (LOWER(a.first_name)like LOWER('%"+keyword+"%') OR LOWER(a.last_name)"+
+				" like LOWER('%"+keyword+"%') OR LOWER(a.middle_name) like LOWER('%"+keyword+"%'))";
+		SQLQuery sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(sql);
+		sqlQuery.addEntity(SundayServiceAttendees.class);
+		sqlQuery.setLong(0, sunday_service_id);
+		return sqlQuery.list();
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<SundayServiceAttendees> findSundayServiceAttendeesByServiceIdGroupId(long sunday_service_id, long group_id){
 		String sql = "SELECT * FROM asystem.sunday_service_attendees ssa"+
 					" LEFT JOIN asystem.attendees a ON a.attendees_id = ssa.attendees_id"+

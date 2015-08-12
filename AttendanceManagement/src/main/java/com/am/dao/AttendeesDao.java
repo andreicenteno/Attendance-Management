@@ -12,4 +12,5 @@ public interface AttendeesDao {
 	public List<Attendees> findAttendeesOnSundayService(long sunday_service_id);
 	public List<Attendees> findAttendeesByName(String keyword);
 	public List<Attendees> findAttendeesOnSundayServiceByName(long sunday_service_id, String keyword);
+	
 }

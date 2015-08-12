@@ -9,4 +9,5 @@ public interface MinistryService {
 	public Ministry getMinistry(Long id);
 	public void delete(Ministry entity);
 	public void update(Ministry entity);
+	public List<Ministry> listMinistryWithoutNone();
 }

@@ -62,7 +62,7 @@
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
 								<button type="submit" class="btn btn-default">Add</button>
-								<button class="btn btn-default" type="reset">Cancel</button>
+								<a href="sunday_service.html"><button class="btn btn-default" type="button" >Cancel</button></a>
 							</div>
 						</div>
 					</form:form>
