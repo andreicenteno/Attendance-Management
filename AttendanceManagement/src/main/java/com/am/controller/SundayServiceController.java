@@ -1,6 +1,8 @@
 package com.am.controller;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +13,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.am.bean.AttendeesBean;
@@ -26,16 +30,19 @@ import com.am.bean.FirstTimerBean;
 import com.am.bean.ServiceAttendanceViewBean;
 import com.am.bean.SundayServiceAttendeesBean;
 import com.am.bean.SundayServiceBean;
+import com.am.bean.Tag;
 import com.am.common.BaseResponse;
 import com.am.common.BeanMapper;
 import com.am.common.Constant;
 import com.am.common.ErrorHandler;
 import com.am.common.ResponseCode;
+import com.am.model.Attendees;
 import com.am.model.FirstTimer;
 import com.am.model.Group;
 import com.am.model.ServiceAttendanceView;
 import com.am.model.SundayService;
 import com.am.model.SundayServiceAttendees;
+import com.am.operation.ServiceAttendeesOperation;
 import com.am.operation.SundayServiceOperation;
 import com.am.service.AttendeesService;
 import com.am.service.FirstTimerService;
@@ -47,6 +54,7 @@ import com.am.service.SundayServiceAttendeesService;
 import com.am.service.SundayServiceService;
 import com.am.utils.HeaderFooter;
 import com.am.utils.PDFUtil;
+import com.google.gson.Gson;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
@@ -84,9 +92,12 @@ public class SundayServiceController extends BeanMapper {
 	@Autowired
 	private SundayServiceOperation sundayServiceOperation;
 	
-	
 	@Autowired
 	private SundayServiceAttendeesService sundayServiceAttendeesService;
+	
+	@Autowired ServiceAttendeesOperation serviceAttendeesOperation;
+	
+	List<String> attendeesFinalList = new ArrayList<String>();
 	
 	@RequestMapping(value = "/sunday_service", method = RequestMethod.GET)
 	public ModelAndView sundayServiceGet(@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,
@@ -103,7 +114,6 @@ public class SundayServiceController extends BeanMapper {
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("servicesList", prepareListOfService(serviceService.listService()));
 		return new ModelAndView("add_sunday_service", model);
-		
 	}
 	
 	@RequestMapping(value = "/insert_sunday_service", method = RequestMethod.POST)
@@ -114,14 +124,13 @@ public class SundayServiceController extends BeanMapper {
 			baseResponse = sundayServiceOperation.insertSundayService(sundayServiceBean);
 			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
 				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
-				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
 			}else{
 				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
 			}
 		}catch(Exception e){
 			LOGGER.error(e);
 		}
-		
 		return new ModelAndView("redirect:/sunday_service.html");
 	}
 	
@@ -146,7 +155,7 @@ public class SundayServiceController extends BeanMapper {
 			baseResponse = sundayServiceOperation.updateSundayService(sundayServiceBean);
 			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
 				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
-				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
 			}else{
 				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
 			}
@@ -165,7 +174,7 @@ public class SundayServiceController extends BeanMapper {
 			baseResponse = sundayServiceOperation.deleteSundayService(sundayServiceBean);
 			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
 				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
-				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
 			}else{
 				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
 			}
@@ -177,7 +186,7 @@ public class SundayServiceController extends BeanMapper {
 	
 	
 	@RequestMapping(value = "/sunday_service_attendees", method = RequestMethod.GET)
-	public ModelAndView sundayServiceAttendeesGet(@ModelAttribute("attendees") AttendeesBean attendeesBean,
+	public ModelAndView sundayServiceAttendeesGet(HttpServletRequest request, @ModelAttribute("attendees") AttendeesBean attendeesBean,
 			@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
 			@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,
 			BindingResult result, ModelMap modelMap){
@@ -186,6 +195,8 @@ public class SundayServiceController extends BeanMapper {
 		model.put("sundayServiceDetails", prepareSundayServiceBean(sundayServiceService.getSundayService(sundayServiceBean.getSundayServiceId())));
 		model.put("sundayServiceAttendeesList", prepareListOfAttendees(attendeesService.findAttendeesOnSundayService(sundayServiceBean.getSundayServiceId())));
 		modelMap.addAttribute("SUNDAY_SERVICE_ID", sundayServiceBean.getSundayServiceId());
+		attendeesFinalList = loadAttendees();
+		ErrorHandler.setupModelMapResponseMessage(modelMap, request);
 		}catch(Exception e){
 			System.out.println(e);
 		}
@@ -193,7 +204,7 @@ public class SundayServiceController extends BeanMapper {
 	}
 	
 	@RequestMapping(value = "/service_first_timer", method = RequestMethod.GET)
-	public ModelAndView firstTimerAttendeesGET(@ModelAttribute("attendees") AttendeesBean attendeesBean,
+	public ModelAndView firstTimerAttendeesGET(HttpServletRequest request, @ModelAttribute("attendees") AttendeesBean attendeesBean,
 			@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
 			@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,
 			BindingResult result, ModelMap modelMap){
@@ -202,6 +213,8 @@ public class SundayServiceController extends BeanMapper {
 		model.put("sundayServiceDetails", prepareSundayServiceBean(sundayServiceService.getSundayService(sundayServiceBean.getSundayServiceId())));
 		model.put("firstTimerList", prepareListOfFirstTimer(firstTimerService.findFirstTimerBySundayServiceId(sundayServiceBean.getSundayServiceId())));
 		modelMap.addAttribute("SUNDAY_SERVICE_ID", sundayServiceBean.getSundayServiceId());
+		attendeesFinalList = loadAttendees();
+		ErrorHandler.setupModelMapResponseMessage(modelMap, request);
 		}catch(Exception e){
 			System.out.println(e);
 		}
@@ -227,21 +240,23 @@ public class SundayServiceController extends BeanMapper {
 	}
 	
 	@RequestMapping(value = "/insert_first_timer", method = RequestMethod.POST)
-	public ModelAndView insertfirstTimerAttendeesGET(@ModelAttribute("first_timer") FirstTimerBean firstTimerBean,
+	public ModelAndView insertfirstTimerAttendeesGET(HttpServletResponse response, @ModelAttribute("first_timer") FirstTimerBean firstTimerBean,
 			@ModelAttribute("attendees") AttendeesBean attendeesBean,
 			@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
 			@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,
 			BindingResult result, ModelMap modelMap){
 		Map<String, Object> model = new HashMap<String, Object>();
+		BaseResponse baseResponse = null;
 		try{
 			model.put("sundayServiceDetails", prepareSundayServiceBean(sundayServiceService.getSundayService(firstTimerBean.getSundayServiceBean().getSundayServiceId())));
 			modelMap.addAttribute("SUNDAY_SERVICE_ID", firstTimerBean.getSundayServiceBean().getSundayServiceId());
 			//-- Insert to attendees table
-			String resultQuery = prepareAttendeesFirstTimerModel(firstTimerBean);
-			if(resultQuery.equals("OK")){
-				System.out.println(resultQuery);
+			baseResponse = prepareAttendeesFirstTimerModel(firstTimerBean);
+			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
+				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
 			}else{
-				System.out.println(resultQuery);
+				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
 			}
 		}catch(Exception e){
 			System.out.println(e);
@@ -250,15 +265,34 @@ public class SundayServiceController extends BeanMapper {
 	}
 	
 	@RequestMapping(value = "/search_first_timer", method = RequestMethod.GET)
-	public ModelAndView searchFirstTimerAttendeesGet(@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
+	public ModelAndView searchFirstTimerAttendeesGet(HttpServletResponse response, @ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
 			@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,
 			BindingResult result, ModelMap modelMap){
 		Map<String, Object> model = new HashMap<String, Object>();
 		try{
+			String[] search = sundayServiceBean.getKeywords().trim().split(" ");
+			String firstName, lastName, middleName = null;
+			if(search.length >= 3){
+				firstName = search[0].trim();
+				middleName = search[1].trim();
+				lastName = search[2].trim();
+			}else if(search.length == 2){
+				firstName = search[0].trim();
+				lastName = search[1].trim();
+				middleName = "#";
+			}else{
+				middleName = lastName = firstName = search[0].trim();
+			}
+			
 			model.put("sundayServiceDetails", prepareSundayServiceBean(sundayServiceService.getSundayService(sundayServiceBean.getSundayServiceId())));
 			System.out.println(sundayServiceBean.getKeywords());
-			model.put("firstTimerList", prepareListOfFirstTimer(firstTimerService.findFirstTimerByName(sundayServiceBean.getSundayServiceId(), sundayServiceBean.getKeywords())));
+			model.put("firstTimerList", prepareListOfFirstTimer(firstTimerService.findFirstTimerByName(firstName, lastName, middleName, search.length, sundayServiceBean.getSundayServiceId())));
 			modelMap.addAttribute("SUNDAY_SERVICE_ID", sundayServiceBean.getSundayServiceId());
+			
+			List<FirstTimer> listFirstTimers = firstTimerService.findFirstTimerByName(firstName, lastName, middleName, search.length, sundayServiceBean.getSundayServiceId());
+			modelMap.addAttribute(Constant.RESPONSE, Constant.SEARCH_RESULT+Constant.QUOTE+sundayServiceBean.getKeywords()+
+					Constant.QUOTE+" - "+listFirstTimers.size()+Constant.SPACE+Constant.TOTAL_OF_RECORDS);
+			response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
 		}catch(Exception e){
 			System.out.println(e);
 		}
@@ -267,14 +301,32 @@ public class SundayServiceController extends BeanMapper {
 	
 	
 	@RequestMapping(value = "/search_service_attendees", method = RequestMethod.GET)
-	public ModelAndView searchsundayServiceGet(@ModelAttribute("attendees") AttendeesBean attendeesBean,
+	public ModelAndView searchsundayServiceGet(HttpServletResponse response, @ModelAttribute("attendees") AttendeesBean attendeesBean,
 			@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
 			@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,
 			BindingResult result, ModelMap modelMap){
 		Map<String, Object> model = new HashMap<String, Object>();
 		try{
+			String[] search = attendeesBean.getKeywords().trim().split(" ");
+			String firstName, lastName, middleName = null;
+			if(search.length >= 3){
+				firstName = search[0].trim();
+				middleName = search[1].trim();
+				lastName = search[2].trim();
+			}else if(search.length == 2){
+				firstName = search[0].trim();
+				lastName = search[1].trim();
+				middleName = "#";
+			}else{
+				middleName = lastName = firstName = search[0].trim();
+			}
 			model.put("sundayServiceDetails", prepareSundayServiceBean(sundayServiceService.getSundayService(attendeesBean.getSundayServiceId())));
-			model.put("sundayServiceAttendeesList", prepareListOfAttendees(attendeesService.findAttendeesOnSundayServiceByName(attendeesBean.getSundayServiceId(), attendeesBean.getKeywords())));
+			model.put("sundayServiceAttendeesList", prepareListOfAttendees(attendeesService.findAttendeesOnSundayServiceByName(firstName, lastName, middleName, search.length, attendeesBean.getSundayServiceId())));
+			List<Attendees> listAttendees = attendeesService.findAttendeesOnSundayServiceByName(firstName, lastName, middleName, search.length, attendeesBean.getSundayServiceId());
+				modelMap.addAttribute(Constant.RESPONSE, Constant.SEARCH_RESULT+Constant.QUOTE+attendeesBean.getKeywords()+
+						Constant.QUOTE+" - "+listAttendees.size()+Constant.SPACE+Constant.TOTAL_OF_RECORDS);
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
+			
 			modelMap.addAttribute("SUNDAY_SERVICE_ID", attendeesBean.getSundayServiceId());
 		}catch(Exception e){
 			System.out.println(e);
@@ -283,9 +335,71 @@ public class SundayServiceController extends BeanMapper {
 	}
 	
 	
+	 @RequestMapping(value = "/getAttendeesService", method = RequestMethod.POST)
+		public void getAttendeesService(@RequestParam String term, HttpServletResponse response) {
+		 try {
+			 response.setContentType("application/json");
+			 String keyWords = term.substring(term.lastIndexOf(",") + 1).trim();
+			 response.getWriter().write(new Gson().toJson(simulateSearchResult(keyWords)));
+		 } catch (IOException e) {
+			 e.printStackTrace();
+		 }
+	 	}
+	 
+	 @RequestMapping(value = "/getAttendeesServiceProfile", method = RequestMethod.POST)
+		public void getAttendeesServiceProfile(@RequestParam String term, HttpServletResponse response) {
+		 try {
+			 response.setContentType("application/json");
+			 String keyWords = term.substring(term.lastIndexOf(",") + 1).trim();
+			 response.getWriter().write(new Gson().toJson(simulateSearchResult(keyWords)));
+		 } catch (IOException e) {
+			 e.printStackTrace();
+		 }
+	 	}
+	
+	 @RequestMapping(value = "/getAttendeesFirstTimer", method = RequestMethod.POST)
+		public void getAttendeesFirstTimer(@RequestParam String term, HttpServletResponse response) {
+		 try {
+			 response.setContentType("application/json");
+			 String keyWords = term.substring(term.lastIndexOf(",") + 1).trim();
+			 response.getWriter().write(new Gson().toJson(simulateSearchResult(keyWords)));
+		 } catch (IOException e) {
+			 e.printStackTrace();
+		 }
+	 	}
+	
+	 private List<Tag> simulateSearchResult(String empName) {
+			List<Tag> result = new ArrayList<Tag>();
+			// iterate a list and filter by tagName
+			 for (final String emp : attendeesFinalList) {
+				 if (emp.toLowerCase().contains(empName.toLowerCase())) {
+					 result.add(new Tag(1, emp));
+					 System.out.println(emp);
+				 }	
+			 }
+			return result;
+		 }
+	
+	private List<String> loadAttendees(){
+		List<String> attList = new ArrayList<String>();
+	 	List<Attendees>  listAttendees = attendeesService.listAttendees();
+	 	for(Attendees attendees: listAttendees){
+	 		String FullName = "";
+	 		if(StringUtils.isNotEmpty(attendees.getMiddleName()) || !Constant.EMPTY_STRING.equals(attendees.getMiddleName())){
+	 			FullName = attendees.getFirstName()+" "+attendees.getMiddleName()+" "+attendees.getLastName();	
+	 		}else{
+	 			FullName = attendees.getFirstName()+" "+attendees.getLastName();
+	 		}
+	 		
+	 		attList.add(FullName);
+	 	}
+	 	return attList;
+	}
+	
+	
 	
 	@RequestMapping(value = "/sunday_service_profile", method = RequestMethod.GET)
-	public ModelAndView sundayServiceProfileGet(@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
+	public ModelAndView sundayServiceProfileGet(HttpServletRequest request, @ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
 			@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,
 			BindingResult result, ModelMap modelMap){
 		Map<String, Object> model = new HashMap<String, Object>();
@@ -314,7 +428,8 @@ public class SundayServiceController extends BeanMapper {
 			modelMap.addAttribute("TOTAL_OF_CHILDREN", ZERO);
 		}
 		
-		
+		attendeesFinalList = loadAttendees();
+		ErrorHandler.setupModelMapResponseMessage(modelMap, request);
 		}catch(Exception e){
 			System.out.println(e);
 		}
@@ -323,14 +438,30 @@ public class SundayServiceController extends BeanMapper {
 	
 	
 	@RequestMapping(value = "/search_profile_attendees", method = RequestMethod.GET)
-	public ModelAndView searchServiceAttendeesGet(@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
+	public ModelAndView searchServiceAttendeesGet(HttpServletResponse response, @ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
 			@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,
 			BindingResult result, ModelMap modelMap){
 		Map<String, Object> model = new HashMap<String, Object>();
 		try{
+			
+			String[] search = sundayServiceBean.getKeywords().trim().split(" ");
+			String firstName, lastName, middleName = null;
+			if(search.length >= 3){
+				firstName = search[0].trim();
+				middleName = search[1].trim();
+				lastName = search[2].trim();
+			}else if(search.length == 2){
+				firstName = search[0].trim();
+				lastName = search[1].trim();
+				middleName = "#";
+			}else{
+				middleName = lastName = firstName = search[0].trim();
+			}
+			
+			
 			model.put("sundayServiceDetails", prepareSundayServiceBean(sundayServiceService.getSundayService(sundayServiceBean.getSundayServiceId())));
 			System.out.println(sundayServiceBean.getKeywords());
-			model.put("sundayServiceAttendeesList", prepareListOfSundayServiceAttendees(sundayServiceAttendeesService.findSundayServiceAttendeesByName(sundayServiceBean.getKeywords().trim(), sundayServiceBean.getSundayServiceId())));
+			model.put("sundayServiceAttendeesList", prepareListOfSundayServiceAttendees(sundayServiceAttendeesService.findSundayServiceAttendeesByName(firstName, lastName, middleName, search.length, sundayServiceBean.getSundayServiceId())));
 			modelMap.addAttribute("SUNDAY_SERVICE_ID", sundayServiceBean.getSundayServiceId());
 			List<ServiceAttendanceViewBean> serviceAttendanceViewBeans =  prepareListOfServiceAttendanceView(serviceAttendanceViewService.listServiceAttendanceView(sundayServiceBean.getSundayServiceId()));
 			if(serviceAttendanceViewBeans!=null){
@@ -352,6 +483,12 @@ public class SundayServiceController extends BeanMapper {
 				modelMap.addAttribute("TOTAL_OF_WOMEN", ZERO);
 				modelMap.addAttribute("TOTAL_OF_CHILDREN", ZERO);
 			}
+			
+			List<SundayServiceAttendees> listSundayServiceAttendees = sundayServiceAttendeesService.findSundayServiceAttendeesByName(firstName, lastName, middleName, search.length, sundayServiceBean.getSundayServiceId());
+			modelMap.addAttribute(Constant.RESPONSE, Constant.SEARCH_RESULT+Constant.QUOTE+sundayServiceBean.getKeywords()+
+					Constant.QUOTE+" - "+listSundayServiceAttendees.size()+Constant.SPACE+Constant.TOTAL_OF_RECORDS);
+			response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
+			
 		}catch(Exception e){
 			System.out.println(e);
 		}
@@ -359,13 +496,18 @@ public class SundayServiceController extends BeanMapper {
 	}
 	
 	
-	
-
 	@RequestMapping(value = "/insert_service_attendees", method = RequestMethod.POST)
-	public ModelAndView insertSundayServiceAttendees(@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
-			@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,BindingResult result){
+	public ModelAndView insertSundayServiceAttendees(HttpServletResponse response, @ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
+			@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,BindingResult result, ModelMap modelMap){
+		BaseResponse baseResponse = null;
 		try{
-			sundayServiceAttendeesService.insert(prepareSundayServiceAttendeesModel(sundayServiceAttendeesBean));
+			baseResponse = serviceAttendeesOperation.insertSundayServiceAttendees(sundayServiceAttendeesBean);
+			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
+				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
+			}else{
+				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
+			}
 		}catch(Exception e){
 			System.out.println(e);
 		}
@@ -373,10 +515,18 @@ public class SundayServiceController extends BeanMapper {
 	}
 	
 	@RequestMapping(value = "/remove_service_attendees", method = RequestMethod.POST)
-	public ModelAndView removeSundayServiceAttendees(@ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
-			@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,BindingResult result){
+	public ModelAndView removeSundayServiceAttendees(HttpServletResponse response, @ModelAttribute("sunday_services") SundayServiceBean sundayServiceBean,
+			@ModelAttribute("sunday_services_attendees") SundayServiceAttendeesBean sundayServiceAttendeesBean,BindingResult result,
+			ModelMap modelMap){
+		BaseResponse baseResponse = null;
 		try{
-			sundayServiceAttendeesService.delete(prepareSundayServiceAttendeesModel(sundayServiceAttendeesBean));
+			baseResponse = serviceAttendeesOperation.deleteSundayServiceAttendees(sundayServiceAttendeesBean);
+			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
+				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
+			}else{
+				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
+			}
 		}catch(Exception e){
 			System.out.println(e);
 		}

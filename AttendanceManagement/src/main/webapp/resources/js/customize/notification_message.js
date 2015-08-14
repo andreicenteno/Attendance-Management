@@ -2,22 +2,44 @@ $(document).ready(function(){
 	cookieValue = getCookie('notification_message');
 	var minutes_display = 8000;
 	
-/*maintenance tab*/	
-	if(cookieValue == "maintenance_success"){
-		$('#maintenance_success').show();
+/*notification div tab*/	
+	if(cookieValue == "div_success"){
+		$('#div_success').show();
 		   setTimeout(function() { 
-		       $('#maintenance_success').fadeOut(); 
+		       $('#div_success').fadeOut(); 
 		   }, minutes_display);
 		setCookie('notification_message', '', -1);
 	}
-	else if(cookieValue == "maintenance_error"){
-		$('#maintenance_error').show();
+	else if(cookieValue == "div_error"){
+		$('#div_error').show();
 		   setTimeout(function() { 
-		       $('#maintenance_error').fadeOut(); 
+		       $('#div_error').fadeOut(); 
 		   }, minutes_display);
 		setCookie('notification_message', '', -1);
 	}
 	
+	else if(cookieValue == "div_success_fixed"){
+		$('#div_success_fixed').show();
+		   /*setTimeout(function() { 
+		       $('#div_success_fixed').fadeOut(); 
+		   });*/
+		setCookie('notification_message', '', -1);
+	}
+	else if(cookieValue == "div_error_fixed"){
+		$('#div_error_fixed').show();
+		  /* setTimeout(function() { 
+		       $('#div_error_fixed').fadeOut(); 
+		   });*/
+		setCookie('notification_message', '', -1);
+	}
+	
+	else if(cookieValue == "div_success_import"){
+		$('#div_success_import').show();
+		   /*setTimeout(function() { 
+		       $('#div_success_fixed').fadeOut(); 
+		   });*/
+		setCookie('notification_message', '', -1);
+	}
 	
 	
 	//-- set and erase the cookie;

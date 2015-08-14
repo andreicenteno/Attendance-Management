@@ -6,7 +6,15 @@ public enum ResponseCode{
 	EMAIL_EXIST(1001, "Email Exist"),
 	INVALID_FORMAT(1002, "Invalid Format Value"),
 	REQUIRED_FIELD(1003, "Make sure all required fields filled out correctly"),
+	SEARCH_RESULT(1004, "Number of Result in searching records"),
+	
+	
+	
+	
 	TECHNICAL_ERROR(9999, "Technical Error");
+	
+	
+	
 	
 	
 	private int code;

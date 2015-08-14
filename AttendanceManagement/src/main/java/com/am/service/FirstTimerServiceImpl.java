@@ -44,7 +44,7 @@ public class FirstTimerServiceImpl implements FirstTimerService{
 		return firstTimerDao.listFirstTimer();
 	}
 	
-	public List<FirstTimer> findFirstTimerByName(long sunday_service_id, String keyword){
-		return firstTimerDao.findFirstTimerByName(sunday_service_id, keyword);
+	public List<FirstTimer> findFirstTimerByName(String firstName, String lastName, String MiddleName, int iSearch, long sunday_service_id){
+		return firstTimerDao.findFirstTimerByName(firstName, lastName, MiddleName, iSearch, sunday_service_id);
 	}
 }

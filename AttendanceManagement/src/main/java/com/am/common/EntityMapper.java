@@ -52,6 +52,7 @@ public class EntityMapper {
 		return entity;
 	}
 	
+	
 	public Attendees prepareAttendeesModel(AttendeesBean attendeesBean) throws ParseException{
 		
 		Attendees entity = new Attendees();
@@ -74,7 +75,6 @@ public class EntityMapper {
 		Ministry ministry = new Ministry();
 		ministry.setId(attendeesBean.getMinistryBean().getMinistryId());
 		entity.setMinistry(ministry);
-		
 		
 		
 		return entity;
@@ -121,8 +121,11 @@ public class EntityMapper {
 	}
 	
 	
-	public String prepareAttendeesFirstTimerModel(FirstTimerBean firstTimerBean){
+	public BaseResponse prepareAttendeesFirstTimerModel(FirstTimerBean firstTimerBean){
+		BaseResponse baseResponse = new BaseResponse();
 		try{
+			com.am.common.ResponseCodeUtil.setResponseCode(baseResponse, com.am.common.ResponseCode.SUCCESSFUL);
+			
 			Attendees attendeesGuest = new Attendees();
 			attendeesGuest.setFirstName(firstTimerBean.getGuestBean().getFirstName());
 			attendeesGuest.setLastName(firstTimerBean.getGuestBean().getLastName());
@@ -152,10 +155,10 @@ public class EntityMapper {
 			
 			firstTimerService.insert(firstTimer);
 		}catch(Exception e){
-			return "ERROR";
+			com.am.common.ResponseCodeUtil.setResponseCode(baseResponse, com.am.common.ResponseCode.TECHNICAL_ERROR);
 		}
 		
-		return "OK";
+		return baseResponse;
 		
 	}
 	

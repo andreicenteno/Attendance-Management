@@ -48,7 +48,7 @@ public class SundayServiceAttendeesServiceImpl implements SundayServiceAttendees
 		return sundayServiceAttendeesDao.findSundayServiceAttendeesByServiceIdGroupId(sunday_service_id, group_id);
 	}
 	
-	public List<SundayServiceAttendees> findSundayServiceAttendeesByName(String keyword, long sunday_service_id){
-		return sundayServiceAttendeesDao.findSundayServiceAttendeesByName(keyword, sunday_service_id);
+	public List<SundayServiceAttendees> findSundayServiceAttendeesByName(String firstName, String lastName, String MiddleName, int iSearch, long sunday_service_id){
+		return sundayServiceAttendeesDao.findSundayServiceAttendeesByName(firstName, lastName, MiddleName, iSearch, sunday_service_id);
 	}
 }

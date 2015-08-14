@@ -1,5 +1,6 @@
 package com.am.bean;
 
+import java.io.File;
 import java.sql.Timestamp;
 
 public class AttendeesBean{
@@ -21,8 +22,24 @@ public class AttendeesBean{
 	private MinistryBean ministryBean;
 	private String keywords;
 	private long sundayServiceId;
+	private File attendeesFile;
+	private String checkForRefresh;
 	
 	
+	
+	
+	public String getCheckForRefresh() {
+		return checkForRefresh;
+	}
+	public void setCheckForRefresh(String checkForRefresh) {
+		this.checkForRefresh = checkForRefresh;
+	}
+	public File getAttendeesFile() {
+		return attendeesFile;
+	}
+	public void setAttendeesFile(File attendeesFile) {
+		this.attendeesFile = attendeesFile;
+	}
 	public MinistryBean getMinistryBean() {
 		return ministryBean;
 	}

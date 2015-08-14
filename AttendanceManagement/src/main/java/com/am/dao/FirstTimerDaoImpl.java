@@ -46,11 +46,25 @@ public class FirstTimerDaoImpl implements FirstTimerDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<FirstTimer> findFirstTimerByName(long sunday_service_id, String keyword){
-		String sql = "SELECT *, b.first_name||' '||b.last_name as fname_invite FROM asystem.first_timers f LEFT JOIN asystem.attendees a ON f.guest_id = a.attendees_id"+
-					" LEFT JOIN asystem.attendees b ON b.attendees_id = f.attendees_id WHERE f.sunday_service_id = ?"+ 
-					" AND (LOWER(a.first_name)like LOWER('%"+keyword+"%') OR LOWER(a.last_name)"+
-					" like LOWER('%"+keyword+"%') OR LOWER(a.middle_name) like LOWER('%"+keyword+"%')) order by f.create_time desc";
+	public List<FirstTimer> findFirstTimerByName(String firstName, String lastName, String MiddleName, int iSearch, long sunday_service_id){
+		// -- iSearch : 1 if 1 value | 2 if first_name and lastname | 3 if complete name
+				String sql = null;
+				if(iSearch <= 1){
+					sql = "SELECT *, b.first_name||' '||b.last_name as fname_invite FROM asystem.first_timers f LEFT JOIN asystem.attendees a ON f.guest_id = a.attendees_id"+
+							" LEFT JOIN asystem.attendees b ON b.attendees_id = f.attendees_id WHERE f.sunday_service_id = ?"+ 
+							" AND (LOWER(a.first_name)like LOWER('%"+firstName+"%') OR LOWER(a.last_name)"+
+							" like LOWER('%"+lastName+"%') OR LOWER(a.middle_name) like LOWER('%"+MiddleName+"%')) order by f.create_time desc";
+				}else if(iSearch == 2){
+					sql = "SELECT *, b.first_name||' '||b.last_name as fname_invite FROM asystem.first_timers f LEFT JOIN asystem.attendees a ON f.guest_id = a.attendees_id"+
+							" LEFT JOIN asystem.attendees b ON b.attendees_id = f.attendees_id WHERE f.sunday_service_id = ?"+ 
+							" AND (LOWER(a.first_name)like LOWER('%"+firstName+"%') AND LOWER(a.last_name)"+
+							" like LOWER('%"+lastName+"%')) order by f.create_time desc";
+				}else if(iSearch >=3){
+					sql = "SELECT *, b.first_name||' '||b.last_name as fname_invite FROM asystem.first_timers f LEFT JOIN asystem.attendees a ON f.guest_id = a.attendees_id"+
+							" LEFT JOIN asystem.attendees b ON b.attendees_id = f.attendees_id WHERE f.sunday_service_id = ?"+ 
+							" AND (LOWER(a.first_name)like LOWER('%"+firstName+"%') AND LOWER(a.last_name)"+
+							" like LOWER('%"+lastName+"%') AND LOWER(a.middle_name) like LOWER('%"+MiddleName+"%')) order by f.create_time desc";
+				}
 				SQLQuery sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(sql);
 				sqlQuery.addEntity(FirstTimer.class);
 				sqlQuery.setLong(0, sunday_service_id);

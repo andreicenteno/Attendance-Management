@@ -5,18 +5,11 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.am.bean.AttendeesBean;
-import com.am.bean.MinistryBean;
+
 import com.am.bean.SundayServiceBean;
 import com.am.common.BaseResponse;
 import com.am.common.BeanMapper;
-import com.am.model.Attendees;
-import com.am.model.Ministry;
 import com.am.model.SundayService;
-import com.am.service.AttendeesService;
-import com.am.service.GroupService;
-import com.am.service.MinistryService;
-import com.am.service.ServiceService;
 import com.am.service.SundayServiceService;
 
 

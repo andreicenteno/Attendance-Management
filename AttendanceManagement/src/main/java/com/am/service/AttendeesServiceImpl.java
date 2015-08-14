@@ -46,11 +46,11 @@ public class AttendeesServiceImpl implements AttendeesService{
 		return attendeesDao.findAttendeesOnSundayService(sunday_service_id);
 	}
 	
-	public List<Attendees> findAttendeesByName(String keyword){
-		return attendeesDao.findAttendeesByName(keyword);
+	public List<Attendees> findAttendeesByName(String firstName, String lastName, String MiddleName, int iSearch){
+		return attendeesDao.findAttendeesByName(firstName, lastName, MiddleName, iSearch);
 	}
 	
-	public List<Attendees> findAttendeesOnSundayServiceByName(long sunday_service_id, String keyword){
-		return attendeesDao.findAttendeesOnSundayServiceByName(sunday_service_id, keyword);
+	public List<Attendees> findAttendeesOnSundayServiceByName(String firstName, String lastName, String MiddleName, int iSearch, long sunday_service_id){
+		return attendeesDao.findAttendeesOnSundayServiceByName(firstName, lastName, MiddleName, iSearch, sunday_service_id);
 	}
 }

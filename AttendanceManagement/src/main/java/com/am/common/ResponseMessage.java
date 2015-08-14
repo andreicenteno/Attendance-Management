@@ -21,4 +21,6 @@ public interface ResponseMessage{
 	String INVALID_FORMAT= "Error in saving data! Please check your data format.";
 	String EMAIL_EXIST= "Email is already exist. Please use other email.";
 	
+	
+	
 }

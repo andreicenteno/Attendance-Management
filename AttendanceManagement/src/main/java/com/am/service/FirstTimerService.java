@@ -10,5 +10,5 @@ public interface FirstTimerService {
 	public void delete(FirstTimer entity);
 	public void update(FirstTimer entity);
 	public List<FirstTimer> findFirstTimerBySundayServiceId(long sunday_service_id);
-	public List<FirstTimer> findFirstTimerByName(long sunday_service_id, String keyword);
+	public List<FirstTimer> findFirstTimerByName(String firstName, String lastName, String MiddleName, int iSearch, long sunday_service_id);
 }

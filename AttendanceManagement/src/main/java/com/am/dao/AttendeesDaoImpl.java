@@ -31,11 +31,24 @@ public class AttendeesDaoImpl implements AttendeesDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Attendees> findAttendeesByName(String keyword){
-		String sql = "select * from asystem.attendees where (LOWER(first_name)"+
-					 " like LOWER('%"+keyword+"%') OR LOWER(last_name)"+
-					 " like LOWER('%"+keyword+"%') OR LOWER(middle_name)"+
-					 " like LOWER('%"+keyword+"%') )";
+	public List<Attendees> findAttendeesByName(String firstName, String lastName, String MiddleName, int iSearch){
+		// -- iSearch : 1 if 1 value | 2 if first_name and lastname | 3 if complete name
+		String sql = null;
+		if(iSearch <= 1){
+			sql = "select * from asystem.attendees where (LOWER(first_name)"+
+					 " like LOWER('%"+firstName+"%') OR LOWER(last_name)"+
+					 " like LOWER('%"+lastName+"%') OR LOWER(middle_name)"+
+					 " like LOWER('%"+MiddleName+"%') )";
+		}else if(iSearch == 2){
+			sql = "select * from asystem.attendees where (LOWER(first_name)"+
+					 " like LOWER('%"+firstName+"%') AND LOWER(last_name)"+
+					 " like LOWER('%"+lastName+"%') )";
+		}else if(iSearch >=3){
+			sql = "select * from asystem.attendees where (LOWER(first_name)"+
+					 " like LOWER('%"+firstName+"%') AND LOWER(last_name)"+
+					 " like LOWER('%"+lastName+"%') AND LOWER(middle_name)"+
+					 " like LOWER('%"+MiddleName+"%') )";
+		}
 		SQLQuery sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(sql);
 	    sqlQuery.addEntity(Attendees.class);
 	    return sqlQuery.list();
@@ -50,12 +63,27 @@ public class AttendeesDaoImpl implements AttendeesDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Attendees> findAttendeesOnSundayServiceByName(long sunday_service_id, String keyword){
-		String sql = "select * from asystem.attendees where attendees_id NOT IN (select attendees_id from asystem.sunday_service_attendees where sunday_service_id = "+sunday_service_id+")"+
+	public List<Attendees> findAttendeesOnSundayServiceByName(String firstName, String lastName, String MiddleName, int iSearch, long sunday_service_id){
+		// -- iSearch : 1 if 1 value | 2 if first_name and lastname | 3 if complete name
+				String sql = null;
+		if(iSearch <= 1){
+			sql = "select * from asystem.attendees where attendees_id NOT IN (select attendees_id from asystem.sunday_service_attendees where sunday_service_id = "+sunday_service_id+")"+
 					 " AND (LOWER(first_name)"+
-					 " like LOWER('%"+keyword+"%') OR LOWER(last_name)"+
-					 " like LOWER('%"+keyword+"%') OR LOWER(middle_name)"+
-					 " like LOWER('%"+keyword+"%') )";
+					 " like LOWER('%"+firstName+"%') OR LOWER(last_name)"+
+					 " like LOWER('%"+lastName+"%') OR LOWER(middle_name)"+
+					 " like LOWER('%"+MiddleName+"%') )";
+		}else if(iSearch == 2){
+			sql = "select * from asystem.attendees where attendees_id NOT IN (select attendees_id from asystem.sunday_service_attendees where sunday_service_id = "+sunday_service_id+")"+
+					 " AND (LOWER(first_name)"+
+					 " like LOWER('%"+firstName+"%') AND LOWER(last_name)"+
+					 " like LOWER('%"+lastName+"%'))";
+		}else if(iSearch >= 3){
+			sql = "select * from asystem.attendees where attendees_id NOT IN (select attendees_id from asystem.sunday_service_attendees where sunday_service_id = "+sunday_service_id+")"+
+					 " AND (LOWER(first_name)"+
+					 " like LOWER('%"+firstName+"%') AND LOWER(last_name)"+
+					 " like LOWER('%"+lastName+"%') AND LOWER(middle_name)"+
+					 " like LOWER('%"+MiddleName+"%') )";
+		}
 		SQLQuery sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(sql);
 	    sqlQuery.addEntity(Attendees.class);
 	    return sqlQuery.list();

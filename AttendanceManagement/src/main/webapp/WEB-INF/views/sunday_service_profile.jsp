@@ -12,11 +12,16 @@
 	content="Custom built online life group management for JIL or Jesus Is Lord">
 <meta name="author" content="Andrei Centeno">
 <link rel="icon" href="images/favicon.ico">
+<script src="${pageContext.request.contextPath}/resources/js/customize/notification_message.js" type="text/javascript"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/notification.css">
+<script src="${pageContext.request.contextPath}/resources/js/customize/autoComplete.js" type="text/javascript"></script>
 <title>Sunday Service Profile</title>
 
 
 </head>
 <body>
+	<div id="div_success" style="display:none;">${response}</div>
+	<div id="div_error" style="display:none;">${response}</div>
 	<div class="container-fluid">
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
@@ -53,7 +58,7 @@
 									<form:input path="sundayServiceId" value="${SUNDAY_SERVICE_ID}" type="hidden"/>		
 									<div class="controls">
 										<div class="input-group">
-											<form:input path="keywords" type="text" class="form-control"
+											<form:input id="attendeesProfileName" path="keywords" type="text" class="form-control"
 												placeholder="Search name..."></form:input>
 											<span class="input-group-btn">
 												<button class="btn btn-default" type="button">Go!</button>
@@ -84,7 +89,9 @@
 							<c:forEach items="${sundayServiceAttendeesList}" var="sundayServiceAttendeesList">
 					
 								<tr>
-									<th><c:out value='${sundayServiceAttendeesList.attendeesBean.firstName}' /></th>
+									<th><c:out value='${sundayServiceAttendeesList.attendeesBean.lastName}' />, 
+									<c:out value='${sundayServiceAttendeesList.attendeesBean.firstName}' />
+									&nbsp;<c:out value='${sundayServiceAttendeesList.attendeesBean.middleName}' /></th>
 									<th>
 									<c:if test="${sundayServiceAttendeesList.attendeesBean.gender eq true}">
 									<c:out value='Male' />

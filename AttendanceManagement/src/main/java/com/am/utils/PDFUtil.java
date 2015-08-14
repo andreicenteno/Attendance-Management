@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
+
 import com.am.common.Constant;
 import com.am.model.AttendeesSummaryView;
 import com.am.model.AttendeesView;
@@ -118,6 +119,23 @@ public class PDFUtil {
 
 	private PDFUtil() {
 
+	}
+	
+	public static void main(String[] args){
+		System.out.println("Hello World");
+		String Name = "Andrei Andrei Andrei Andrei";
+		String[] search = Name.trim().split(" ");
+		if(search.length >= 3){
+			System.out.println(search[0].trim());
+			System.out.println(search[1].trim());
+			System.out.println(search[2].trim());
+		}else if(search.length == 2){
+			System.out.println(search[0].trim());
+			System.out.println(search[1].trim());
+		}else{
+			System.out.println(search[0].trim());
+		}
+		
 	}
 
 	

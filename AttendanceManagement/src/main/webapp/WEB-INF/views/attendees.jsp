@@ -14,13 +14,13 @@
 <link rel="icon" href="images/favicon.ico">
 <script src="${pageContext.request.contextPath}/resources/js/customize/notification_message.js" type="text/javascript"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/notification.css">
-
+<script src="${pageContext.request.contextPath}/resources/js/customize/autoComplete.js" type="text/javascript"></script>
 <title>Attendees</title>
 
 </head>
 <body>
-	<div id="maintenance_success" style="display:none;">${response}</div>
-	<div id="maintenance_error" style="display:none;">${response}</div>
+	<div id="div_success" style="display:none;">${response}</div>
+	<div id="div_error" style="display:none;">${response}</div>
 	<div class="container-fluid">
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 			<h1 class="page-header">Attendees</h1>
@@ -28,17 +28,20 @@
 			<div class="row">
 				<div class="date-form">
 					<div class="form-horizontal">
-
+						
 						<a href="add_attendees.html"><button type="submit"
-								class="btn btn-default">Add Attendees</button></a><br /> <label
-							for="date-picker-3" class="control-label">Name</label>
+								class="btn btn-default">Add Attendees</button></a>
+						<a href="import_attendees.html"><button type="submit"
+								class="btn btn-default">Import Attendees</button></a>
+						<br/>		
+						<label for="date-picker-3" class="control-label">Name</label>
 						
 						<div class="control-group">
 							<form:form method="GET" style="align-items: center;" class="form-horizontal" 
 										action="search_attendees.html" modelAttribute="attendees">
 								<div class="controls">
 									<div class="input-group">
-										<form:input path="keywords" type="text" class="form-control"
+										<form:input id="attendeesName" path="keywords" type="text" class="form-control"
 											placeholder="Search name..."></form:input>
 										<span class="input-group-btn">
 											<button class="btn btn-default" type="button">Go!</button>
@@ -70,7 +73,8 @@
 						<c:if test="${!empty attendeesList}">
 							<c:forEach items="${attendeesList}" var="attendeesList">
 								<tr>
-									<th><c:out value='${attendeesList.firstName}' /> &nbsp; <c:out
+									<th><c:out value='${attendeesList.firstName}' />  &nbsp; <c:out
+											value='${attendeesList.middleName}' />&nbsp; <c:out
 											value='${attendeesList.lastName}' /></th>
 									<th><c:out value='${attendeesList.contactNumber}' /></th>
 									<th><c:if test="${attendeesList.gender eq true}">

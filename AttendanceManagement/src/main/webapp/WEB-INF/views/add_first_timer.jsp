@@ -13,12 +13,15 @@
 <meta name="author" content="Andrei Centeno">
 <link rel="icon" href="images/favicon.ico">
 <title>Sunday Service First Timer</title>
-<script
-	src="${pageContext.request.contextPath}/resources/js/customize/common.js"
-	type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/resources/js/customize/common.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/resources/js/customize/notification_message.js" type="text/javascript"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/notification.css">
+<script src="${pageContext.request.contextPath}/resources/js/customize/autoComplete.js" type="text/javascript"></script>
 
 </head>
 <body>
+	<div id="div_success" style="display:none;">${response}</div>
+	<div id="div_error" style="display:none;">${response}</div>
 	<div class="container-fluid">
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 

@@ -68,6 +68,11 @@
   		<put-attribute name="title" value="Add Attendees"></put-attribute>  
         <put-attribute name="body" value="/WEB-INF/views/add_attendees.jsp"></put-attribute> 
  </definition> 
+ 
+ <definition extends="base.definition" name="import_attendees">  
+  		<put-attribute name="title" value="Import Attendees"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/import_attendees.jsp"></put-attribute> 
+ </definition> 
 
 <definition extends="base.definition" name="update_attendees">  
   		<put-attribute name="title" value="Update Attendees"></put-attribute>  

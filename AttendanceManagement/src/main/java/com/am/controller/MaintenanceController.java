@@ -83,7 +83,7 @@ public class MaintenanceController extends BeanMapper{
 			baseResponse = maintenanceOperation.insertMinistry(ministryBean);
 			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
 				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
-				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
 			}else{
 				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
 			}
@@ -101,8 +101,8 @@ public class MaintenanceController extends BeanMapper{
 		try{
 			baseResponse = maintenanceOperation.updateMinistry(ministryBean);
 			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
-				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
-				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SEARCH_RESULT.getCode());
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
 			}else{
 				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
 			}
@@ -121,7 +121,7 @@ public class MaintenanceController extends BeanMapper{
 			baseResponse = maintenanceOperation.deleteMinistry(ministryBean);
 			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
 				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
-				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
 			}else{
 				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
 			}
@@ -147,7 +147,7 @@ public class MaintenanceController extends BeanMapper{
 			baseResponse = maintenanceOperation.insertGroup(groupBean);
 			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
 				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
-				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
 			}else{
 				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
 			}
@@ -176,7 +176,7 @@ public class MaintenanceController extends BeanMapper{
 			baseResponse = maintenanceOperation.updateGroup(groupBean);
 			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
 				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
-				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
 			}else{
 				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
 			}
@@ -195,7 +195,7 @@ public class MaintenanceController extends BeanMapper{
 			baseResponse = maintenanceOperation.deleteGroup(groupBean);
 			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
 				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
-				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
 			}else{
 				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
 			}
@@ -221,7 +221,7 @@ public class MaintenanceController extends BeanMapper{
 			baseResponse = maintenanceOperation.insertService(serviceBean);
 			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
 				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
-				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
 			}else{
 				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
 			}
@@ -251,7 +251,7 @@ public class MaintenanceController extends BeanMapper{
 			baseResponse = maintenanceOperation.updateService(serviceBean);
 			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
 				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
-				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
 			}else{
 				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
 			}
@@ -269,7 +269,7 @@ public class MaintenanceController extends BeanMapper{
 			baseResponse = maintenanceOperation.deleteService(serviceBean);
 			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
 				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
-				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.MAINTENANCE_SUCCESS));
+				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
 			}else{
 				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
 			}
