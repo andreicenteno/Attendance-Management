@@ -94,4 +94,27 @@ $(document).ready(function() {
 	 });
 	 
 	 
+	 $(function() {
+			$("#invitedByAttendee").autocomplete({
+				 source: function(request, response) {
+					 $.ajax({
+						 url: "/attendance_management/getAttendeesFirstTimer.html",
+						 type: "POST",
+						 data: { term: request.term },
+						 dataType: "json",
+						 multiple:true,
+						 success: function(data) {
+					   	 response($.map(data, function(v){
+							 return {
+							 label: v.tagName,
+							 value: v.tagName
+							 };	
+						 }
+					   	 ));
+						}
+				 });
+			  }
+		 });
+	 });
+	 
 });

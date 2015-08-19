@@ -12,8 +12,6 @@ public class AttendeesBean{
 	private String contactNumber;
 	private String birthday;
 	private Boolean gender;
-	private Boolean isFirstTimer;
-	private Timestamp firstTimerDate;
 	private Boolean isMember;
 	private Timestamp memberDate;
 	private Timestamp createTime;
@@ -113,18 +111,7 @@ public class AttendeesBean{
 	public void setGender(Boolean gender) {
 		this.gender = gender;
 	}
-	public Boolean getIsFirstTimer() {
-		return isFirstTimer;
-	}
-	public void setIsFirstTimer(Boolean isFirstTimer) {
-		this.isFirstTimer = isFirstTimer;
-	}
-	public Timestamp getFirstTimerDate() {
-		return firstTimerDate;
-	}
-	public void setFirstTimerDate(Timestamp firstTimerDate) {
-		this.firstTimerDate = firstTimerDate;
-	}
+	
 	public Boolean getIsMember() {
 		return isMember;
 	}
@@ -155,13 +142,14 @@ public class AttendeesBean{
 				+ firstName + ", lastName=" + lastName + ", middleName="
 				+ middleName + ", address=" + address + ", contactNumber="
 				+ contactNumber + ", birthday=" + birthday + ", gender="
-				+ gender + ", isFirstTimer=" + isFirstTimer
-				+ ", firstTimerDate=" + firstTimerDate + ", isMember="
-				+ isMember + ", memberDate=" + memberDate + ", createTime="
-				+ createTime + ", updateTime=" + updateTime + ", toString()="
-				+ super.toString() + "]";
+				+ gender + ", isMember=" + isMember + ", memberDate="
+				+ memberDate + ", createTime=" + createTime + ", updateTime="
+				+ updateTime + ", groupBean=" + groupBean + ", ministryBean="
+				+ ministryBean + ", keywords=" + keywords
+				+ ", sundayServiceId=" + sundayServiceId + ", attendeesFile="
+				+ attendeesFile + ", checkForRefresh=" + checkForRefresh
+				+ ", toString()=" + super.toString() + "]";
 	}
-	
 	
 	
 }

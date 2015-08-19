@@ -76,6 +76,7 @@
 						<tr>
 							<th>Name</th>
 							<th class="hidden-xs hidden-sm">Address</th>
+							<th class="hidden-xs hidden-sm">Status</th>
 							<th>Remarks</th>
 							<th>Invited by</th>
 							
@@ -90,6 +91,8 @@
 									<c:out value='${firstTimerList.guestBean.lastName}' /></th>
 									<th class="hidden-xs hidden-sm"><c:out
 											value='${firstTimerList.guestBean.address}' /></th>
+									<th class="hidden-xs hidden-sm"><c:out
+											value='${firstTimerList.firstTimerStatusBean.firstTimerStatus}' /></th>
 									<th><c:out value='${firstTimerList.remarks}' /></th>
 									<th><c:out value='${firstTimerList.attendeesBean.firstName}' /> &nbsp; <c:out value='${firstTimerList.attendeesBean.lastName}' /></th>
 								</tr>

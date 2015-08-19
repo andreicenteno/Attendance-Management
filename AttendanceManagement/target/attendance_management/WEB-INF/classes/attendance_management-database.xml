@@ -24,13 +24,12 @@
 	  <property name="password" value="Helloworld0@" />
 	 </bean> -->
 		
- 	 <!--  <bean id="dataSource" class="org.postgresql.ds.PGPoolingDataSource" destroy-method="close">
-	  <property name="serverName" value="test-cheers.cqw0u5iepa5f.ap-southeast-1.rds.amazonaws.com" />
-	  <property name="databaseName" value="cheers" />
+ 	  <bean id="dataSource" class="org.postgresql.ds.PGPoolingDataSource" destroy-method="close">
+	  <property name="serverName" value="localhost" />
+	  <property name="databaseName" value="asystem" />
 	  <property name="portNumber" value="5432" />
-	  <property name="user" value="cheersuser"/>
-	  <property name="password" value="TonY$tArkS" />
-	 </bean> -->
-	
+	  <property name="user" value="lgmaster"/>
+	  <property name="password" value="lgmaster123" />
+	 </bean>
  
 </beans>

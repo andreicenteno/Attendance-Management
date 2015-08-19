@@ -17,13 +17,14 @@ public class FirstTimerDaoImpl implements FirstTimerDao {
 	private SessionFactory sessionFactory;
 	
 	public void insert(FirstTimer entity){
-		String sql = "INSERT INTO asystem.first_timers (sunday_service_id, attendees_id, guest_id, remarks) VALUES (?, ?, ?, ?)";
+		String sql = "INSERT INTO asystem.first_timers (sunday_service_id, attendees_id, guest_id, remarks, first_timer_status_id) VALUES (?, ?, ?, ?, ?)";
 		SQLQuery sqlQuery = sessionFactory.getCurrentSession().createSQLQuery(sql);
 	  sqlQuery.addEntity(FirstTimer.class);
 	  sqlQuery.setLong(0, entity.getSundayService().getId());
 	  sqlQuery.setLong(1, entity.getAttendeesId());
 	  sqlQuery.setLong(2, entity.getAttendeesGuest().getId());
 	  sqlQuery.setString(3, entity.getRemarks());
+	  sqlQuery.setLong(4, entity.getFirstTimerStatus().getId());
 	  sqlQuery.executeUpdate();
 	}
 

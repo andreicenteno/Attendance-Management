@@ -1,10 +1,10 @@
 function changeReasonChange(){
 	if(document.getElementById('remarks_change').value == 'Invited'){
-	      document.getElementById('invited_by').style.display = 'block';
+	      document.getElementById('invitedByAttendee').style.display = 'block';
 	      document.getElementById('others_invited').style.display = 'block';
 	}
 	else{
-		document.getElementById('invited_by').style.display = 'none';
+		document.getElementById('invitedByAttendee').style.display = 'none';
 	    document.getElementById('others_invited').style.display = 'none';
 	}
 }

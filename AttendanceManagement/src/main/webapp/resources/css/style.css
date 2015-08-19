@@ -4,6 +4,19 @@
 	margin-top: 300px;
 }
 
+.error {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #FFFFFF;
+    background-color: #82010B;
+    border-color: #ebccd1;
+    font-size: inherit;
+    font-weight: 600;
+    text-align: center;
+}
+
 /********* LOGIN PAGE *********/
 .wrapper {	
   margin-top: 80px;
@@ -21,7 +34,8 @@
 	.checkbox {
 	  margin-bottom: 30px;
 	}
-
+	
+	
 	.checkbox {
 	  font-weight: normal;
 	}
@@ -51,7 +65,11 @@
 	}
 }
 
-
+h4{
+	color: #28288A; 
+	font-weight: bolder;
+	font-size: x-large;
+}
 
 
 /********* LEAVES FULL CALENDAR *********/

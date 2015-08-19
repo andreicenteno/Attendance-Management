@@ -1,1 +1,1 @@
-<p>©2015 Footer Property of Andrei Centeno</p>
+<p>©2015 Attendance Management. Jesus is Lord Church Bulihan.</p>

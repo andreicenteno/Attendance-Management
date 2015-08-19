@@ -192,6 +192,8 @@ public class ReportController extends BeanMapper{
 	    	  if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() == 0 && attendeesReportBean.getGender().equals("all")){ // all
 					ReportQuery = "All Attendees";
 					views = "all";
+					listAttendeesViews = prepareListAttendeesView(attendeesReportBean);
+			    	  recordSize = listAttendeesViews.size();
 			     }else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() == 0 && !attendeesReportBean.getGender().equals("all")){ // gender
 			    	  if(attendeesReportBean.getGender().equals("true")){
 			    		  ReportQuery = "All Male Attendees";
@@ -200,15 +202,21 @@ public class ReportController extends BeanMapper{
 			    		  ReportQuery = "All Female Attendees";
 			    		  views = "female";
 			    	  }
+			    	  listAttendeesViews = prepareListAttendeesView(attendeesReportBean);
+			    	  recordSize = listAttendeesViews.size();
 			     }else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() == 0 && attendeesReportBean.getGender().equals("all")){ // group
 			    	  Group group = groupService.getGroup(attendeesReportBean.getGroupId());
 			    	  ReportQuery = "All "+group.getGroupName()+" Attendees";
 			    	  views = "others";
+			    	  listAttendeesViews = prepareListAttendeesView(attendeesReportBean);
+			    	  recordSize = listAttendeesViews.size();
 			     }
 			     else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() != 0 && attendeesReportBean.getGender().equals("all")){ // ministry
 			    	  Ministry ministry = ministryService.getMinistry(attendeesReportBean.getMinistryId());
 			    	  ReportQuery = "All "+ministry.getMinistryName()+" Attendees";
 			    	  views = "others";
+			    	  listAttendeesViews = prepareListAttendeesView(attendeesReportBean);
+			    	  recordSize = listAttendeesViews.size();
 			     }else{
 			    	 views = "others";
 			    	 Group group = new Group();

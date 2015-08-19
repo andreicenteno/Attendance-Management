@@ -25,7 +25,11 @@ public class ErrorHandler{
 		}else if(baseResponse.getResponseCode() == ResponseCode.TECHNICAL_ERROR.getCode()){
 			modelMap.addAttribute(Constant.RESPONSE, ResponseCode.TECHNICAL_ERROR.getCode());
 			response.addCookie(new Cookie(Constant.NOTIFICATION,Constant.DIV_ERROR));
+		}else if(baseResponse.getResponseCode() == ResponseCode.RECORD_NOT_EXIST.getCode()){
+			modelMap.addAttribute(Constant.RESPONSE, ResponseCode.RECORD_NOT_EXIST.getCode());
+			response.addCookie(new Cookie(Constant.NOTIFICATION,Constant.DIV_ERROR));
 		}
+		
 	}
 	
 	
@@ -65,6 +69,8 @@ public class ErrorHandler{
 						modelMap.addAttribute(Constant.RESPONSE, ResponseMessage.EMAIL_EXIST);
 					else if(request.getParameter(Constant.RESPONSE).toString().equals(String.valueOf(ResponseCode.TECHNICAL_ERROR.getCode())))
 						modelMap.addAttribute(Constant.RESPONSE, ResponseMessage.TECHNICAL_ERROR);
+					else if(request.getParameter(Constant.RESPONSE).toString().equals(String.valueOf(ResponseCode.RECORD_NOT_EXIST.getCode())))
+						modelMap.addAttribute(Constant.RESPONSE, ResponseMessage.RECORD_NOT_EXIST);
 					else if(request.getParameter("HIDE_IMPORT").toString().equals("YES")){
 						modelMap.addAttribute(Constant.RESPONSE, "SUCCESSFULLY UPLOADED FILE IN OUR DATABASE! You can now check attendees information on Attendees tab.");
 					}

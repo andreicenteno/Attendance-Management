@@ -59,6 +59,38 @@
 			<form:form method="POST" style="align-items: center;" class="form-horizontal" action="insert_first_timer.html"
 						modelAttribute="first_timer">
 				<form:input path="sundayServiceBean.sundayServiceId" type="hidden" class="form-control" value="${SUNDAY_SERVICE_ID}"></form:input>
+				
+				
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Remarks</label>
+					<div class="col-sm-10">
+						<form:select path="remarks" id="remarks_change" class="form-control" onchange="return changeReasonChange();">
+							<form:option path="remarks" value="Walk-in">Walk-In</form:option>
+							<form:option path="remarks" value="Invited">Invited</form:option>
+						</form:select>
+						<br/><p id="others_invited" style="display:none;">Invited by:</p>
+						<form:input style="display:none;" path="attendeesBean.keywords" id="invitedByAttendee" type="text" class="form-control" placeholder="Invited By"></form:input>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-sm-2 control-label">First Timer Status</label>
+					<div class="col-sm-10">
+						<form:select path="firstTimerStatusBean.firstTimerStatusId" id="leave_type"
+							class="form-control">
+							<c:if test="${!empty firstTimerList}">
+								<c:forEach items="${firstTimerList}" var="firstTimerList">
+									<form:option path="firstTimerStatusBean.firstTimerStatusId"
+										value="${firstTimerList.firstTimerStatusId}">
+										<c:out value='${firstTimerList.firstTimerStatus}' />
+									</form:option>
+								</c:forEach>
+							</c:if>
+						</form:select>
+					</div>
+				</div>
+				
+				
 				<div class="form-group">
 					<label class="col-sm-2 control-label">First Name</label>
 					<div class="col-sm-10">
@@ -88,8 +120,7 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Address</label>
 					<div class="col-sm-10">
-						<form:input path="guestBean.address" type="text" class="form-control"
-							placeholder="Address"></form:input>
+						<form:input path="guestBean.address" type="text" class="form-control" placeholder="Address"></form:input>
 						<br />
 					</div>
 				</div>
@@ -159,20 +190,6 @@
 					</div>
 				</div>
 				
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Remarks</label>
-					<div class="col-sm-10">
-						<form:select path="remarks" id="remarks_change" class="form-control" onchange="return changeReasonChange();">
-							<form:option path="remarks" value="Walk-in">Walk-In</form:option>
-							<form:option path="remarks" value="Invited">Invited</form:option>
-						</form:select>
-						<br/><p id="others_invited" style="display:none;">Invited by:</p>
-						<form:select style="display:none;" path="attendeesBean.attendeesId" id="invited_by" class="form-control">
-							<form:option path="attendeesBean.attendeesId" value="700">Pearlyn Tan</form:option>
-							<form:option path="attendeesBean.attendeesId" value="700">Pearlyn Tan</form:option>
-						</form:select>
-					</div>
-				</div>
 				
 
 				<div class="form-group">

@@ -23,7 +23,7 @@
   <body>
       <div class="wrapper">
     <form class="form-signin" action="dashboard.html" method="post">       
-      <h2 class="form-signin-heading">Account Management</h2>
+      <h2 class="form-signin-heading">Attendance Management</h2>
       <input type="text" class="form-control" name="username" placeholder="Email Address" required="" autofocus="" />
       <input type="password" class="form-control" name="password" placeholder="Password" required=""/>      
       <label class="checkbox" style="padding-left: 20px;">

@@ -14,13 +14,13 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.am.bean.AttendeesBean;
 import com.am.bean.AttendeesSummaryViewBean;
 import com.am.bean.AttendeesViewBean;
 import com.am.bean.FirstTimerBean;
+import com.am.bean.FirstTimerStatusBean;
 import com.am.bean.GroupBean;
 import com.am.bean.MinistryBean;
 import com.am.bean.ServiceAttendanceViewBean;
@@ -31,6 +31,7 @@ import com.am.model.Attendees;
 import com.am.model.AttendeesSummaryView;
 import com.am.model.AttendeesView;
 import com.am.model.FirstTimer;
+import com.am.model.FirstTimerStatus;
 import com.am.model.Group;
 import com.am.model.Ministry;
 import com.am.model.ServiceAttendanceView;
@@ -119,8 +120,6 @@ public class BeanMapper extends EntityMapper{
 				bean.setContactNumber(entity.getContactNumber());
 				bean.setBirthday(ConvertionUtil.convertFormatter1().format(ConvertionUtil.formatDate(entity.getBirthday().toString())));
 				bean.setGender(entity.getGender());
-				bean.setIsFirstTimer(entity.getIsFirstTimer());
-				bean.setFirstTimerDate(entity.getFirstTimerDate());
 				bean.setIsMember(entity.getIsMember());
 				bean.setMemberDate(entity.getMemberDate());
 				bean.setCreateTime(entity.getCreateTime());
@@ -156,8 +155,6 @@ public class BeanMapper extends EntityMapper{
 		bean.setContactNumber(entity.getContactNumber());
 		bean.setBirthday(ConvertionUtil.convertFormatter1().format(ConvertionUtil.formatDate(entity.getBirthday().toString())));
 		bean.setGender(entity.getGender());
-		bean.setIsFirstTimer(entity.getIsFirstTimer());
-		bean.setFirstTimerDate(entity.getFirstTimerDate());
 		bean.setIsMember(entity.getIsMember());
 		bean.setMemberDate(entity.getMemberDate());
 		bean.setCreateTime(entity.getCreateTime());
@@ -407,6 +404,11 @@ public class BeanMapper extends EntityMapper{
 				
 				bean.setRemarks(entity.getRemarks());
 			
+				FirstTimerStatusBean firstTimerStatusBean = new FirstTimerStatusBean();
+				firstTimerStatusBean.setFirstTimerStatusId(entity.getFirstTimerStatus().getId());
+				firstTimerStatusBean.setFirstTimerStatus(entity.getFirstTimerStatus().getFirstTimerStatus());
+				bean.setFirstTimerStatusBean(firstTimerStatusBean);
+				
 				bean.setCreateTime(entity.getCreateTime());
 				bean.setUpdateTime(entity.getUpdateTime());
 				beans.add(bean);
@@ -444,6 +446,24 @@ public class BeanMapper extends EntityMapper{
 		return bean;
 	}
 	
+	
+	public List<FirstTimerStatusBean> prepareListOfFirstTimerStatus(List<FirstTimerStatus> firstTimerStatus) {
+		List<FirstTimerStatusBean> beans = null;
+		if (firstTimerStatus != null && !firstTimerStatus.isEmpty()) {
+			beans = new ArrayList<FirstTimerStatusBean>();
+			FirstTimerStatusBean bean = null;
+			for (FirstTimerStatus entity : firstTimerStatus) {
+				bean = new FirstTimerStatusBean();
+				bean.setFirstTimerStatusId(entity.getId());
+				bean.setFirstTimerStatus(entity.getFirstTimerStatus());
+				bean.setDescription(entity.getDescription());
+				bean.setCreateTime(entity.getCreateTime());
+				bean.setUpdateTime(entity.getUpdateTime());
+				beans.add(bean);
+			}
+		}
+		return beans;
+	}
 	
 	
 }

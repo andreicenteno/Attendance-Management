@@ -20,7 +20,7 @@ public interface ResponseMessage{
 	String REQUIRED_FIELD = "Error in saving data! Please make sure all the required fields are filled out correctly.";
 	String INVALID_FORMAT= "Error in saving data! Please check your data format.";
 	String EMAIL_EXIST= "Email is already exist. Please use other email.";
-	
+	String RECORD_NOT_EXIST = "The record that you entered cannot find in our database. Please double check your data entered";
 	
 	
 }

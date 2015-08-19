@@ -7,6 +7,7 @@ public class FirstTimerBean{
 	private SundayServiceBean sundayServiceBean;
 	private AttendeesBean attendeesBean;
 	private AttendeesBean guestBean;
+	private FirstTimerStatusBean firstTimerStatusBean;
 	private String remarks;
 	private Timestamp createTime;
 	private Timestamp updateTime;
@@ -14,6 +15,12 @@ public class FirstTimerBean{
 	
 	
 	
+	public FirstTimerStatusBean getFirstTimerStatusBean() {
+		return firstTimerStatusBean;
+	}
+	public void setFirstTimerStatusBean(FirstTimerStatusBean firstTimerStatusBean) {
+		this.firstTimerStatusBean = firstTimerStatusBean;
+	}
 	public SundayServiceBean getSundayServiceBean() {
 		return sundayServiceBean;
 	}

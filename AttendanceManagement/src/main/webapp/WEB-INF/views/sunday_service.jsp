@@ -19,8 +19,8 @@
 
 </head>
 <body>
-	<div id="maintenance_success" style="display:none;">${response}</div>
-	<div id="maintenance_error" style="display:none;">${response}</div>
+	<div id="div_success" style="display:none;">${response}</div>
+	<div id="div_error" style="display:none;">${response}</div>
 	
 	<div class="container-fluid">
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

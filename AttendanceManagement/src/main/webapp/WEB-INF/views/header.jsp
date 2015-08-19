@@ -47,7 +47,7 @@
             <li><a href="reports.html">Report</a></li>
             <li><a href="maintenance.html">Maintenance</a></li>
 		   	<li><a href="#" style="color:white;"> | </a></li>
-           	<li><a href="#">Logout</a></li>
+           	<li><a href="<c:url value="/j_spring_security_logout" />" style="color:white;">Logout</a></li>
            </ul>
          <ul class="mobile_navbar nav navbar-nav navbar-right">
          	<li class="active"><a href="dashboard.html">Dashboard<span class="sr-only">(current)</span></a></li>
@@ -55,7 +55,7 @@
             <li><a href="attendees.html">Attendees</a></li>
             <li><a href="reports.html">Report</a></li>
             <li><a href="maintenance.html">Maintenance</a></li>
-            <li><a href="#">Logout</a></li>
+            <li><a href="<c:url value="/j_spring_security_logout" />" style="color:white;">Logout</a></li>
           </ul>
          
           

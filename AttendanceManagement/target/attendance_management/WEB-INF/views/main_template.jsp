@@ -11,11 +11,7 @@
 	<tiles:insertAttribute name="title" ignore="true"></tiles:insertAttribute>
 </title>
 	<!-- --Include transition of tabs, main layout design -- -->
-	<%-- <link href="${pageContext.request.contextPath}/resources/css/tabs.css" rel="stylesheet"/> 
-	<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet"/>
-	<script src="${pageContext.request.contextPath}/resources/js/jquery-1.8.1.min.js" type="text/javascript"></script>
-	<script src="${pageContext.request.contextPath}/resources/js/tabs.js" type="text/javascript"></script> --%>
-	
+
 </head>
 
 <body>
@@ -33,9 +29,6 @@
         
     </tr>
     <tr>
-        <%-- <td width="15%" valign="top">
-        	<tiles:insertAttribute name="menu"></tiles:insertAttribute>
-        </td> --%>
         <td width="100%" valign="top">
         	<div id="mainBorder"><tiles:insertAttribute name="body"></tiles:insertAttribute></div>
         </td>

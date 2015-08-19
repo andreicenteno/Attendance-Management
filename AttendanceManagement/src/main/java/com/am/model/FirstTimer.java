@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,8 +15,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
+
 
 @Entity
 @Table(name="first_timers", schema="asystem")
@@ -42,7 +40,9 @@ private static final long serialVersionUID = -723583058586873479L;
 	@Column(name="attendees_id", nullable=true)
 	private long attendeesId;
 
-	
+	@ManyToOne
+	@JoinColumn(name = "first_timer_status_id", nullable=true)
+	private FirstTimerStatus firstTimerStatus;
 	
 	@ManyToOne
 	@JoinColumn(name = "guest_id", nullable=true)
@@ -62,6 +62,14 @@ private static final long serialVersionUID = -723583058586873479L;
 	
 	
 	
+	public FirstTimerStatus getFirstTimerStatus() {
+		return firstTimerStatus;
+	}
+
+	public void setFirstTimerStatus(FirstTimerStatus firstTimerStatus) {
+		this.firstTimerStatus = firstTimerStatus;
+	}
+
 	public String getFirstNameInvite() {
 		return firstNameInvite;
 	}
@@ -130,6 +138,17 @@ private static final long serialVersionUID = -723583058586873479L;
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	@Override
+	public String toString() {
+		return "FirstTimer [id=" + id + ", remarks=" + remarks
+				+ ", sundayService=" + sundayService + ", attendeesId="
+				+ attendeesId + ", firstTimerStatus=" + firstTimerStatus
+				+ ", attendeesGuest=" + attendeesGuest + ", createTime="
+				+ createTime + ", updateTime=" + updateTime
+				+ ", firstNameInvite=" + firstNameInvite + ", toString()="
+				+ super.toString() + "]";
 	}
 
 	

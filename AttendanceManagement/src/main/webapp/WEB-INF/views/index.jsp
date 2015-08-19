@@ -1,3 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+    <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    <%@page session="true"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -22,14 +27,23 @@
   </head>
   <body>
       <div class="wrapper">
-    <form class="form-signin" action="dashboard.html" method="post">       
-      <h2 class="form-signin-heading">Attendance Management</h2>
-      <input type="text" class="form-control" name="username" placeholder="Email Address" required="" autofocus="" />
-      <input type="password" class="form-control" name="password" placeholder="Password" required=""/>      
+    <form class="form-signin" action="${pageContext.request.contextPath}/j_spring_security_check" method="POST">       
+      <h4 class="form-signin-heading" style="">Attendance Management</h4>
+      <img class="img-responsive" src="${pageContext.request.contextPath}/resources/images/jil_logo_banner.jpg" style="height: 86px; width:293px; ">
+        <c:if test="${not empty error}">
+            <div class="error">${error}</div>
+          </c:if>
+          <c:if test="${not empty msg}">
+            <div class="msg">${msg}</div>
+        </c:if>
+      <input type="text" class="form-control" name="j_username" placeholder="Email Address" required="" autofocus="" />
+      <input type="password" class="form-control" name="j_password" placeholder="Password" required=""/>      
       <label class="checkbox" style="padding-left: 20px;">
-        <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
+        <input type="checkbox" value="remember-me" id="rememberMe" name="_spring_security_remember_me"> Remember me
       </label>
       <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>   
+      <a href="forgot_password.html" style="color:white;">Forgot Password</a>
+       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
     </form>
   </div>
 

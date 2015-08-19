@@ -46,6 +46,7 @@ import com.am.operation.ServiceAttendeesOperation;
 import com.am.operation.SundayServiceOperation;
 import com.am.service.AttendeesService;
 import com.am.service.FirstTimerService;
+import com.am.service.FirstTimerStatusService;
 import com.am.service.GroupService;
 import com.am.service.MinistryService;
 import com.am.service.ServiceAttendanceViewService;
@@ -91,6 +92,10 @@ public class SundayServiceController extends BeanMapper {
 	
 	@Autowired
 	private SundayServiceOperation sundayServiceOperation;
+	
+	@Autowired
+	private FirstTimerStatusService firstTimerStatusService;
+	
 	
 	@Autowired
 	private SundayServiceAttendeesService sundayServiceAttendeesService;
@@ -231,6 +236,7 @@ public class SundayServiceController extends BeanMapper {
 		try{
 			model.put("groupList", prepareListOfGroup(groupService.listGroup()));
 			model.put("ministryList", prepareListOfMinistry(ministryService.listMinistry()));
+			model.put("firstTimerList", prepareListOfFirstTimerStatus(firstTimerStatusService.listFirstTimerStatus()));
 			model.put("sundayServiceDetails", prepareSundayServiceBean(sundayServiceService.getSundayService(sundayServiceBean.getSundayServiceId())));
 			modelMap.addAttribute("SUNDAY_SERVICE_ID", sundayServiceBean.getSundayServiceId());
 		}catch(Exception e){
@@ -248,18 +254,53 @@ public class SundayServiceController extends BeanMapper {
 		Map<String, Object> model = new HashMap<String, Object>();
 		BaseResponse baseResponse = null;
 		try{
+			Boolean checkInvitedBy = false;
+			//-- if  remarks is invited / validate the invited by
+			if(firstTimerBean.getRemarks().equals("Invited")){
+				String[] search = firstTimerBean.getAttendeesBean().getKeywords().trim().split(" ");
+				String firstName, lastName, middleName = null;
+				if(search.length >= 3){
+					firstName = search[0].trim();
+					middleName = search[1].trim();
+					lastName = search[2].trim();
+				}else if(search.length == 2){
+					firstName = search[0].trim();
+					lastName = search[1].trim();
+					middleName = "#";
+				}else{
+					middleName = lastName = firstName = search[0].trim();
+				}
+				
+				List<Attendees> listAttendees = attendeesService.findAttendeesByName(firstName, lastName, middleName, search.length);
+				if(listAttendees.size() == 1){
+					Attendees attendees = listAttendees.get(0);
+					AttendeesBean attendeesBean2 = new AttendeesBean();
+					attendeesBean2.setAttendeesId(attendees.getId());
+					firstTimerBean.setAttendeesBean(attendeesBean2);
+					checkInvitedBy = true;
+				}
+			}else{
+				checkInvitedBy = true;
+			}
+			if(checkInvitedBy){
+				//-- Insert to attendees table
+				baseResponse = prepareAttendeesFirstTimerModel(firstTimerBean);
+				if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
+					modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
+					response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
+				}else{
+					ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
+				}
+				
+			}else{
+				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.RECORD_NOT_EXIST.getCode());
+			}
 			model.put("sundayServiceDetails", prepareSundayServiceBean(sundayServiceService.getSundayService(firstTimerBean.getSundayServiceBean().getSundayServiceId())));
 			modelMap.addAttribute("SUNDAY_SERVICE_ID", firstTimerBean.getSundayServiceBean().getSundayServiceId());
-			//-- Insert to attendees table
-			baseResponse = prepareAttendeesFirstTimerModel(firstTimerBean);
-			if(baseResponse.getResponseCode() == ResponseCode.SUCCESSFUL.getCode()){
-				modelMap.addAttribute(Constant.RESPONSE, ResponseCode.SUCCESSFUL.getCode());
-				response.addCookie(new Cookie(Constant.NOTIFICATION, Constant.DIV_SUCCESS));
-			}else{
-				ErrorHandler.HandleErrorMessageRedirect(response, baseResponse, modelMap);
-			}
+			
 		}catch(Exception e){
 			System.out.println(e);
+			modelMap.addAttribute(Constant.RESPONSE, ResponseCode.TECHNICAL_ERROR.getCode());
 		}
 		return new ModelAndView("redirect:/service_first_timer.html?sundayServiceId="+sundayServiceAttendeesBean.getSundayServiceBean().getSundayServiceId());
 	}

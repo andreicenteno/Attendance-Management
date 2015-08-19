@@ -22,6 +22,109 @@
         <put-attribute name="body" value="/WEB-INF/views/dashboard.jsp"></put-attribute> 
  </definition> 
 
+<definition extends="base.definition" name="sunday_service">  
+  		<put-attribute name="title" value="Sunday Service"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/sunday_service.jsp"></put-attribute> 
+ </definition> 
+
+<definition extends="base.definition" name="sunday_service_profile">  
+  		<put-attribute name="title" value="Sunday Service Profile"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/sunday_service_profile.jsp"></put-attribute> 
+ </definition> 
+
+<definition extends="base.definition" name="service_first_timer">  
+  		<put-attribute name="title" value="Sunday Service First Timer"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/service_first_timer.jsp"></put-attribute> 
+ </definition> 
+
+<definition extends="base.definition" name="add_first_timer">  
+  		<put-attribute name="title" value="Add First Timer"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/add_first_timer.jsp"></put-attribute> 
+ </definition> 
+
+<definition extends="base.definition" name="add_sunday_service">  
+  		<put-attribute name="title" value="Add Sunday Service"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/add_sunday_service.jsp"></put-attribute> 
+ </definition> 
+
+<definition extends="base.definition" name="sunday_service_attendees">  
+  		<put-attribute name="title" value="Sunday Service Attendees"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/sunday_service_attendees.jsp"></put-attribute> 
+ </definition> 
+
+<definition extends="base.definition" name="update_sunday_service">  
+  		<put-attribute name="title" value="Update Sunday Service"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/update_sunday_service.jsp"></put-attribute> 
+ </definition> 
+
+
+
+<definition extends="base.definition" name="attendees">  
+  		<put-attribute name="title" value="Attendees"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/attendees.jsp"></put-attribute> 
+ </definition> 
+
+<definition extends="base.definition" name="add_attendees">  
+  		<put-attribute name="title" value="Add Attendees"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/add_attendees.jsp"></put-attribute> 
+ </definition> 
+ 
+ <definition extends="base.definition" name="import_attendees">  
+  		<put-attribute name="title" value="Import Attendees"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/import_attendees.jsp"></put-attribute> 
+ </definition> 
+
+<definition extends="base.definition" name="update_attendees">  
+  		<put-attribute name="title" value="Update Attendees"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/update_attendees.jsp"></put-attribute> 
+ </definition> 
+ 
+ <definition extends="base.definition" name="reports">  
+  		<put-attribute name="title" value="Reports"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/reports.jsp"></put-attribute> 
+ </definition> 
+ 
+  <definition extends="base.definition" name="view_attendees_report">  
+  		<put-attribute name="title" value="View Attendees Report"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/view_attendees_report.jsp"></put-attribute> 
+ </definition> 
+ 
+ <definition extends="base.definition" name="maintenance">  
+  		<put-attribute name="title" value="Maintenance"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/maintenance.jsp"></put-attribute> 
+ </definition> 
+ 
+ <definition extends="base.definition" name="add_ministry">  
+  		<put-attribute name="title" value="Add Ministry"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/add_ministry.jsp"></put-attribute> 
+ </definition> 
+ 
+ <definition extends="base.definition" name="update_ministry">  
+  		<put-attribute name="title" value="Update Ministry"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/update_ministry.jsp"></put-attribute> 
+ </definition> 
+ 
+<definition extends="base.definition" name="add_service">  
+  		<put-attribute name="title" value="Add Service"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/add_service.jsp"></put-attribute> 
+ </definition> 
+
+<definition extends="base.definition" name="update_service">  
+  		<put-attribute name="title" value="Update Service"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/update_service.jsp"></put-attribute> 
+</definition>  
+
+<definition extends="base.definition" name="add_group">  
+  		<put-attribute name="title" value="Add Group"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/add_group.jsp"></put-attribute> 
+</definition> 
+
+<definition extends="base.definition" name="update_group">  
+		<put-attribute name="title" value="Update Group"></put-attribute>  
+        <put-attribute name="body" value="/WEB-INF/views/update_group.jsp"></put-attribute> 
+</definition>  
+
+
 <definition extends="base.definition" name="main_template">  
        <put-attribute name="title" value="Dashboard"></put-attribute>  
        <put-attribute name="header" value="/WEB-INF/views/header.jsp"></put-attribute>  
@@ -31,79 +134,5 @@
  </definition>
 
 
-<!-- 
-<definition name="success_forgot_password" template="/WEB-INF/views/success_forgot_password.jsp">  
-       <put-attribute name="title" value="/WEB-INF/views/success_forgot_password.jsp"></put-attribute>
-</definition>
-
-  <definition name="forgot_password" template="/WEB-INF/views/forgot_password.jsp">  
-        <put-attribute name="title" value="/WEB-INF/views/forgot_password.jsp"></put-attribute>  
-  </definition> 
-  
-
-
-<definition name="403" template="/WEB-INF/views/403.jsp">  
-       <put-attribute name="title" value="Error"></put-attribute>
-       <put-attribute name="body" value="/WEB-INF/views/403.jsp"></put-attribute> 
-</definition>
-
-
-<definition name="login_expired" template="/WEB-INF/views/login_expired.jsp">  
-       <put-attribute name="title" value="Login_Expired"></put-attribute>
-       <put-attribute name="body" value="/WEB-INF/views/login_expired.jsp"></put-attribute> 
-</definition>
-
-  <definition extends="base.definition" name="change_password">  
-  		<put-attribute name="title" value="Change Password"></put-attribute>  
-        <put-attribute name="body" value="/WEB-INF/views/change_password.jsp"></put-attribute> 
-  </definition> 
-
-  <definition extends="base.definition" name="home_reports">  
-    <put-attribute name="title" value="Reports"></put-attribute>  
-        <put-attribute name="body" value="/WEB-INF/views/home_reports.jsp"></put-attribute> 
-</definition>
-
- <definition extends="base.definition" name="vmoney_log">  
-    <put-attribute name="title" value="Reports"></put-attribute>  
-        <put-attribute name="body" value="/WEB-INF/views/vmoney_log.jsp"></put-attribute> 
-</definition>
-
-    
-  <definition extends="base.definition" name="application_control">  
-        <put-attribute name="title" value="Application Control"></put-attribute>  
-        <put-attribute name="body" value="/WEB-INF/views/application_control.jsp"></put-attribute>  
-    </definition>  
-    
-    
-    <definition extends="base.definition" name="wallet_administration">  
-        <put-attribute name="title" value="Wallet Administration"></put-attribute>  
-        <put-attribute name="body" value="/WEB-INF/views/wallet_administration.jsp"></put-attribute>  
-    </definition>  
-    
-   <definition extends="base.definition" name="reports">  
-        <put-attribute name="title" value="Reports"></put-attribute>  
-        <put-attribute name="body" value="/WEB-INF/views/reports.jsp"></put-attribute>  
-    </definition>     
-    
-    
-       <definition extends="base.definition" name="admin_users">  
-        <put-attribute name="title" value="Admin Users"></put-attribute>  
-        <put-attribute name="body" value="/WEB-INF/views/admin_users.jsp"></put-attribute>  
-    </definition>     
-    
-	<definition extends="base.definition" name="activity_log">  
-        <put-attribute name="title" value="Activity Log"></put-attribute>  
-        <put-attribute name="body" value="/WEB-INF/views/activity_log.jsp"></put-attribute>  
-    </definition>     
- 
- -->
-    
-     <definition extends="base.definition" name="main_template">  
-       <put-attribute name="title" value="Dashboard"></put-attribute>  
-       <put-attribute name="header" value="/WEB-INF/views/header.jsp"></put-attribute>  
-       <put-attribute name="menu" value="/WEB-INF/views/menu.jsp"></put-attribute>  
-       <put-attribute name="body" value="/WEB-INF/views/dashboard.jsp"></put-attribute>  
-       <put-attribute name="footer" value="/WEB-INF/views/footer.jsp"></put-attribute>  
- </definition>
     
 </tiles-definitions>  
