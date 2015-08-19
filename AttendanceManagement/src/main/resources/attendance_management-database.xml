@@ -3,6 +3,16 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	
+	 <bean class="java.net.URI" id="dbUrl">
+        <constructor-arg value="#{systemEnvironment['upoqzmeugmbvce:XXTVgjnQ9TvYIzbnJUGIU7_JWG@ec2-54-197-253-142.compute-1.amazonaws.com:5432/df4anbmo4f9dc1']}"/>
+    </bean>
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="url" value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }"/>
+        <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
+        <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
+    </bean>
+	
 	<!--  <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
     	 <property name="jndiName" value="java:comp/env/jdbc/cheers"/>
  	 </bean> -->
@@ -24,13 +34,13 @@
 	  <property name="password" value="Helloworld0@" />
 	 </bean> -->
 	
-   <bean id="dataSource" class="org.postgresql.ds.PGPoolingDataSource" destroy-method="close">
+  <!--  <bean id="dataSource" class="org.postgresql.ds.PGPoolingDataSource" destroy-method="close">
 	  <property name="serverName" value="ec2-54-197-253-142.compute-1.amazonaws.com" />
 	  <property name="databaseName" value="df4anbmo4f9dc1" />
 	  <property name="portNumber" value="5432" />
 	  <property name="user" value="upoqzmeugmbvce"/>
 	  <property name="password" value="XXTVgjnQ9TvYIzbnJUGIU7_JWG" />
-	 </bean>
+	 </bean> -->
 	 
  	<!--   <bean id="dataSource" class="org.postgresql.ds.PGPoolingDataSource" destroy-method="close">
 	  <property name="serverName" value="localhost" />
