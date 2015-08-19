@@ -318,6 +318,10 @@ public class ReportController extends BeanMapper{
 	   		  listAttendeesViews =  attendeesViewService.listAttendeesViewByGenderMinistry(Boolean.parseBoolean(attendeesReportBean.getGender()), attendeesReportBean.getMinistryId());
 	   	  }else if(attendeesReportBean.getGroupId() != 0 && attendeesReportBean.getMinistryId() != 0 && !attendeesReportBean.getGender().equals("all")){ // group ministry gender
 	   		  listAttendeesViews =  attendeesViewService.listAttendeesViewByGroupMinistryGender(attendeesReportBean.getGroupId(), attendeesReportBean.getMinistryId(), Boolean.parseBoolean(attendeesReportBean.getGender()));
+	   	  }else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() == 0 && attendeesReportBean.getGender().equals("all")){ // ALL
+	   		  listAttendeesViews =  attendeesViewService.listAttendeesViewByGroupMinistryGender(attendeesReportBean.getGroupId(), attendeesReportBean.getMinistryId(), Boolean.parseBoolean(attendeesReportBean.getGender()));
+	   	  }else if(attendeesReportBean.getGroupId() == 0 && attendeesReportBean.getMinistryId() == 0 && !attendeesReportBean.getGender().equals("all")){ // gender
+	   		  listAttendeesViews =  attendeesViewService.listAttendeesViewByGender(Boolean.parseBoolean(attendeesReportBean.getGender()));
 	   	  }
 		 return listAttendeesViews;
 	}

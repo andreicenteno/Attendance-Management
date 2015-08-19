@@ -101,6 +101,7 @@ public class PDFUtil {
 	public static final String NameHeader = "Name";
 	public static final String AddressHeader = "Address";
 	public static final String ContactNumberHeader = "Contact Number";
+	public static final String StatusHeader = "Status";
 	public static final String GenderHeader = "Gender";
 	public static final String BirthdayHeader = "Birthday";
 	public static final String AgeHeader = "Age";
@@ -293,7 +294,6 @@ public class PDFUtil {
 
 		Paragraph contentTitle = new Paragraph();
 		contentTitle.add(new Paragraph(GroupName, SmallBFont));
-
 		PdfPCell cell1 = createCell(NameHeader, 3, 3);
 		PdfPCell cell2 = createCell(AddressHeader, 3, 3);
 		PdfPCell cell3 = createCell(ContactNumberHeader, 3, 3);
@@ -345,6 +345,7 @@ public class PDFUtil {
 			Cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
 			table.addCell(Cell3);
 
+			
 			String GENDER = (attendeesView.getGender()) ? "Male" : "Female";
 			PdfPCell Cell4 = createCell(GENDER, 2, 3);
 			Cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -574,6 +575,7 @@ public class PDFUtil {
 		PdfPCell cell1 = createCell(NameHeader, 3, 3);
 		PdfPCell cell2 = createCell(AddressHeader, 3, 3);
 		PdfPCell cell3 = createCell(ContactNumberHeader, 3, 3);
+		
 		PdfPCell cell4 = createCell(GenderHeader, 3, 3);
 		PdfPCell cell5 = createCell(BirthdayHeader, 3, 3);
 		/*PdfPCell cell6 = createCell(AgeHeader, 3, 3);*/
@@ -646,8 +648,8 @@ public class PDFUtil {
 			throws BadElementException, DocumentException {
 		
 		// table
-		PdfPTable table = new PdfPTable(9);
-		float[] w = new float[] { 20f, 45f, 20f, 7f, 10f, 10f, 10f, 10f,10f };
+		PdfPTable table = new PdfPTable(10);
+		float[] w = new float[] { 20f, 30f, 20f, 25f, 10f, 10f, 10f, 10f, 10f,10f };
 		table.setWidths(w);
 		table.setWidthPercentage(100);
 		table.setSpacingBefore(10f);
@@ -659,6 +661,7 @@ public class PDFUtil {
 		PdfPCell cell1 = createCell(NameHeader, 3, 3);
 		PdfPCell cell2 = createCell(AddressHeader, 3, 3);
 		PdfPCell cell3 = createCell(ContactNumberHeader, 3, 3);
+		PdfPCell cell11 = createCell(StatusHeader, 3, 3);
 		PdfPCell cell4 = createCell(GenderHeader, 3, 3);
 		PdfPCell cell5 = createCell(BirthdayHeader, 3, 3);
 		PdfPCell cell7 = createCell(MinistryHeader, 3, 3);
@@ -670,6 +673,7 @@ public class PDFUtil {
 		cell1.setGrayFill(0.85f);
 		cell2.setGrayFill(0.85f);
 		cell3.setGrayFill(0.85f);
+		cell11.setGrayFill(0.85f);
 		cell4.setGrayFill(0.85f);
 		cell5.setGrayFill(0.85f);
 		/*cell6.setGrayFill(0.85f);*/
@@ -681,6 +685,7 @@ public class PDFUtil {
 		table.addCell(cell1);
 		table.addCell(cell2);
 		table.addCell(cell3);
+		table.addCell(cell11);
 		table.addCell(cell4);
 		table.addCell(cell5);
 		/*table.addCell(cell6);*/
@@ -708,6 +713,10 @@ public class PDFUtil {
 			Cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
 			table.addCell(Cell3);
 
+			PdfPCell Cell11 = createCell(firstTimer.getFirstTimerStatus().getFirstTimerStatus(), 3, 3);
+			Cell11.setHorizontalAlignment(Element.ALIGN_LEFT);
+			table.addCell(Cell11);
+			
 			String GENDER = (firstTimer.getAttendeesGuest().getGender()) ? "Male" : "Female";
 			PdfPCell Cell4 = createCell(GENDER, 2, 3);
 			Cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
